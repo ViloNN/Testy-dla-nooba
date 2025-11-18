@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Wielki Test z Matematyki (z podglądem błędów)</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #eef2f3;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+      }
+      .quiz-container {
+        background: white;
+        width: 100%;
+        max-width: 700px;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 40px;
+      }
+      h2 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+      }
+      .subtitle {
+        color: #7f8c8d;
+        font-size: 0.9em;
+        margin-bottom: 30px;
+      }
+
+      /* Styl pytań w trakcie testu */
+      .question {
+        font-size: 1.3em;
+        margin-bottom: 25px;
+        font-weight: 600;
+        color: #34495e;
+      }
+      .options {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      button.option-btn {
+        padding: 15px;
+        border: 2px solid #e0e0e0;
+        background: white;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 1.05em;
+        transition: all 0.2s;
+        text-align: left;
+        color: #555;
+      }
+      button.option-btn:hover {
+        background-color: #f0f8ff;
+        border-color: #3498db;
+        transform: translateY(-2px);
+      }
+      button.option-btn.selected {
+        background-color: #e1f0fa;
+        border-color: #2980b9;
+        font-weight: bold;
+        color: #2980b9;
+      }
+
+      /* Nawigacja */
+      .navigation {
+        margin-top: 35px;
+        display: flex;
+        justify-content: space-between;
+      }
+      button.nav-btn {
+        padding: 12px 25px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: bold;
+        transition: 0.2s;
+      }
+      button.nav-btn:hover {
+        background-color: #2980b9;
+      }
+      button.nav-btn:disabled {
+        background-color: #bdc3c7;
+        cursor: not-allowed;
+      }
+
+      /* Wyniki i podsumowanie */
+      .result-box {
+        display: none;
+        text-align: center;
+      }
+      .score-circle {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: #2ecc71;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2em;
+        margin: 0 auto 20px;
+        font-weight: bold;
+        box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+      }
+
+      /* Pasek postępu */
+      #progress-bar-container {
+        width: 100%;
+        background-color: #ecf0f1;
+        border-radius: 10px;
+        height: 10px;
+        margin-bottom: 20px;
+        overflow: hidden;
+      }
+      #progress-bar {
+        height: 100%;
+        background-color: #3498db;
+        width: 0%;
+        transition: width 0.3s;
+      }
+      #progress-text {
+        text-align: right;
+        font-size: 0.85em;
+        color: #95a5a6;
+        margin-bottom: 5px;
+      }
+
+      /* Szczegółowy podgląd odpowiedzi */
+      #review-container {
+        margin-top: 30px;
+        text-align: left;
+        border-top: 2px solid #ecf0f1;
+        padding-top: 20px;
+      }
+      .review-item {
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        border-left: 6px solid #ccc;
+        background: #fafafa;
+      }
+      .review-item.correct {
+        border-left-color: #2ecc71;
+        background-color: #f0fff4;
+      }
+      .review-item.incorrect {
+        border-left-color: #e74c3c;
+        background-color: #fff5f5;
+      }
+      .review-q-title {
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 8px;
+        display: block;
+      }
+      .review-ans {
+        font-size: 0.95em;
+        margin: 4px 0;
+      }
+      .ans-bad {
+        color: #c0392b;
+        text-decoration: line-through;
+      }
+      .ans-good {
+        color: #27ae60;
+        font-weight: bold;
+      }
+      .status-icon {
+        float: right;
+        font-size: 1.2em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="quiz-container">
+      <div id="quiz-area">
+        <h2>Sprawdzian: Własności Liczb</h2>
+        <div class="subtitle">
+          Wielokrotności, dzielniki, liczby pierwsze, NWW, NWD
+        </div>
+
+        <div id="progress-text">Pytanie 1 z 30</div>
+        <div id="progress-bar-container"><div id="progress-bar"></div></div>
+
+        <div class="question" id="question-text">...</div>
+        <div class="options" id="options-container"></div>
+
+        <div class="navigation">
+          <button
+            class="nav-btn"
+            id="prev-btn"
+            onclick="prevQuestion()"
+            disabled
+          >
+            ← Cofnij
+          </button>
+          <button class="nav-btn" id="next-btn" onclick="nextQuestion()">
+            Dalej →
+          </button>
+        </div>
+      </div>
+
+      <div id="result-area" class="result-box">
+        <h2>Twój Wynik</h2>
+        <div class="score-circle" id="score-val">0/30</div>
+        <p
+          id="feedback-msg"
+          style="font-size: 1.2em; color: #555; margin-bottom: 20px"
+        ></p>
+
+        <button
+          class="nav-btn"
+          onclick="location.reload()"
+          style="margin-bottom: 30px"
+        >
+          Rozwiąż ponownie ↺
+        </button>
+
+        <h3>Szczegółowy podgląd odpowiedzi:</h3>
+        <div id="review-container"></div>
+      </div>
+    </div>
+
+    <script>
+      const questions = [
+        // --- Wielokrotności i Dzielniki ---
+        {
+          q: "1. Która liczba jest wielokrotnością liczby 7?",
+          options: ["15", "27", "42", "50"],
+          answer: 2,
+        },
+        {
+          q: "2. Wypisz wszystkie dzielniki liczby 6.",
+          options: ["1, 6", "2, 3", "1, 2, 3, 6", "1, 2, 3, 4, 6"],
+          answer: 2,
+        },
+        {
+          q: "3. Jaka jest najmniejsza wielokrotność liczby 12 (większa od 0)?",
+          options: ["1", "6", "12", "24"],
+          answer: 2,
+        },
+        {
+          q: "4. Liczba 1 jest dzielnikiem:",
+          options: [
+            "Tylko liczb parzystych",
+            "Tylko liczb pierwszych",
+            "Każdej liczby naturalnej",
+            "Żadnej liczby",
+          ],
+          answer: 2,
+        },
+        {
+          q: "5. Ile dzielników ma liczba 17?",
+          options: ["Jeden (17)", "Dwa (1, 17)", "Trzy", "Zero"],
+          answer: 1,
+        },
+
+        // --- Cechy podzielności ---
+        {
+          q: "6. Liczba jest podzielna przez 2, jeśli:",
+          options: [
+            "Jest nieparzysta",
+            "Kończy się na 1, 3, 5, 7 lub 9",
+            "Jej suma cyfr dzieli się przez 2",
+            "Jej ostatnią cyfrą jest 0, 2, 4, 6 lub 8",
+          ],
+          answer: 3,
+        },
+        {
+          q: "7. Która z tych liczb dzieli się przez 5?",
+          options: ["1052", "305", "551", "5051"],
+          answer: 1,
+        },
+        {
+          q: "8. Liczba 411 jest podzielna przez 3, ponieważ:",
+          options: [
+            "Kończy się na 1",
+            "4+1+1 = 6, a 6 dzieli się przez 3",
+            "Jest liczbą pierwszą",
+            "Jest podzielna przez 9",
+          ],
+          answer: 1,
+        },
+        {
+          q: "9. Aby liczba była podzielna przez 4, to:",
+          options: [
+            "Musi być parzysta",
+            "Suma cyfr musi dzielić się przez 4",
+            "Dwie ostatnie cyfry muszą tworzyć liczbę podzielną przez 4",
+            "Ostatnia cyfra musi być 0 lub 4",
+          ],
+          answer: 2,
+        },
+        {
+          q: "10. Która liczba dzieli się jednocześnie przez 10 i przez 3?",
+          options: ["100", "130", "60", "35"],
+          answer: 2,
+        },
+        {
+          q: "11. Liczba 72 dzieli się przez 9, ponieważ:",
+          options: [
+            "Kończy się na 2",
+            "7+2=9",
+            "Dzieli się przez 3",
+            "Jest duża",
+          ],
+          answer: 1,
+        },
+
+        // --- Liczby Pierwsze i Złożone ---
+        {
+          q: "12. Liczba pierwsza to taka, która:",
+          options: [
+            "Ma tylko jeden dzielnik",
+            "Ma tylko dwa dzielniki: 1 i samą siebie",
+            "Ma więcej niż dwa dzielniki",
+            "Jest liczbą nieparzystą",
+          ],
+          answer: 1,
+        },
+        {
+          q: "13. Liczba 1 jest:",
+          options: [
+            "Liczbą pierwszą",
+            "Liczbą złożoną",
+            "Ani pierwszą, ani złożoną",
+            "Liczbą parzystą",
+          ],
+          answer: 2,
+        },
+        {
+          q: "14. Jedyną parzystą liczbą pierwszą jest:",
+          options: ["0", "2", "4", "Nie ma takiej liczby"],
+          answer: 1,
+        },
+        {
+          q: "15. Który zbiór zawiera tylko liczby pierwsze?",
+          options: ["2, 4, 6", "3, 5, 9", "2, 3, 5, 7", "11, 13, 15"],
+          answer: 2,
+        },
+        {
+          q: "16. Liczba 25 jest liczbą:",
+          options: [
+            "Pierwszą",
+            "Złożoną",
+            "Nieparzystą pierwszą",
+            "Żadną z powyższych",
+          ],
+          answer: 1,
+        },
+
+        // --- Rozkład na czynniki pierwsze ---
+        {
+          q: "17. Rozkład liczby 8 na czynniki pierwsze to:",
+          options: ["2 * 4", "2 * 2 * 2", "1 * 8", "4 + 4"],
+          answer: 1,
+        },
+        {
+          q: "18. Rozkład liczby 10 na czynniki pierwsze to:",
+          options: ["2 * 5", "1 * 10", "5 + 5", "2 * 2 * 2"],
+          answer: 0,
+        },
+        {
+          q: "19. Jaka liczba ma rozkład 2 * 3 * 5?",
+          options: ["10", "15", "30", "60"],
+          answer: 2,
+        },
+        {
+          q: "20. Rozkład liczby 36 na czynniki pierwsze to:",
+          options: ["6 * 6", "4 * 9", "2 * 2 * 3 * 3", "2 * 3 * 6"],
+          answer: 2,
+        },
+        {
+          q: "21. Czy liczba 2 w rozkładzie na czynniki może wystąpić kilka razy?",
+          options: [
+            "Tak, np. w liczbie 4 (2*2)",
+            "Nie, tylko raz",
+            "Tylko w liczbach nieparzystych",
+            "Nigdy",
+          ],
+          answer: 0,
+        },
+
+        // --- NWD i NWW ---
+        {
+          q: "22. Skrót NWD oznacza:",
+          options: [
+            "Najmniejszy Wspólny Dzielnik",
+            "Największy Wspólny Dzielnik",
+            "Największa Wspólna Dzielna",
+            "Największy Własny Dzielnik",
+          ],
+          answer: 1,
+        },
+        {
+          q: "23. Znajdź NWD liczb 12 i 16.",
+          options: ["2", "4", "6", "12"],
+          answer: 1,
+        },
+        {
+          q: "24. NWD liczb 5 i 7 (liczb pierwszych) wynosi:",
+          options: ["0", "1", "5", "35"],
+          answer: 1,
+        },
+        {
+          q: "25. Skrót NWW oznacza:",
+          options: [
+            "Najmniejsza Wspólna Wielokrotność",
+            "Największa Wspólna Wielokrotność",
+            "Najmniejszy Wspólny Wynik",
+            "Najlepsza Wspólna Wartość",
+          ],
+          answer: 0,
+        },
+        {
+          q: "26. Znajdź NWW liczb 3 i 4.",
+          options: ["7", "12", "24", "1"],
+          answer: 1,
+        },
+        {
+          q: "27. Znajdź NWW liczb 6 i 8.",
+          options: ["14", "48", "24", "12"],
+          answer: 2,
+        },
+        {
+          q: "28. Jeżeli jedna liczba to 10, a druga to 20, to ich NWW wynosi:",
+          options: ["10", "20", "200", "30"],
+          answer: 1,
+        },
+
+        // --- Zadania mieszane / tekstowe ---
+        {
+          q: "29. Zosia biega co 2 dni, a Kasia co 3 dni. Spotkały się dzisiaj. Za ile dni spotkają się znowu? (NWW)",
+          options: ["Za 2 dni", "Za 5 dni", "Za 6 dni", "Za 12 dni"],
+          answer: 2,
+        },
+        {
+          q: "30. Masz 12 jabłek i 18 gruszek. Chcesz zrobić jednakowe paczki (bez reszty). Jaka jest największa liczba paczek? (NWD)",
+          options: ["2", "3", "6", "9"],
+          answer: 2,
+        },
+      ];
+
+      let currentQ = 0;
+      let answers = new Array(questions.length).fill(null);
+
+      function loadQ() {
+        const qData = questions[currentQ];
+        document.getElementById("question-text").innerText = qData.q;
+        document.getElementById("progress-text").innerText = `Pytanie ${
+          currentQ + 1
+        } z ${questions.length}`;
+
+        const percent = (currentQ / questions.length) * 100;
+        document.getElementById("progress-bar").style.width = percent + "%";
+
+        const optsDiv = document.getElementById("options-container");
+        optsDiv.innerHTML = "";
+
+        qData.options.forEach((opt, idx) => {
+          const btn = document.createElement("button");
+          btn.className = "option-btn";
+          btn.innerText = opt;
+          if (answers[currentQ] === idx) btn.classList.add("selected");
+          btn.onclick = () => {
+            answers[currentQ] = idx;
+            loadQ();
+          };
+          optsDiv.appendChild(btn);
+        });
+
+        document.getElementById("prev-btn").disabled = currentQ === 0;
+        const nextBtn = document.getElementById("next-btn");
+        if (currentQ === questions.length - 1) {
+          nextBtn.innerText = "Zakończ 🏁";
+          nextBtn.style.backgroundColor = "#2ecc71";
+        } else {
+          nextBtn.innerText = "Dalej →";
+          nextBtn.style.backgroundColor = "#3498db";
+        }
+      }
+
+      function nextQuestion() {
+        if (currentQ < questions.length - 1) {
+          currentQ++;
+          loadQ();
+        } else {
+          finishQuiz();
+        }
+      }
+
+      function prevQuestion() {
+        if (currentQ > 0) {
+          currentQ--;
+          loadQ();
+        }
+      }
+
+      function finishQuiz() {
+        let score = 0;
+        const reviewContainer = document.getElementById("review-container");
+        reviewContainer.innerHTML = ""; // Wyczyść poprzednie wyniki
+
+        questions.forEach((q, idx) => {
+          const userAnsIdx = answers[idx];
+          const correctAnsIdx = q.answer;
+          const isCorrect = userAnsIdx === correctAnsIdx;
+
+          if (isCorrect) score++;
+
+          // Generowanie kafelka z odpowiedzią
+          const div = document.createElement("div");
+          div.className = isCorrect
+            ? "review-item correct"
+            : "review-item incorrect";
+
+          const statusIcon = isCorrect
+            ? '<span class="status-icon">✅</span>'
+            : '<span class="status-icon">❌</span>';
+
+          let reviewContent = `
+                ${statusIcon}
+                <span class="review-q-title">${q.q}</span>
+            `;
+
+          if (isCorrect) {
+            reviewContent += `<div class="review-ans ans-good">Twoja odpowiedź: ${q.options[userAnsIdx]} (Dobrze!)</div>`;
+          } else {
+            const userText =
+              userAnsIdx !== null ? q.options[userAnsIdx] : "Brak odpowiedzi";
+            reviewContent += `
+                    <div class="review-ans ans-bad">Twoja odpowiedź: ${userText}</div>
+                    <div class="review-ans ans-good">Poprawna odpowiedź: ${q.options[correctAnsIdx]}</div>
+                `;
+          }
+
+          div.innerHTML = reviewContent;
+          reviewContainer.appendChild(div);
+        });
+
+        // Ukryj test, pokaż wyniki
+        document.getElementById("quiz-area").style.display = "none";
+        document.getElementById("result-area").style.display = "block";
+        document.getElementById(
+          "score-val"
+        ).innerText = `${score}/${questions.length}`;
+
+        // Komunikat
+        let msg = "";
+        const percent = (score / questions.length) * 100;
+        if (percent === 100) msg = "Perfekcyjnie! Jesteś mistrzem! 🏆";
+        else if (percent >= 80) msg = "Bardzo dobry wynik! Świetna robota! 👍";
+        else if (percent >= 50)
+          msg = "Nieźle, ale sprawdź poniżej, gdzie zrobiłeś błędy. 🙂";
+        else
+          msg =
+            "Musisz jeszcze trochę poćwiczyć. Przeanalizuj błędy poniżej! 💪";
+
+        document.getElementById("feedback-msg").innerText = msg;
+      }
+
+      // Start
+      loadQ();
+    </script>
+  </body>
+</html>

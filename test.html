@@ -2,13 +2,13 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>English for Graphic Designers 🎨</title>
+    <title>General English Quiz 🇬🇧</title>
     <style>
-        /* DESIGN THEME: Dark Mode / Creative UI */
+        /* Styl: Ciemny, nowoczesny, czytelny */
         body { 
-            font-family: 'Inter', 'Segoe UI', sans-serif; 
-            background-color: #121212; 
-            color: #e0e0e0; 
+            font-family: 'Segoe UI', sans-serif; 
+            background-color: #1a1a1a; 
+            color: #f0f0f0; 
             display: flex; 
             justify-content: center; 
             align-items: flex-start; 
@@ -18,36 +18,34 @@
         }
         
         .quiz-container { 
-            background: #1e1e1e; 
+            background: #2b2b2b; 
             width: 100%; 
-            max-width: 750px; 
+            max-width: 700px; 
             padding: 40px; 
-            border-radius: 16px; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
+            border-radius: 15px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
             text-align: center; 
             margin-top: 20px; 
             margin-bottom: 40px; 
-            border: 1px solid #333;
+            border: 1px solid #444;
         }
         
         h2 { 
-            color: #00d2d3; /* Cyan accent */
-            margin-bottom: 5px; 
+            color: #6c5ce7; /* Fioletowy akcent */
+            margin-bottom: 10px; 
             font-weight: 700;
-            letter-spacing: -0.5px;
         }
         
         .subtitle { 
-            color: #888; 
-            font-size: 0.9em; 
+            color: #aaa; 
+            font-size: 0.95em; 
             margin-bottom: 30px; 
-            text-transform: uppercase; 
-            letter-spacing: 2px;
+            font-style: italic;
         }
         
         /* Pytania */
         .question { 
-            font-size: 1.3em; 
+            font-size: 1.25em; 
             margin-bottom: 25px; 
             font-weight: 500; 
             color: #fff; 
@@ -61,44 +59,43 @@
         }
         
         button.option-btn { 
-            padding: 16px; 
-            border: 1px solid #333; 
-            background: #2d2d2d; 
+            padding: 15px; 
+            border: 1px solid #444; 
+            background: #333; 
             border-radius: 8px; 
             cursor: pointer; 
             font-size: 1.05em; 
             transition: all 0.2s; 
             text-align: left; 
-            color: #bbb; 
-            font-family: inherit;
+            color: #ccc; 
         }
         
         button.option-btn:hover { 
-            background-color: #3d3d3d; 
-            border-color: #00d2d3; 
+            background-color: #444; 
+            border-color: #6c5ce7; 
             color: #fff;
-            transform: translateX(4px); 
+            transform: translateX(3px); 
         }
         
         button.option-btn.selected { 
-            background-color: #00d2d3; 
-            border-color: #00d2d3; 
-            color: #121212; 
+            background-color: #6c5ce7; 
+            border-color: #6c5ce7; 
+            color: #fff; 
             font-weight: bold; 
         }
         
         /* Nawigacja */
         .navigation { 
-            margin-top: 40px; 
+            margin-top: 35px; 
             display: flex; 
             justify-content: space-between; 
         }
         
         button.nav-btn { 
-            padding: 12px 30px; 
+            padding: 12px 25px; 
             background-color: transparent; 
-            color: #00d2d3; 
-            border: 2px solid #00d2d3; 
+            color: #6c5ce7; 
+            border: 2px solid #6c5ce7; 
             border-radius: 50px; 
             cursor: pointer; 
             font-size: 1em; 
@@ -107,8 +104,8 @@
         }
         
         button.nav-btn:hover { 
-            background-color: #00d2d3; 
-            color: #121212; 
+            background-color: #6c5ce7; 
+            color: white; 
         }
         
         button.nav-btn:disabled { 
@@ -123,39 +120,38 @@
             width: 100%; 
             background-color: #333; 
             border-radius: 4px; 
-            height: 6px; 
+            height: 8px; 
             margin-bottom: 25px; 
             overflow: hidden; 
         }
         
         #progress-bar { 
             height: 100%; 
-            background-color: #ff9f43; /* Orange accent */
+            background-color: #a29bfe; 
             width: 0%; 
             transition: width 0.3s; 
         }
         
         #progress-text { 
             text-align: right; 
-            font-size: 0.8em; 
-            color: #777; 
-            margin-bottom: 8px; 
+            font-size: 0.85em; 
+            color: #888; 
+            margin-bottom: 5px; 
         }
 
         /* Wyniki */
         .result-box { display: none; text-align: center; }
-        
         .score-circle { 
-            width: 120px; 
-            height: 120px; 
+            width: 130px; 
+            height: 130px; 
             border-radius: 50%; 
             background: transparent; 
-            border: 4px solid #00d2d3;
-            color: #00d2d3; 
+            border: 5px solid #6c5ce7;
+            color: #6c5ce7; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            font-size: 2.2em; 
+            font-size: 2.5em; 
             margin: 0 auto 20px; 
             font-weight: bold; 
         }
@@ -172,36 +168,35 @@
             padding: 15px; 
             margin-bottom: 15px; 
             border-radius: 8px; 
-            background: #252525; 
-            border-left: 4px solid #555; 
+            background: #333; 
+            border-left: 5px solid #555; 
         }
         
-        .review-item.correct { border-left-color: #00d2d3; }
-        .review-item.incorrect { border-left-color: #ff6b6b; }
+        .review-item.correct { border-left-color: #00b894; }
+        .review-item.incorrect { border-left-color: #ff7675; }
         
         .review-q-title { font-weight: bold; margin-bottom: 8px; display: block; color: #fff; }
-        .ans-bad { color: #ff6b6b; text-decoration: line-through; font-size: 0.9em; opacity: 0.8; }
-        .ans-good { color: #00d2d3; font-weight: bold; }
+        .ans-bad { color: #ff7675; text-decoration: line-through; opacity: 0.8; font-size: 0.9em; }
+        .ans-good { color: #00b894; font-weight: bold; }
         
         .grammar-tag {
             display: inline-block;
-            background: #333;
-            color: #aaa;
-            padding: 2px 6px;
-            font-size: 0.7em;
+            background: #444;
+            color: #ddd;
+            padding: 2px 8px;
+            font-size: 0.75em;
             border-radius: 4px;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             text-transform: uppercase;
         }
-
     </style>
 </head>
 <body>
 
 <div class="quiz-container">
     <div id="quiz-area">
-        <h2>English for Designers 🎨</h2>
-        <div class="subtitle">Grammar Practice for WSTI Students</div>
+        <h2>General English Quiz 🇬🇧</h2>
+        <div class="subtitle">Grammar Review (Tenses & Future Forms)</div>
         
         <div id="progress-text">Question 1 of 20</div>
         <div id="progress-bar-container"><div id="progress-bar"></div></div>
@@ -216,13 +211,13 @@
     </div>
 
     <div id="result-area" class="result-box">
-        <h2>Result</h2>
+        <h2>Your Result</h2>
         <div class="score-circle" id="score-val">0/20</div>
-        <p id="feedback-msg" style="font-size: 1.2em; color: #bbb; margin-bottom: 20px;"></p>
+        <p id="feedback-msg" style="font-size: 1.2em; color: #ccc; margin-bottom: 20px;"></p>
         
-        <button class="nav-btn" onclick="location.reload()" style="margin-bottom: 30px;">Restart Test</button>
+        <button class="nav-btn" onclick="location.reload()" style="margin-bottom: 30px;">Try Again</button>
 
-        <h3 style="color: #777; border-bottom: 1px solid #444; padding-bottom: 10px;">Review:</h3>
+        <h3 style="color: #aaa; border-bottom: 1px solid #444; padding-bottom: 10px;">Review Answers:</h3>
         <div id="review-container"></div>
     </div>
 </div>
@@ -230,34 +225,34 @@
 <script>
     const questions = [
         // --- PRESENT SIMPLE vs CONTINUOUS ---
-        { q: "1. Graphic designers usually __________ typical 9-to-5 hours. They often work late.", options: ["aren't working", "don't work", "not work", "doesn't work"], answer: 1, type: "Present Simple" },
-        { q: "2. Look at the screen! The computer __________ the 3D model right now.", options: ["renders", "is rendering", "rendering", "render"], answer: 1, type: "Present Continuous" },
-        { q: "3. I __________ this font. It's too decorative.", options: ["am not liking", "don't like", "not like", "doesn't like"], answer: 1, type: "State Verbs" },
-        { q: "4. What __________? It looks like a new logo for Nike.", options: ["do you draw", "are you draw", "are you drawing", "you drawing"], answer: 2, type: "Present Continuous" },
+        { q: "1. Look! It __________ outside. We can't go to the park.", options: ["rains", "is raining", "raining", "does rain"], answer: 1, type: "Present Continuous" },
+        { q: "2. I usually __________ tea, but today I want coffee.", options: ["drink", "am drinking", "drinks", "drank"], answer: 0, type: "Present Simple" },
+        { q: "3. 'Where is Tom?' – 'He __________ in the garden.'", options: ["works", "work", "is working", "working"], answer: 2, type: "Present Continuous" },
+        { q: "4. She __________ understand this exercise. Can you help her?", options: ["isn't", "don't", "not", "doesn't"], answer: 3, type: "Present Simple (Negative)" },
         
         // --- PAST SIMPLE ---
-        { q: "5. I __________ my first Wacom tablet two years ago.", options: ["buyed", "bought", "have bought", "buy"], answer: 1, type: "Past Simple" },
-        { q: "6. The client __________ happy with the first draft, so we changed it.", options: ["wasn't", "weren't", "didn't be", "hasn't been"], answer: 0, type: "Past Simple" },
-        { q: "7. When __________ you finish the project?", options: ["did", "have", "were", "are"], answer: 0, type: "Past Simple" },
-        { q: "8. Picasso __________ many famous paintings in the 20th century.", options: ["paints", "painted", "has painted", "painting"], answer: 1, type: "Past Simple" },
+        { q: "5. We __________ to the cinema last night.", options: ["go", "went", "have gone", "gone"], answer: 1, type: "Past Simple" },
+        { q: "6. I __________ enjoy the party yesterday. The music was too loud.", options: ["didn't", "don't", "wasn't", "haven't"], answer: 0, type: "Past Simple (Negative)" },
+        { q: "7. When __________ you buy this car?", options: ["have", "did", "were", "are"], answer: 1, type: "Past Simple (Question)" },
+        { q: "8. Shakespeare __________ many famous plays.", options: ["write", "wrote", "has written", "writes"], answer: 1, type: "Past Simple (Finished Action)" },
 
         // --- FUTURE EXPRESSIONS ---
-        { q: "9. 'We need more paper.' – 'Okay, I __________ some.' (Spontaneous decision)", options: ["am going to buy", "will buy", "am buying", "buy"], answer: 1, type: "Future Simple (Will)" },
-        { q: "10. Look at those errors! The program __________ crash.", options: ["will", "is going to", "goes to", "is go to"], answer: 1, type: "Going to (Prediction)" },
-        { q: "11. I __________ the Art Director at 10:00 AM tomorrow. (Arrangement)", options: ["will meet", "am meeting", "meet", "going to meet"], answer: 1, type: "Present Continuous for Future" },
-        { q: "12. What are your plans? I __________ a new portfolio website next month.", options: ["will design", "am going to design", "design", "designed"], answer: 1, type: "Going to (Plan)" },
+        { q: "9. 'It's very hot in here.' – 'Okay, I __________ open the window.' (Spontaneous)", options: ["will", "am going to", "am opening", "open"], answer: 0, type: "Future Simple (Will)" },
+        { q: "10. Look at those dark clouds! It __________ rain.", options: ["will", "is going to", "goes to", "is go to"], answer: 1, type: "Going to (Prediction)" },
+        { q: "11. I __________ my dentist tomorrow at 10:00. (Arrangement)", options: ["will see", "am seeing", "see", "saw"], answer: 1, type: "Present Continuous for Future" },
+        { q: "12. What are your plans for the summer? I __________ travel to Spain.", options: ["will", "am going to", "traveling", "travel"], answer: 1, type: "Going to (Plan)" },
 
         // --- PRESENT PERFECT ---
-        { q: "13. I __________ never __________ Photoshop. I prefer Illustrator.", options: ["did / use", "have / used", "has / used", "have / use"], answer: 1, type: "Present Perfect" },
-        { q: "14. She __________ just __________ the file. You can open it now.", options: ["has / saved", "have / saved", "did / save", "is / saving"], answer: 0, type: "Present Perfect" },
-        { q: "15. We have known this client __________ 2015.", options: ["for", "since", "from", "ago"], answer: 1, type: "For / Since" },
-        { q: "16. __________ you ever __________ an award for your design?", options: ["Did / win", "Have / won", "Have / win", "Has / won"], answer: 1, type: "Present Perfect" },
+        { q: "13. __________ you ever __________ sushi?", options: ["Did / eat", "Have / eaten", "Have / eat", "Has / eaten"], answer: 1, type: "Present Perfect (Experience)" },
+        { q: "14. I can't find my keys. I think I __________ them.", options: ["lost", "have lost", "lose", "am losing"], answer: 1, type: "Present Perfect (Result)" },
+        { q: "15. She has lived in London __________ ten years.", options: ["since", "for", "from", "ago"], answer: 1, type: "For / Since" },
+        { q: "16. We __________ haven't finished our homework.", options: ["just", "already", "yet", "still"], answer: 3, type: "Still / Yet" },
         
         // --- MIXED / GENERAL ---
-        { q: "17. Yesterday I __________ tired, but today I __________ fine.", options: ["was / am", "were / am", "have been / be", "am / was"], answer: 0, type: "Past & Present" },
-        { q: "18. He __________ (not / finish) the sketch yet.", options: ["didn't finish", "hasn't finished", "isn't finishing", "don't finish"], answer: 1, type: "Present Perfect (Yet)" },
-        { q: "19. In the future, AI __________ probably __________ some basic design tasks.", options: ["is / doing", "will / do", "is going / do", "does"], answer: 1, type: "Future (Prediction)" },
-        { q: "20. Why __________ you __________ at the monitor? Is it broken?", options: ["do / staring", "are / staring", "have / stare", "did / stared"], answer: 1, type: "Present Continuous" }
+        { q: "17. I __________ him since we were children.", options: ["know", "knew", "have known", "am knowing"], answer: 2, type: "Present Perfect" },
+        { q: "18. While I was walking to work, I __________ an old friend.", options: ["meet", "met", "have met", "meeting"], answer: 1, type: "Past Simple" },
+        { q: "19. In the future, people __________ live on Mars.", options: ["are going", "will", "are living", "live"], answer: 1, type: "Future (Prediction)" },
+        { q: "20. Why __________ you __________? Is something funny?", options: ["do / smile", "are / smiling", "have / smiled", "did / smile"], answer: 1, type: "Present Continuous" }
     ];
 
     let currentQ = 0;
@@ -352,10 +347,10 @@
         
         let msg = "";
         const percent = (score / questions.length) * 100;
-        if(percent === 100) msg = "Perfect! Your English is as sharp as a vector line! 🖊️";
-        else if(percent >= 80) msg = "Great job! Ready for international clients! 🌍";
-        else if(percent >= 50) msg = "Good start, but watch out for grammar glitches. 👾";
-        else msg = "Keep practicing! Don't let grammar crash your system. 💻";
+        if(percent === 100) msg = "Perfect Score! You are a grammar master! 🏆";
+        else if(percent >= 80) msg = "Great job! Your English is very good! 👏";
+        else if(percent >= 50) msg = "Good start! Review the mistakes below. 🙂";
+        else msg = "Keep practicing. You will get there! 💪";
         
         document.getElementById('feedback-msg').innerText = msg;
     }

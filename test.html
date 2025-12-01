@@ -2,104 +2,262 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Biologia Klasa 5: Odżywianie</title>
+    <title>English for Graphic Designers 🎨</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #e8f5e9; color: #1b5e20; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; margin: 0; padding: 20px; }
-        .quiz-container { background: #fff; width: 100%; max-width: 700px; padding: 40px; border-radius: 20px; box-shadow: 0 10px 25px rgba(27, 94, 32, 0.2); text-align: center; margin-top: 20px; margin-bottom: 40px; border-top: 10px solid #43a047; }
+        /* DESIGN THEME: Dark Mode / Creative UI */
+        body { 
+            font-family: 'Inter', 'Segoe UI', sans-serif; 
+            background-color: #121212; 
+            color: #e0e0e0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: flex-start; 
+            min-height: 100vh; 
+            margin: 0; 
+            padding: 20px; 
+        }
         
-        h2 { color: #2e7d32; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
-        .subtitle { color: #66bb6a; font-size: 1.1em; margin-bottom: 30px; font-style: italic; font-weight: 500;}
+        .quiz-container { 
+            background: #1e1e1e; 
+            width: 100%; 
+            max-width: 750px; 
+            padding: 40px; 
+            border-radius: 16px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
+            text-align: center; 
+            margin-top: 20px; 
+            margin-bottom: 40px; 
+            border: 1px solid #333;
+        }
+        
+        h2 { 
+            color: #00d2d3; /* Cyan accent */
+            margin-bottom: 5px; 
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .subtitle { 
+            color: #888; 
+            font-size: 0.9em; 
+            margin-bottom: 30px; 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+        }
         
         /* Pytania */
-        .question { font-size: 1.3em; margin-bottom: 25px; font-weight: 600; color: #1b5e20; }
-        .options { display: flex; flex-direction: column; gap: 12px; }
+        .question { 
+            font-size: 1.3em; 
+            margin-bottom: 25px; 
+            font-weight: 500; 
+            color: #fff; 
+            line-height: 1.5;
+        }
         
-        button.option-btn { padding: 16px; border: 2px solid #a5d6a7; background: #f1f8e9; border-radius: 12px; cursor: pointer; font-size: 1.1em; transition: all 0.2s; text-align: left; color: #2e7d32; }
-        button.option-btn:hover { background-color: #c8e6c9; border-color: #4caf50; transform: translateX(5px); }
-        button.option-btn.selected { background-color: #4caf50; border-color: #1b5e20; font-weight: bold; color: white; }
+        .options { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+        }
+        
+        button.option-btn { 
+            padding: 16px; 
+            border: 1px solid #333; 
+            background: #2d2d2d; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 1.05em; 
+            transition: all 0.2s; 
+            text-align: left; 
+            color: #bbb; 
+            font-family: inherit;
+        }
+        
+        button.option-btn:hover { 
+            background-color: #3d3d3d; 
+            border-color: #00d2d3; 
+            color: #fff;
+            transform: translateX(4px); 
+        }
+        
+        button.option-btn.selected { 
+            background-color: #00d2d3; 
+            border-color: #00d2d3; 
+            color: #121212; 
+            font-weight: bold; 
+        }
         
         /* Nawigacja */
-        .navigation { margin-top: 35px; display: flex; justify-content: space-between; }
-        button.nav-btn { padding: 12px 30px; background-color: #2e7d32; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1.1em; font-weight: bold; transition: 0.2s; }
-        button.nav-btn:hover { background-color: #1b5e20; }
-        button.nav-btn:disabled { background-color: #a5d6a7; cursor: not-allowed; }
+        .navigation { 
+            margin-top: 40px; 
+            display: flex; 
+            justify-content: space-between; 
+        }
+        
+        button.nav-btn { 
+            padding: 12px 30px; 
+            background-color: transparent; 
+            color: #00d2d3; 
+            border: 2px solid #00d2d3; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            font-size: 1em; 
+            font-weight: 600; 
+            transition: 0.2s; 
+        }
+        
+        button.nav-btn:hover { 
+            background-color: #00d2d3; 
+            color: #121212; 
+        }
+        
+        button.nav-btn:disabled { 
+            border-color: #555; 
+            color: #555; 
+            cursor: not-allowed; 
+            background-color: transparent;
+        }
+
+        /* Pasek postępu */
+        #progress-bar-container { 
+            width: 100%; 
+            background-color: #333; 
+            border-radius: 4px; 
+            height: 6px; 
+            margin-bottom: 25px; 
+            overflow: hidden; 
+        }
+        
+        #progress-bar { 
+            height: 100%; 
+            background-color: #ff9f43; /* Orange accent */
+            width: 0%; 
+            transition: width 0.3s; 
+        }
+        
+        #progress-text { 
+            text-align: right; 
+            font-size: 0.8em; 
+            color: #777; 
+            margin-bottom: 8px; 
+        }
 
         /* Wyniki */
         .result-box { display: none; text-align: center; }
-        .score-circle { width: 140px; height: 140px; border-radius: 50%; background: #43a047; color: white; display: flex; justify-content: center; align-items: center; font-size: 2.5em; margin: 0 auto 20px; font-weight: bold; box-shadow: 0 5px 15px rgba(67, 160, 71, 0.4); }
         
-        /* Pasek postępu */
-        #progress-bar-container { width: 100%; background-color: #c8e6c9; border-radius: 10px; height: 15px; margin-bottom: 20px; overflow: hidden; }
-        #progress-bar { height: 100%; background-color: #2e7d32; width: 0%; transition: width 0.3s; }
-        #progress-text { text-align: right; font-size: 0.9em; color: #558b2f; margin-bottom: 5px; }
-
+        .score-circle { 
+            width: 120px; 
+            height: 120px; 
+            border-radius: 50%; 
+            background: transparent; 
+            border: 4px solid #00d2d3;
+            color: #00d2d3; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            font-size: 2.2em; 
+            margin: 0 auto 20px; 
+            font-weight: bold; 
+        }
+        
         /* Podgląd odpowiedzi */
-        #review-container { margin-top: 30px; text-align: left; border-top: 2px solid #a5d6a7; padding-top: 20px; }
-        .review-item { padding: 15px; margin-bottom: 15px; border-radius: 10px; border-left: 6px solid #ccc; background: #f9fbe7; color: #33691e; }
-        .review-item.correct { border-left-color: #4caf50; background-color: #e8f5e9; }
-        .review-item.incorrect { border-left-color: #d32f2f; background-color: #ffebee; color: #b71c1c; }
+        #review-container { 
+            margin-top: 30px; 
+            text-align: left; 
+            border-top: 1px solid #444; 
+            padding-top: 20px; 
+        }
         
-        .review-q-title { font-weight: bold; margin-bottom: 8px; display: block; font-size: 1.1em; }
-        .ans-bad { text-decoration: line-through; opacity: 0.8; }
-        .ans-good { font-weight: bold; color: #2e7d32; }
+        .review-item { 
+            padding: 15px; 
+            margin-bottom: 15px; 
+            border-radius: 8px; 
+            background: #252525; 
+            border-left: 4px solid #555; 
+        }
+        
+        .review-item.correct { border-left-color: #00d2d3; }
+        .review-item.incorrect { border-left-color: #ff6b6b; }
+        
+        .review-q-title { font-weight: bold; margin-bottom: 8px; display: block; color: #fff; }
+        .ans-bad { color: #ff6b6b; text-decoration: line-through; font-size: 0.9em; opacity: 0.8; }
+        .ans-good { color: #00d2d3; font-weight: bold; }
+        
+        .grammar-tag {
+            display: inline-block;
+            background: #333;
+            color: #aaa;
+            padding: 2px 6px;
+            font-size: 0.7em;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
     </style>
 </head>
 <body>
 
 <div class="quiz-container">
     <div id="quiz-area">
-        <h2>Sprawdzian z Biologii 🌿</h2>
-        <div class="subtitle">Samożywność i Cudzożywność (Puls Życia)</div>
+        <h2>English for Designers 🎨</h2>
+        <div class="subtitle">Grammar Practice for WSTI Students</div>
         
-        <div id="progress-text">Pytanie 1 z 20</div>
+        <div id="progress-text">Question 1 of 20</div>
         <div id="progress-bar-container"><div id="progress-bar"></div></div>
 
         <div class="question" id="question-text">...</div>
         <div class="options" id="options-container"></div>
         
         <div class="navigation">
-            <button class="nav-btn" id="prev-btn" onclick="prevQuestion()" disabled>Cofnij</button>
-            <button class="nav-btn" id="next-btn" onclick="nextQuestion()">Dalej</button>
+            <button class="nav-btn" id="prev-btn" onclick="prevQuestion()" disabled>Back</button>
+            <button class="nav-btn" id="next-btn" onclick="nextQuestion()">Next</button>
         </div>
     </div>
 
     <div id="result-area" class="result-box">
-        <h2>Twój Wynik</h2>
+        <h2>Result</h2>
         <div class="score-circle" id="score-val">0/20</div>
-        <p id="feedback-msg" style="font-size: 1.3em; margin-bottom: 20px;"></p>
+        <p id="feedback-msg" style="font-size: 1.2em; color: #bbb; margin-bottom: 20px;"></p>
         
-        <button class="nav-btn" onclick="location.reload()" style="margin-bottom: 30px;">Rozwiąż ponownie</button>
+        <button class="nav-btn" onclick="location.reload()" style="margin-bottom: 30px;">Restart Test</button>
 
-        <h3 style="color: #558b2f; border-bottom: 1px solid #a5d6a7; padding-bottom: 10px;">Sprawdź swoje błędy:</h3>
+        <h3 style="color: #777; border-bottom: 1px solid #444; padding-bottom: 10px;">Review:</h3>
         <div id="review-container"></div>
     </div>
 </div>
 
 <script>
     const questions = [
-        // --- TEMAT 4: SAMOŻYWNOŚĆ (FOTOSYNTEZA) ---
-        { q: "1. Organizmy samożywne to przede wszystkim:", options: ["Zwierzęta i grzyby", "Rośliny i niektóre bakterie", "Tylko ludzie", "Wszystkie organizmy żywe"], answer: 1 },
-        { q: "2. Proces wytwarzania pokarmu przez rośliny nazywamy:", options: ["Oddychaniem", "Trawieniem", "Fotosyntezą", "Cudzożywnością"], answer: 2 },
-        { q: "3. Co jest potrzebne roślinie do fotosyntezy?", options: ["Tlen, woda i cukier", "Woda, dwutlenek węgla i światło", "Mięso i woda", "Tylko woda i ziemia"], answer: 1 },
-        { q: "4. W jakiej części komórki zachodzi fotosynteza?", options: ["W jądrze komórkowym", "W chloroplastach", "W błonie komórkowej", "W ścianie komórkowej"], answer: 1 },
-        { q: "5. Jaki barwnik pochłania światło potrzebne do fotosyntezy?", options: ["Melanina", "Hemoglobina", "Chlorofil", "Cytoplazma"], answer: 2 },
-        { q: "6. Co jest głównym produktem fotosyntezy (pokarmem rośliny)?", options: ["Glukoza (cukier)", "Sól", "Woda", "Dwutlenek węgla"], answer: 0 },
-        { q: "7. Jaki gaz jest 'odpadem' przy fotosyntezie i jest wydalany do atmosfery?", options: ["Dwutlenek węgla", "Azot", "Tlen", "Hel"], answer: 2 },
-        { q: "8. Rośliny pobierają wodę z gleby za pomocą:", options: ["Liści", "Korzeni", "Łodygi", "Kwiatów"], answer: 1 },
-        { q: "9. Dwutlenek węgla wnika do liści przez:", options: ["Aparaty szparkowe", "Włoski na korzeniach", "Kwiaty", "Łodygę"], answer: 0 },
+        // --- PRESENT SIMPLE vs CONTINUOUS ---
+        { q: "1. Graphic designers usually __________ typical 9-to-5 hours. They often work late.", options: ["aren't working", "don't work", "not work", "doesn't work"], answer: 1, type: "Present Simple" },
+        { q: "2. Look at the screen! The computer __________ the 3D model right now.", options: ["renders", "is rendering", "rendering", "render"], answer: 1, type: "Present Continuous" },
+        { q: "3. I __________ this font. It's too decorative.", options: ["am not liking", "don't like", "not like", "doesn't like"], answer: 1, type: "State Verbs" },
+        { q: "4. What __________? It looks like a new logo for Nike.", options: ["do you draw", "are you draw", "are you drawing", "you drawing"], answer: 2, type: "Present Continuous" },
+        
+        // --- PAST SIMPLE ---
+        { q: "5. I __________ my first Wacom tablet two years ago.", options: ["buyed", "bought", "have bought", "buy"], answer: 1, type: "Past Simple" },
+        { q: "6. The client __________ happy with the first draft, so we changed it.", options: ["wasn't", "weren't", "didn't be", "hasn't been"], answer: 0, type: "Past Simple" },
+        { q: "7. When __________ you finish the project?", options: ["did", "have", "were", "are"], answer: 0, type: "Past Simple" },
+        { q: "8. Picasso __________ many famous paintings in the 20th century.", options: ["paints", "painted", "has painted", "painting"], answer: 1, type: "Past Simple" },
 
-        // --- TEMAT 5: CUDZOŻYWNOŚĆ ---
-        { q: "10. Organizm cudzożywny to taki, który:", options: ["Sam wytwarza sobie pokarm", "Pobiera gotowy pokarm z otoczenia", "Nie musi jeść", "Żywi się tylko wodą"], answer: 1 },
-        { q: "11. Do organizmów cudzożywnych zaliczamy:", options: ["Tylko zwierzęta", "Tylko grzyby", "Zwierzęta, grzyby i niektóre bakterie", "Tylko drapieżniki"], answer: 2 },
-        { q: "12. Roślinożercy mają zęby trzonowe przystosowane do:", options: ["Rozszarpywania mięsa", "Rozcierania twardego pokarmu roślinnego", "Łapania owadów", "Nie mają zębów trzonowych"], answer: 1 },
-        { q: "13. Zwierzęta, które polują i zabijają inne zwierzęta, to:", options: ["Pasożyty", "Padlinożercy", "Drapieżniki", "Roślinożercy"], answer: 2 },
-        { q: "14. Cechą charakterystyczną drapieżników są:", options: ["Długi przewód pokarmowy", "Ostre kły i pazury", "Płaskie zęby", "Brak zębów"], answer: 1 },
-        { q: "15. Zwierzęta żywiące się szczątkami martwych zwierząt (np. hiena, sęp) to:", options: ["Drapieżniki", "Padlinożercy", "Pasożyty", "Wszystkożercy"], answer: 1 },
-        { q: "16. Dzik jest przykładem:", options: ["Roślinożercy", "Mięsożercy", "Wszystkożercy", "Pasożyta"], answer: 2 },
-        { q: "17. Jaką funkcję pełni kamuflaż u drapieżnika (np. paski tygrysa)?", options: ["Pozwala mu ukryć się przed ofiarą", "Chroni go przed zimnem", "Służy do ozdoby", "Odstrasza inne drapieżniki"], answer: 0 },
-        { q: "18. Tasiemiec i kleszcz to przykłady:", options: ["Drapieżników", "Padlinożerców", "Pasożytów", "Symbiontów"], answer: 2 },
-        { q: "19. Żyrafa ma długą szyję, aby:", options: ["Widzieć drapieżniki z daleka", "Sięgać do liści na czubkach drzew", "Szybciej biegać", "Lepiej oddychać"], answer: 1 },
-        { q: "20. Które zdanie jest fałszywe?", options: ["Grzyby są cudzożywne", "Rośliny produkują tlen", "Wszystkie bakterie są samożywne", "Człowiek jest wszystkożerny"], answer: 2 } // Nie wszystkie bakterie
+        // --- FUTURE EXPRESSIONS ---
+        { q: "9. 'We need more paper.' – 'Okay, I __________ some.' (Spontaneous decision)", options: ["am going to buy", "will buy", "am buying", "buy"], answer: 1, type: "Future Simple (Will)" },
+        { q: "10. Look at those errors! The program __________ crash.", options: ["will", "is going to", "goes to", "is go to"], answer: 1, type: "Going to (Prediction)" },
+        { q: "11. I __________ the Art Director at 10:00 AM tomorrow. (Arrangement)", options: ["will meet", "am meeting", "meet", "going to meet"], answer: 1, type: "Present Continuous for Future" },
+        { q: "12. What are your plans? I __________ a new portfolio website next month.", options: ["will design", "am going to design", "design", "designed"], answer: 1, type: "Going to (Plan)" },
+
+        // --- PRESENT PERFECT ---
+        { q: "13. I __________ never __________ Photoshop. I prefer Illustrator.", options: ["did / use", "have / used", "has / used", "have / use"], answer: 1, type: "Present Perfect" },
+        { q: "14. She __________ just __________ the file. You can open it now.", options: ["has / saved", "have / saved", "did / save", "is / saving"], answer: 0, type: "Present Perfect" },
+        { q: "15. We have known this client __________ 2015.", options: ["for", "since", "from", "ago"], answer: 1, type: "For / Since" },
+        { q: "16. __________ you ever __________ an award for your design?", options: ["Did / win", "Have / won", "Have / win", "Has / won"], answer: 1, type: "Present Perfect" },
+        
+        // --- MIXED / GENERAL ---
+        { q: "17. Yesterday I __________ tired, but today I __________ fine.", options: ["was / am", "were / am", "have been / be", "am / was"], answer: 0, type: "Past & Present" },
+        { q: "18. He __________ (not / finish) the sketch yet.", options: ["didn't finish", "hasn't finished", "isn't finishing", "don't finish"], answer: 1, type: "Present Perfect (Yet)" },
+        { q: "19. In the future, AI __________ probably __________ some basic design tasks.", options: ["is / doing", "will / do", "is going / do", "does"], answer: 1, type: "Future (Prediction)" },
+        { q: "20. Why __________ you __________ at the monitor? Is it broken?", options: ["do / staring", "are / staring", "have / stare", "did / stared"], answer: 1, type: "Present Continuous" }
     ];
 
     let currentQ = 0;
@@ -108,7 +266,7 @@
     function loadQ() {
         const qData = questions[currentQ];
         document.getElementById('question-text').innerText = qData.q;
-        document.getElementById('progress-text').innerText = `Pytanie ${currentQ + 1} z ${questions.length}`;
+        document.getElementById('progress-text').innerText = `Question ${currentQ + 1} of ${questions.length}`;
         
         const percent = ((currentQ) / questions.length) * 100;
         document.getElementById('progress-bar').style.width = percent + "%";
@@ -131,11 +289,9 @@
         document.getElementById('prev-btn').disabled = (currentQ === 0);
         const nextBtn = document.getElementById('next-btn');
         if (currentQ === questions.length - 1) {
-            nextBtn.innerText = "Zakończ i Sprawdź 🍀";
-            nextBtn.style.backgroundColor = "#4caf50";
+            nextBtn.innerText = "Finish Test 🏁";
         } else {
-            nextBtn.innerText = "Dalej 🍃";
-            nextBtn.style.backgroundColor = "#2e7d32";
+            nextBtn.innerText = "Next →";
         }
     }
 
@@ -172,15 +328,18 @@
             
             const statusIcon = isCorrect ? '✅' : '❌';
             
-            let reviewContent = `<span class="review-q-title">${statusIcon} ${q.q}</span>`;
+            let reviewContent = `
+                <span class="grammar-tag">${q.type}</span>
+                <span class="review-q-title">${statusIcon} ${q.q}</span>
+            `;
 
             if (isCorrect) {
-                reviewContent += `<div style="color:#2e7d32; font-weight:bold;">Twoja odpowiedź: ${q.options[userAnsIdx]} (Dobrze!)</div>`;
+                reviewContent += `<div class="ans-good">Your answer: ${q.options[userAnsIdx]}</div>`;
             } else {
-                const userText = userAnsIdx !== null ? q.options[userAnsIdx] : "Brak odpowiedzi";
+                const userText = userAnsIdx !== null ? q.options[userAnsIdx] : "No answer";
                 reviewContent += `
-                    <div class="ans-bad">Twoja odpowiedź: ${userText}</div>
-                    <div class="ans-good">Poprawna odpowiedź: ${q.options[correctAnsIdx]}</div>
+                    <div class="ans-bad">Your answer: ${userText}</div>
+                    <div class="ans-good">Correct answer: ${q.options[correctAnsIdx]}</div>
                 `;
             }
             div.innerHTML = reviewContent;
@@ -193,10 +352,10 @@
         
         let msg = "";
         const percent = (score / questions.length) * 100;
-        if(percent === 100) msg = "Wspaniale! Jesteś ekspertem z biologii! 🌿🦁";
-        else if(percent >= 80) msg = "Bardzo dobry wynik! Znasz przyrodę! 🌳";
-        else if(percent >= 50) msg = "Dobrze, ale powtórz jeszcze temat o fotosyntezie. 🍃";
-        else msg = "Musisz zajrzeć do podręcznika 'Puls Życia'. Nie poddawaj się! 📖";
+        if(percent === 100) msg = "Perfect! Your English is as sharp as a vector line! 🖊️";
+        else if(percent >= 80) msg = "Great job! Ready for international clients! 🌍";
+        else if(percent >= 50) msg = "Good start, but watch out for grammar glitches. 👾";
+        else msg = "Keep practicing! Don't let grammar crash your system. 💻";
         
         document.getElementById('feedback-msg').innerText = msg;
     }

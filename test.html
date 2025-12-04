@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Sheep Racing Challenge 🐑</title>
+    <title>The Surprise Party 🎉</title>
     <style>
         /* Styl: Dark Mode / Modern */
         body { 
@@ -20,7 +20,7 @@
         .quiz-container { 
             background: #1e1e1e; 
             width: 100%; 
-            max-width: 800px; 
+            max-width: 700px; 
             padding: 40px; 
             border-radius: 15px; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
@@ -28,7 +28,7 @@
         }
         
         h2 { 
-            color: #00cec9; 
+            color: #fd79a8; 
             margin-bottom: 10px; 
             text-align: center;
         }
@@ -41,21 +41,19 @@
             font-style: italic;
         }
 
-        /* Styl tekstu z lukami */
         .text-content {
-            font-size: 1.1em;
+            font-size: 1.15em;
             text-align: justify;
         }
 
-        /* Styl pól do wpisywania */
         input.gap-input {
             background: #2d3436;
             border: none;
             border-bottom: 2px solid #636e72;
-            color: #00cec9;
+            color: #fd79a8;
             font-size: 1em;
             padding: 5px 10px;
-            width: 140px;
+            width: 130px;
             margin: 0 5px;
             text-align: center;
             border-radius: 4px;
@@ -66,10 +64,10 @@
         input.gap-input:focus {
             outline: none;
             background: #353b48;
-            border-bottom-color: #00cec9;
+            border-bottom-color: #fd79a8;
         }
 
-        /* Klasy walidacji */
+        /* Walidacja */
         input.correct {
             border-bottom-color: #00b894 !important;
             color: #00b894 !important;
@@ -82,14 +80,13 @@
         }
 
         .answer-key {
-            display: none;
+            display: block;
             color: #fab1a0;
             font-size: 0.85em;
             margin-top: 5px;
-            display: block;
+            font-weight: normal;
         }
 
-        /* Przycisk sprawdzania */
         .btn-container {
             text-align: center;
             margin-top: 30px;
@@ -97,7 +94,7 @@
 
         button.check-btn { 
             padding: 15px 40px; 
-            background-color: #00cec9; 
+            background-color: #fd79a8; 
             color: #121212; 
             border: none; 
             border-radius: 50px; 
@@ -105,15 +102,14 @@
             font-size: 1.2em; 
             font-weight: 800; 
             transition: 0.2s; 
-            box-shadow: 0 5px 15px rgba(0, 206, 201, 0.3);
+            box-shadow: 0 5px 15px rgba(253, 121, 168, 0.3);
         }
         
         button.check-btn:hover { 
-            background-color: #81ecec; 
+            background-color: #ff8ab3; 
             transform: translateY(-2px);
         }
 
-        /* Wynik */
         #result-area {
             margin-top: 30px;
             text-align: center;
@@ -121,42 +117,29 @@
             font-weight: bold;
             display: none;
         }
-
     </style>
 </head>
 <body>
 
 <div class="quiz-container">
-    <h2>Sheep Racing Challenge 🐑</h2>
-    <div class="subtitle">Complete the text with the correct form of the verbs in brackets.</div>
+    <h2>The Surprise Party 🎉</h2>
+    <div class="subtitle">Fill in the gaps with the correct verb forms.</div>
     
     <form id="quiz-form">
         <div class="text-content">
-            Farmers, as we all (1) <input type="text" class="gap-input" data-ans="know" placeholder="know"> (know), 
-            (2) <input type="text" class="gap-input" data-ans="have had" placeholder="have"> (have) a hard time of it in Britain lately, and 
-            (3) <input type="text" class="gap-input" data-ans="have turned" placeholder="turn"> (turn) to new ways of earning income from their land. 
-            This (4) <input type="text" class="gap-input" data-ans="involves" placeholder="involve"> (involve) not only planting new kinds of crops, but some strange ways of making money, the most unusual of which has got to be sheep racing.
+            Last week, I (1) <input type="text" class="gap-input" data-ans="decided" placeholder="decide"> (decide) to organize a surprise party for my brother, Tom. 
+            He (2) <input type="text" class="gap-input" data-ans="has been working,has worked" placeholder="work"> (work) very hard recently, so he deserves a break.
             <br><br>
-            Yes, you (5) <input type="text" class="gap-input" data-ans="heard" placeholder="hear"> (hear) me correctly! A farmer in the West of England now 
-            (6) <input type="text" class="gap-input" data-ans="holds" placeholder="hold"> (hold) sheep races on a regular basis, and during the past year over 100,000 people 
-            (7) <input type="text" class="gap-input" data-ans="have turned up" placeholder="turn up"> (turn up) to watch the proceedings.
+            While I (3) <input type="text" class="gap-input" data-ans="was preparing" placeholder="prepare"> (prepare) the snacks in the kitchen, the doorbell suddenly 
+            (4) <input type="text" class="gap-input" data-ans="rang" placeholder="ring"> (ring). I 
+            (5) <input type="text" class="gap-input" data-ans="wasn't expecting,was not expecting,didn't expect" placeholder="not expect"> (not expect) anyone so early!
+            It was my friend, Sarah. She usually (6) <input type="text" class="gap-input" data-ans="arrives" placeholder="arrive"> (arrive) late, but this time she was the first.
             <br><br>
-            'I (8) <input type="text" class="gap-input" data-ans="was passing,passed" placeholder="pass"> (pass) the farm on my way to the sea for a holiday,' one punter told me, 'and I 
-            (9) <input type="text" class="gap-input" data-ans="thought" placeholder="think"> (think) I'd have a look. I 
-            (10) <input type="text" class="gap-input" data-ans="didn't believe,did not believe" placeholder="not believe"> (not believe) it was serious, to tell you the truth.'
+            'Look! I (7) <input type="text" class="gap-input" data-ans="have brought,brought" placeholder="bring"> (bring) some great music!' she shouted.
             <br><br>
-            According to a regular visitor, betting on sheep is more interesting than betting on horses. 'At proper horse races everyone 
-            (11) <input type="text" class="gap-input" data-ans="has already studied" placeholder="already study"> (already study) the form of the horses in advance, and there are clear favourites. But nobody 
-            (12) <input type="text" class="gap-input" data-ans="has heard" placeholder="hear"> (hear) anything about these sheep! Most people 
-            (13) <input type="text" class="gap-input" data-ans="find" placeholder="find"> (find) it difficult to tell one from another in any case.'
-            <br><br>
-            I (14) <input type="text" class="gap-input" data-ans="stayed" placeholder="stay"> (stay) to watch the races, and I must admit that I 
-            (15) <input type="text" class="gap-input" data-ans="found" placeholder="find"> (find) it quite exciting. In a typical race, half a dozen sheep 
-            (16) <input type="text" class="gap-input" data-ans="race" placeholder="race"> (race) downhill over a course of about half a mile. Food 
-            (17) <input type="text" class="gap-input" data-ans="is waiting" placeholder="wait"> (wait) for them at the other end of the track, I ought to add! The sheep 
-            (18) <input type="text" class="gap-input" data-ans="run" placeholder="run"> (run) surprisingly fast, although presumably they 
-            (19) <input type="text" class="gap-input" data-ans="haven't eaten,have not eaten" placeholder="not eat"> (not eat) for a while just to give them some motivation. At any rate, the crowd around me 
-            (20) <input type="text" class="gap-input" data-ans="were obviously enjoying,obviously enjoyed" placeholder="obviously enjoy"> (obviously enjoy) their day out at the races.
+            Right now, the party is in full swing. Everyone (8) <input type="text" class="gap-input" data-ans="is dancing" placeholder="dance"> (dance) and having fun.
+            Tom (9) <input type="text" class="gap-input" data-ans="looks" placeholder="look"> (look) really happy. 
+            I think we (10) <input type="text" class="gap-input" data-ans="will do,are going to do" placeholder="do"> (do) this again next year!
         </div>
 
         <div class="btn-container">
@@ -174,26 +157,22 @@
         let total = inputs.length;
 
         inputs.forEach(input => {
-            // Pobieramy poprawne odpowiedzi (może być kilka po przecinku)
             let correctAnswers = input.getAttribute('data-ans').toLowerCase().split(',');
             let userAnswer = input.value.trim().toLowerCase();
 
-            // Reset stylów
             input.classList.remove('correct', 'incorrect');
             
-            // Usuwamy starą podpowiedź jeśli istnieje
+            // Usuń poprzednią odpowiedź jeśli istnieje
             let nextEl = input.nextElementSibling;
             if(nextEl && nextEl.classList.contains('answer-key')) {
                 nextEl.remove();
             }
 
-            // Sprawdzanie
             if (correctAnswers.includes(userAnswer)) {
                 input.classList.add('correct');
                 score++;
             } else {
                 input.classList.add('incorrect');
-                // Dodaj poprawną odpowiedź pod spodem
                 let span = document.createElement('span');
                 span.className = 'answer-key';
                 span.innerText = `(Correct: ${correctAnswers[0]})`;
@@ -201,18 +180,17 @@
             }
         });
 
-        // Wyświetl wynik
         const resultArea = document.getElementById('result-area');
         resultArea.style.display = 'block';
         
         let percentage = Math.round((score / total) * 100);
         
         if(percentage === 100) {
-            resultArea.innerHTML = `<span style="color:#00b894">Perfect! ${score}/${total} 🏆</span>`;
+            resultArea.innerHTML = `<span style="color:#00b894">Great job! ${score}/${total} 🌟</span>`;
         } else if (percentage >= 50) {
-            resultArea.innerHTML = `<span style="color:#e17055">Not bad! ${score}/${total} 👍</span>`;
+            resultArea.innerHTML = `<span style="color:#e17055">Good practice! ${score}/${total} 👍</span>`;
         } else {
-            resultArea.innerHTML = `<span style="color:#ff7675">Keep practicing! ${score}/${total} 💪</span>`;
+            resultArea.innerHTML = `<span style="color:#ff7675">Keep learning! ${score}/${total} 💪</span>`;
         }
     }
 </script>

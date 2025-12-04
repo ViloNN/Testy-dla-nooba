@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>The Surprise Party 🎉</title>
+    <title>The Traveler 🌍</title>
     <style>
         /* Styl: Dark Mode / Modern */
         body { 
@@ -14,13 +14,13 @@
             min-height: 100vh; 
             margin: 0; 
             padding: 20px; 
-            line-height: 1.6;
+            line-height: 1.7;
         }
         
         .quiz-container { 
             background: #1e1e1e; 
             width: 100%; 
-            max-width: 700px; 
+            max-width: 800px; 
             padding: 40px; 
             border-radius: 15px; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
@@ -28,7 +28,7 @@
         }
         
         h2 { 
-            color: #fd79a8; 
+            color: #6c5ce7; 
             margin-bottom: 10px; 
             text-align: center;
         }
@@ -42,7 +42,7 @@
         }
 
         .text-content {
-            font-size: 1.15em;
+            font-size: 1.1em;
             text-align: justify;
         }
 
@@ -50,10 +50,10 @@
             background: #2d3436;
             border: none;
             border-bottom: 2px solid #636e72;
-            color: #fd79a8;
+            color: #a29bfe;
             font-size: 1em;
-            padding: 5px 10px;
-            width: 130px;
+            padding: 5px 5px;
+            width: 140px;
             margin: 0 5px;
             text-align: center;
             border-radius: 4px;
@@ -64,10 +64,9 @@
         input.gap-input:focus {
             outline: none;
             background: #353b48;
-            border-bottom-color: #fd79a8;
+            border-bottom-color: #a29bfe;
         }
 
-        /* Walidacja */
         input.correct {
             border-bottom-color: #00b894 !important;
             color: #00b894 !important;
@@ -94,19 +93,20 @@
 
         button.check-btn { 
             padding: 15px 40px; 
-            background-color: #fd79a8; 
-            color: #121212; 
+            background-color: #6c5ce7; 
+            color: #fff; 
             border: none; 
             border-radius: 50px; 
             cursor: pointer; 
             font-size: 1.2em; 
             font-weight: 800; 
             transition: 0.2s; 
-            box-shadow: 0 5px 15px rgba(253, 121, 168, 0.3);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
         }
         
         button.check-btn:hover { 
-            background-color: #ff8ab3; 
+            background-color: #81ecec;
+            color: #121212; 
             transform: translateY(-2px);
         }
 
@@ -122,24 +122,29 @@
 <body>
 
 <div class="quiz-container">
-    <h2>The Surprise Party 🎉</h2>
-    <div class="subtitle">Fill in the gaps with the correct verb forms.</div>
+    <h2>The Traveler 🌍</h2>
+    <div class="subtitle">15 Gaps to fill. Watch out for mixed tenses!</div>
     
     <form id="quiz-form">
         <div class="text-content">
-            Last week, I (1) <input type="text" class="gap-input" data-ans="decided" placeholder="decide"> (decide) to organize a surprise party for my brother, Tom. 
-            He (2) <input type="text" class="gap-input" data-ans="has been working,has worked" placeholder="work"> (work) very hard recently, so he deserves a break.
+            My cousin, Alice, (1) <input type="text" class="gap-input" data-ans="loves" placeholder="love"> (love) adventure more than anyone I know. 
+            She (2) <input type="text" class="gap-input" data-ans="has visited" placeholder="visit"> (visit) ten different countries so far, and she wants to see more.
             <br><br>
-            While I (3) <input type="text" class="gap-input" data-ans="was preparing" placeholder="prepare"> (prepare) the snacks in the kitchen, the doorbell suddenly 
-            (4) <input type="text" class="gap-input" data-ans="rang" placeholder="ring"> (ring). I 
-            (5) <input type="text" class="gap-input" data-ans="wasn't expecting,was not expecting,didn't expect" placeholder="not expect"> (not expect) anyone so early!
-            It was my friend, Sarah. She usually (6) <input type="text" class="gap-input" data-ans="arrives" placeholder="arrive"> (arrive) late, but this time she was the first.
+            Last year, she (3) <input type="text" class="gap-input" data-ans="went" placeholder="go"> (go) to Brazil. 
+            While she (4) <input type="text" class="gap-input" data-ans="was hiking" placeholder="hike"> (hike) in the Amazon rainforest, she 
+            (5) <input type="text" class="gap-input" data-ans="saw" placeholder="see"> (see) a very rare parrot. She quickly 
+            (6) <input type="text" class="gap-input" data-ans="took" placeholder="take"> (take) a photo of it before it flew away.
             <br><br>
-            'Look! I (7) <input type="text" class="gap-input" data-ans="have brought,brought" placeholder="bring"> (bring) some great music!' she shouted.
+            Currently, she (7) <input type="text" class="gap-input" data-ans="is planning" placeholder="plan"> (plan) her next big trip. 
+            She (8) <input type="text" class="gap-input" data-ans="believes" placeholder="believe"> (believe) that travel is the best education. 
+            She (9) <input type="text" class="gap-input" data-ans="hasn't decided,has not decided" placeholder="not decide"> (not decide) on the exact destination yet, but she 
+            (10) <input type="text" class="gap-input" data-ans="is thinking,thinks" placeholder="think"> (think) seriously about Japan.
             <br><br>
-            Right now, the party is in full swing. Everyone (8) <input type="text" class="gap-input" data-ans="is dancing" placeholder="dance"> (dance) and having fun.
-            Tom (9) <input type="text" class="gap-input" data-ans="looks" placeholder="look"> (look) really happy. 
-            I think we (10) <input type="text" class="gap-input" data-ans="will do,are going to do" placeholder="do"> (do) this again next year!
+            I (11) <input type="text" class="gap-input" data-ans="don't travel,do not travel" placeholder="not travel"> (not travel) very often because I 
+            (12) <input type="text" class="gap-input" data-ans="am" placeholder="be"> (be) afraid of flying. 
+            However, Alice (13) <input type="text" class="gap-input" data-ans="told" placeholder="tell"> (tell) me yesterday: 
+            "If you (14) <input type="text" class="gap-input" data-ans="come" placeholder="come"> (come) with me next time, I 
+            (15) <input type="text" class="gap-input" data-ans="will help" placeholder="help"> (help) you overcome your fear."
         </div>
 
         <div class="btn-container">
@@ -162,7 +167,7 @@
 
             input.classList.remove('correct', 'incorrect');
             
-            // Usuń poprzednią odpowiedź jeśli istnieje
+            // Usunięcie starej odpowiedzi
             let nextEl = input.nextElementSibling;
             if(nextEl && nextEl.classList.contains('answer-key')) {
                 nextEl.remove();
@@ -186,11 +191,11 @@
         let percentage = Math.round((score / total) * 100);
         
         if(percentage === 100) {
-            resultArea.innerHTML = `<span style="color:#00b894">Great job! ${score}/${total} 🌟</span>`;
+            resultArea.innerHTML = `<span style="color:#00b894">Perfect! ${score}/${total} 🏆</span>`;
         } else if (percentage >= 50) {
-            resultArea.innerHTML = `<span style="color:#e17055">Good practice! ${score}/${total} 👍</span>`;
+            resultArea.innerHTML = `<span style="color:#e17055">Good job! ${score}/${total} 👍</span>`;
         } else {
-            resultArea.innerHTML = `<span style="color:#ff7675">Keep learning! ${score}/${total} 💪</span>`;
+            resultArea.innerHTML = `<span style="color:#ff7675">Don't give up! ${score}/${total} 💪</span>`;
         }
     }
 </script>

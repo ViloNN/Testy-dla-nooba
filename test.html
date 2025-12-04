@@ -2,360 +2,219 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>General English Quiz 🇬🇧</title>
+    <title>Sheep Racing Challenge 🐑</title>
     <style>
-        /* Styl: Ciemny, nowoczesny, czytelny */
+        /* Styl: Dark Mode / Modern */
         body { 
-            font-family: 'Segoe UI', sans-serif; 
-            background-color: #1a1a1a; 
-            color: #f0f0f0; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #121212; 
+            color: #e0e0e0; 
             display: flex; 
             justify-content: center; 
-            align-items: flex-start; 
             min-height: 100vh; 
             margin: 0; 
             padding: 20px; 
+            line-height: 1.6;
         }
         
         .quiz-container { 
-            background: #2b2b2b; 
+            background: #1e1e1e; 
             width: 100%; 
-            max-width: 700px; 
+            max-width: 800px; 
             padding: 40px; 
             border-radius: 15px; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
-            text-align: center; 
-            margin-top: 20px; 
-            margin-bottom: 40px; 
-            border: 1px solid #444;
+            border: 1px solid #333;
         }
         
         h2 { 
-            color: #6c5ce7; /* Fioletowy akcent */
+            color: #00cec9; 
             margin-bottom: 10px; 
-            font-weight: 700;
+            text-align: center;
         }
         
         .subtitle { 
             color: #aaa; 
-            font-size: 0.95em; 
+            font-size: 0.9em; 
             margin-bottom: 30px; 
+            text-align: center; 
             font-style: italic;
         }
-        
-        /* Pytania */
-        .question { 
-            font-size: 1.25em; 
-            margin-bottom: 25px; 
-            font-weight: 500; 
-            color: #fff; 
-            line-height: 1.5;
+
+        /* Styl tekstu z lukami */
+        .text-content {
+            font-size: 1.1em;
+            text-align: justify;
         }
-        
-        .options { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 12px; 
+
+        /* Styl pól do wpisywania */
+        input.gap-input {
+            background: #2d3436;
+            border: none;
+            border-bottom: 2px solid #636e72;
+            color: #00cec9;
+            font-size: 1em;
+            padding: 5px 10px;
+            width: 140px;
+            margin: 0 5px;
+            text-align: center;
+            border-radius: 4px;
+            transition: 0.3s;
+            font-weight: bold;
         }
-        
-        button.option-btn { 
-            padding: 15px; 
-            border: 1px solid #444; 
-            background: #333; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-size: 1.05em; 
-            transition: all 0.2s; 
-            text-align: left; 
-            color: #ccc; 
+
+        input.gap-input:focus {
+            outline: none;
+            background: #353b48;
+            border-bottom-color: #00cec9;
         }
-        
-        button.option-btn:hover { 
-            background-color: #444; 
-            border-color: #6c5ce7; 
-            color: #fff;
-            transform: translateX(3px); 
+
+        /* Klasy walidacji */
+        input.correct {
+            border-bottom-color: #00b894 !important;
+            color: #00b894 !important;
+            background-color: rgba(0, 184, 148, 0.1) !important;
         }
-        
-        button.option-btn.selected { 
-            background-color: #6c5ce7; 
-            border-color: #6c5ce7; 
-            color: #fff; 
-            font-weight: bold; 
+
+        input.incorrect {
+            border-bottom-color: #ff7675 !important;
+            color: #ff7675 !important;
         }
-        
-        /* Nawigacja */
-        .navigation { 
-            margin-top: 35px; 
-            display: flex; 
-            justify-content: space-between; 
+
+        .answer-key {
+            display: none;
+            color: #fab1a0;
+            font-size: 0.85em;
+            margin-top: 5px;
+            display: block;
         }
-        
-        button.nav-btn { 
-            padding: 12px 25px; 
-            background-color: transparent; 
-            color: #6c5ce7; 
-            border: 2px solid #6c5ce7; 
+
+        /* Przycisk sprawdzania */
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        button.check-btn { 
+            padding: 15px 40px; 
+            background-color: #00cec9; 
+            color: #121212; 
+            border: none; 
             border-radius: 50px; 
             cursor: pointer; 
-            font-size: 1em; 
-            font-weight: 600; 
+            font-size: 1.2em; 
+            font-weight: 800; 
             transition: 0.2s; 
+            box-shadow: 0 5px 15px rgba(0, 206, 201, 0.3);
         }
         
-        button.nav-btn:hover { 
-            background-color: #6c5ce7; 
-            color: white; 
-        }
-        
-        button.nav-btn:disabled { 
-            border-color: #555; 
-            color: #555; 
-            cursor: not-allowed; 
-            background-color: transparent;
+        button.check-btn:hover { 
+            background-color: #81ecec; 
+            transform: translateY(-2px);
         }
 
-        /* Pasek postępu */
-        #progress-bar-container { 
-            width: 100%; 
-            background-color: #333; 
-            border-radius: 4px; 
-            height: 8px; 
-            margin-bottom: 25px; 
-            overflow: hidden; 
-        }
-        
-        #progress-bar { 
-            height: 100%; 
-            background-color: #a29bfe; 
-            width: 0%; 
-            transition: width 0.3s; 
-        }
-        
-        #progress-text { 
-            text-align: right; 
-            font-size: 0.85em; 
-            color: #888; 
-            margin-bottom: 5px; 
+        /* Wynik */
+        #result-area {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            display: none;
         }
 
-        /* Wyniki */
-        .result-box { display: none; text-align: center; }
-        .score-circle { 
-            width: 130px; 
-            height: 130px; 
-            border-radius: 50%; 
-            background: transparent; 
-            border: 5px solid #6c5ce7;
-            color: #6c5ce7; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            font-size: 2.5em; 
-            margin: 0 auto 20px; 
-            font-weight: bold; 
-        }
-        
-        /* Podgląd odpowiedzi */
-        #review-container { 
-            margin-top: 30px; 
-            text-align: left; 
-            border-top: 1px solid #444; 
-            padding-top: 20px; 
-        }
-        
-        .review-item { 
-            padding: 15px; 
-            margin-bottom: 15px; 
-            border-radius: 8px; 
-            background: #333; 
-            border-left: 5px solid #555; 
-        }
-        
-        .review-item.correct { border-left-color: #00b894; }
-        .review-item.incorrect { border-left-color: #ff7675; }
-        
-        .review-q-title { font-weight: bold; margin-bottom: 8px; display: block; color: #fff; }
-        .ans-bad { color: #ff7675; text-decoration: line-through; opacity: 0.8; font-size: 0.9em; }
-        .ans-good { color: #00b894; font-weight: bold; }
-        
-        .grammar-tag {
-            display: inline-block;
-            background: #444;
-            color: #ddd;
-            padding: 2px 8px;
-            font-size: 0.75em;
-            border-radius: 4px;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
     </style>
 </head>
 <body>
 
 <div class="quiz-container">
-    <div id="quiz-area">
-        <h2>General English Quiz 🇬🇧</h2>
-        <div class="subtitle">Grammar Review (Tenses & Future Forms)</div>
-        
-        <div id="progress-text">Question 1 of 20</div>
-        <div id="progress-bar-container"><div id="progress-bar"></div></div>
-
-        <div class="question" id="question-text">...</div>
-        <div class="options" id="options-container"></div>
-        
-        <div class="navigation">
-            <button class="nav-btn" id="prev-btn" onclick="prevQuestion()" disabled>Back</button>
-            <button class="nav-btn" id="next-btn" onclick="nextQuestion()">Next</button>
+    <h2>Sheep Racing Challenge 🐑</h2>
+    <div class="subtitle">Complete the text with the correct form of the verbs in brackets.</div>
+    
+    <form id="quiz-form">
+        <div class="text-content">
+            Farmers, as we all (1) <input type="text" class="gap-input" data-ans="know" placeholder="know"> (know), 
+            (2) <input type="text" class="gap-input" data-ans="have had" placeholder="have"> (have) a hard time of it in Britain lately, and 
+            (3) <input type="text" class="gap-input" data-ans="have turned" placeholder="turn"> (turn) to new ways of earning income from their land. 
+            This (4) <input type="text" class="gap-input" data-ans="involves" placeholder="involve"> (involve) not only planting new kinds of crops, but some strange ways of making money, the most unusual of which has got to be sheep racing.
+            <br><br>
+            Yes, you (5) <input type="text" class="gap-input" data-ans="heard" placeholder="hear"> (hear) me correctly! A farmer in the West of England now 
+            (6) <input type="text" class="gap-input" data-ans="holds" placeholder="hold"> (hold) sheep races on a regular basis, and during the past year over 100,000 people 
+            (7) <input type="text" class="gap-input" data-ans="have turned up" placeholder="turn up"> (turn up) to watch the proceedings.
+            <br><br>
+            'I (8) <input type="text" class="gap-input" data-ans="was passing,passed" placeholder="pass"> (pass) the farm on my way to the sea for a holiday,' one punter told me, 'and I 
+            (9) <input type="text" class="gap-input" data-ans="thought" placeholder="think"> (think) I'd have a look. I 
+            (10) <input type="text" class="gap-input" data-ans="didn't believe,did not believe" placeholder="not believe"> (not believe) it was serious, to tell you the truth.'
+            <br><br>
+            According to a regular visitor, betting on sheep is more interesting than betting on horses. 'At proper horse races everyone 
+            (11) <input type="text" class="gap-input" data-ans="has already studied" placeholder="already study"> (already study) the form of the horses in advance, and there are clear favourites. But nobody 
+            (12) <input type="text" class="gap-input" data-ans="has heard" placeholder="hear"> (hear) anything about these sheep! Most people 
+            (13) <input type="text" class="gap-input" data-ans="find" placeholder="find"> (find) it difficult to tell one from another in any case.'
+            <br><br>
+            I (14) <input type="text" class="gap-input" data-ans="stayed" placeholder="stay"> (stay) to watch the races, and I must admit that I 
+            (15) <input type="text" class="gap-input" data-ans="found" placeholder="find"> (find) it quite exciting. In a typical race, half a dozen sheep 
+            (16) <input type="text" class="gap-input" data-ans="race" placeholder="race"> (race) downhill over a course of about half a mile. Food 
+            (17) <input type="text" class="gap-input" data-ans="is waiting" placeholder="wait"> (wait) for them at the other end of the track, I ought to add! The sheep 
+            (18) <input type="text" class="gap-input" data-ans="run" placeholder="run"> (run) surprisingly fast, although presumably they 
+            (19) <input type="text" class="gap-input" data-ans="haven't eaten,have not eaten" placeholder="not eat"> (not eat) for a while just to give them some motivation. At any rate, the crowd around me 
+            (20) <input type="text" class="gap-input" data-ans="were obviously enjoying,obviously enjoyed" placeholder="obviously enjoy"> (obviously enjoy) their day out at the races.
         </div>
-    </div>
 
-    <div id="result-area" class="result-box">
-        <h2>Your Result</h2>
-        <div class="score-circle" id="score-val">0/20</div>
-        <p id="feedback-msg" style="font-size: 1.2em; color: #ccc; margin-bottom: 20px;"></p>
+        <div class="btn-container">
+            <button type="button" class="check-btn" onclick="checkAnswers()">Check Answers</button>
+        </div>
         
-        <button class="nav-btn" onclick="location.reload()" style="margin-bottom: 30px;">Try Again</button>
-
-        <h3 style="color: #aaa; border-bottom: 1px solid #444; padding-bottom: 10px;">Review Answers:</h3>
-        <div id="review-container"></div>
-    </div>
+        <div id="result-area"></div>
+    </form>
 </div>
 
 <script>
-    const questions = [
-        // --- PRESENT SIMPLE vs CONTINUOUS ---
-        { q: "1. Look! It __________ outside. We can't go to the park.", options: ["rains", "is raining", "raining", "does rain"], answer: 1, type: "Present Continuous" },
-        { q: "2. I usually __________ tea, but today I want coffee.", options: ["drink", "am drinking", "drinks", "drank"], answer: 0, type: "Present Simple" },
-        { q: "3. 'Where is Tom?' – 'He __________ in the garden.'", options: ["works", "work", "is working", "working"], answer: 2, type: "Present Continuous" },
-        { q: "4. She __________ understand this exercise. Can you help her?", options: ["isn't", "don't", "not", "doesn't"], answer: 3, type: "Present Simple (Negative)" },
-        
-        // --- PAST SIMPLE ---
-        { q: "5. We __________ to the cinema last night.", options: ["go", "went", "have gone", "gone"], answer: 1, type: "Past Simple" },
-        { q: "6. I __________ enjoy the party yesterday. The music was too loud.", options: ["didn't", "don't", "wasn't", "haven't"], answer: 0, type: "Past Simple (Negative)" },
-        { q: "7. When __________ you buy this car?", options: ["have", "did", "were", "are"], answer: 1, type: "Past Simple (Question)" },
-        { q: "8. Shakespeare __________ many famous plays.", options: ["write", "wrote", "has written", "writes"], answer: 1, type: "Past Simple (Finished Action)" },
-
-        // --- FUTURE EXPRESSIONS ---
-        { q: "9. 'It's very hot in here.' – 'Okay, I __________ open the window.' (Spontaneous)", options: ["will", "am going to", "am opening", "open"], answer: 0, type: "Future Simple (Will)" },
-        { q: "10. Look at those dark clouds! It __________ rain.", options: ["will", "is going to", "goes to", "is go to"], answer: 1, type: "Going to (Prediction)" },
-        { q: "11. I __________ my dentist tomorrow at 10:00. (Arrangement)", options: ["will see", "am seeing", "see", "saw"], answer: 1, type: "Present Continuous for Future" },
-        { q: "12. What are your plans for the summer? I __________ travel to Spain.", options: ["will", "am going to", "traveling", "travel"], answer: 1, type: "Going to (Plan)" },
-
-        // --- PRESENT PERFECT ---
-        { q: "13. __________ you ever __________ sushi?", options: ["Did / eat", "Have / eaten", "Have / eat", "Has / eaten"], answer: 1, type: "Present Perfect (Experience)" },
-        { q: "14. I can't find my keys. I think I __________ them.", options: ["lost", "have lost", "lose", "am losing"], answer: 1, type: "Present Perfect (Result)" },
-        { q: "15. She has lived in London __________ ten years.", options: ["since", "for", "from", "ago"], answer: 1, type: "For / Since" },
-        { q: "16. We __________ haven't finished our homework.", options: ["just", "already", "yet", "still"], answer: 3, type: "Still / Yet" },
-        
-        // --- MIXED / GENERAL ---
-        { q: "17. I __________ him since we were children.", options: ["know", "knew", "have known", "am knowing"], answer: 2, type: "Present Perfect" },
-        { q: "18. While I was walking to work, I __________ an old friend.", options: ["meet", "met", "have met", "meeting"], answer: 1, type: "Past Simple" },
-        { q: "19. In the future, people __________ live on Mars.", options: ["are going", "will", "are living", "live"], answer: 1, type: "Future (Prediction)" },
-        { q: "20. Why __________ you __________? Is something funny?", options: ["do / smile", "are / smiling", "have / smiled", "did / smile"], answer: 1, type: "Present Continuous" }
-    ];
-
-    let currentQ = 0;
-    let answers = new Array(questions.length).fill(null);
-
-    function loadQ() {
-        const qData = questions[currentQ];
-        document.getElementById('question-text').innerText = qData.q;
-        document.getElementById('progress-text').innerText = `Question ${currentQ + 1} of ${questions.length}`;
-        
-        const percent = ((currentQ) / questions.length) * 100;
-        document.getElementById('progress-bar').style.width = percent + "%";
-
-        const optsDiv = document.getElementById('options-container');
-        optsDiv.innerHTML = '';
-
-        qData.options.forEach((opt, idx) => {
-            const btn = document.createElement('button');
-            btn.className = 'option-btn';
-            btn.innerText = opt;
-            if (answers[currentQ] === idx) btn.classList.add('selected');
-            btn.onclick = () => {
-                answers[currentQ] = idx;
-                loadQ();
-            };
-            optsDiv.appendChild(btn);
-        });
-
-        document.getElementById('prev-btn').disabled = (currentQ === 0);
-        const nextBtn = document.getElementById('next-btn');
-        if (currentQ === questions.length - 1) {
-            nextBtn.innerText = "Finish Test 🏁";
-        } else {
-            nextBtn.innerText = "Next →";
-        }
-    }
-
-    function nextQuestion() {
-        if (currentQ < questions.length - 1) {
-            currentQ++;
-            loadQ();
-        } else {
-            finishQuiz();
-        }
-    }
-
-    function prevQuestion() {
-        if (currentQ > 0) {
-            currentQ--;
-            loadQ();
-        }
-    }
-
-    function finishQuiz() {
+    function checkAnswers() {
+        const inputs = document.querySelectorAll('.gap-input');
         let score = 0;
-        const reviewContainer = document.getElementById('review-container');
-        reviewContainer.innerHTML = ""; 
+        let total = inputs.length;
 
-        questions.forEach((q, idx) => {
-            const userAnsIdx = answers[idx];
-            const correctAnsIdx = q.answer;
-            const isCorrect = (userAnsIdx === correctAnsIdx);
-            
-            if (isCorrect) score++;
+        inputs.forEach(input => {
+            // Pobieramy poprawne odpowiedzi (może być kilka po przecinku)
+            let correctAnswers = input.getAttribute('data-ans').toLowerCase().split(',');
+            let userAnswer = input.value.trim().toLowerCase();
 
-            const div = document.createElement('div');
-            div.className = isCorrect ? 'review-item correct' : 'review-item incorrect';
+            // Reset stylów
+            input.classList.remove('correct', 'incorrect');
             
-            const statusIcon = isCorrect ? '✅' : '❌';
-            
-            let reviewContent = `
-                <span class="grammar-tag">${q.type}</span>
-                <span class="review-q-title">${statusIcon} ${q.q}</span>
-            `;
-
-            if (isCorrect) {
-                reviewContent += `<div class="ans-good">Your answer: ${q.options[userAnsIdx]}</div>`;
-            } else {
-                const userText = userAnsIdx !== null ? q.options[userAnsIdx] : "No answer";
-                reviewContent += `
-                    <div class="ans-bad">Your answer: ${userText}</div>
-                    <div class="ans-good">Correct answer: ${q.options[correctAnsIdx]}</div>
-                `;
+            // Usuwamy starą podpowiedź jeśli istnieje
+            let nextEl = input.nextElementSibling;
+            if(nextEl && nextEl.classList.contains('answer-key')) {
+                nextEl.remove();
             }
-            div.innerHTML = reviewContent;
-            reviewContainer.appendChild(div);
+
+            // Sprawdzanie
+            if (correctAnswers.includes(userAnswer)) {
+                input.classList.add('correct');
+                score++;
+            } else {
+                input.classList.add('incorrect');
+                // Dodaj poprawną odpowiedź pod spodem
+                let span = document.createElement('span');
+                span.className = 'answer-key';
+                span.innerText = `(Correct: ${correctAnswers[0]})`;
+                input.parentNode.insertBefore(span, input.nextSibling);
+            }
         });
 
-        document.getElementById('quiz-area').style.display = 'none';
-        document.getElementById('result-area').style.display = 'block';
-        document.getElementById('score-val').innerText = `${score}/${questions.length}`;
+        // Wyświetl wynik
+        const resultArea = document.getElementById('result-area');
+        resultArea.style.display = 'block';
         
-        let msg = "";
-        const percent = (score / questions.length) * 100;
-        if(percent === 100) msg = "Perfect Score! You are a grammar master! 🏆";
-        else if(percent >= 80) msg = "Great job! Your English is very good! 👏";
-        else if(percent >= 50) msg = "Good start! Review the mistakes below. 🙂";
-        else msg = "Keep practicing. You will get there! 💪";
+        let percentage = Math.round((score / total) * 100);
         
-        document.getElementById('feedback-msg').innerText = msg;
+        if(percentage === 100) {
+            resultArea.innerHTML = `<span style="color:#00b894">Perfect! ${score}/${total} 🏆</span>`;
+        } else if (percentage >= 50) {
+            resultArea.innerHTML = `<span style="color:#e17055">Not bad! ${score}/${total} 👍</span>`;
+        } else {
+            resultArea.innerHTML = `<span style="color:#ff7675">Keep practicing! ${score}/${total} 💪</span>`;
+        }
     }
-
-    loadQ();
 </script>
 
 </body>

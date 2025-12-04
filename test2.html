@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystery Quiz 🌌</title>
+    <style>
+        /* --- VISUAL EFFECTS & BACKGROUND --- */
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            color: #fff;
+            /* Animowane tło gradientowe */
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- GLASSMORPHISM CONTAINER --- */
+        .quiz-container { 
+            background: rgba(255, 255, 255, 0.1); /* Półprzezroczystość */
+            backdrop-filter: blur(15px); /* Rozmycie tła pod spodem */
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 100%; 
+            max-width: 800px; 
+            padding: 50px; 
+            border-radius: 20px; 
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        
+        h2 { 
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            /* Efekt Neonu */
+            text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6), 0 0 30px #23a6d5;
+        }
+        
+        .subtitle { 
+            text-align: center; 
+            font-size: 1.1em; 
+            margin-bottom: 40px; 
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        .text-content {
+            font-size: 1.2em;
+            line-height: 1.8;
+            text-align: justify;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* --- STYLING INPUTS --- */
+        input.gap-input {
+            background: rgba(0, 0, 0, 0.3);
+            border: none;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+            color: #fff;
+            font-size: 1em;
+            padding: 8px 10px;
+            width: 150px;
+            margin: 0 5px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        input.gap-input:focus {
+            outline: none;
+            background: rgba(0, 0, 0, 0.5);
+            border-bottom-color: #00f2ff;
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+        }
+
+        input.gap-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: normal;
+            font-size: 0.9em;
+        }
+
+        /* Validation Colors */
+        input.correct {
+            border-bottom-color: #00ff88 !important;
+            background-color: rgba(0, 255, 136, 0.2) !important;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
+        }
+
+        input.incorrect {
+            border-bottom-color: #ff4d4d !important;
+            background-color: rgba(255, 77, 77, 0.2) !important;
+            box-shadow: 0 0 10px rgba(255, 77, 77, 0.4);
+            animation: shake 0.4s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .answer-key {
+            display: block;
+            color: #ffcccc;
+            font-size: 0.8em;
+            margin-top: 2px;
+            font-weight: normal;
+            text-shadow: none;
+        }
+
+        /* --- BUTTON --- */
+        .btn-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        button.check-btn { 
+            padding: 15px 50px; 
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            color: white; 
+            border: none; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            font-size: 1.3em; 
+            font-weight: bold; 
+            transition: all 0.3s ease; 
+            box-shadow: 0 5px 20px rgba(0, 114, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        button.check-btn:hover { 
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 114, 255, 0.6);
+        }
+
+        /* --- RESULT AREA --- */
+        #result-area {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: bold;
+            display: none;
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 15px;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h2>The Mysterious Letter ✉️</h2>
+    <div class="subtitle">Fill in the gaps. Good luck!</div>
+    
+    <form id="quiz-form">
+        <div class="text-content">
+            Last night, while I (1) <input type="text" class="gap-input" data-ans="was cleaning" placeholder="clean"> (clean) the attic, I 
+            (2) <input type="text" class="gap-input" data-ans="found" placeholder="find"> (find) a strange, old envelope. 
+            It (3) <input type="text" class="gap-input" data-ans="was hidden" placeholder="hide"> (hide) under a loose floorboard for decades.
+            <br><br>
+            I (4) <input type="text" class="gap-input" data-ans="opened" placeholder="open"> (open) it carefully. Inside, there was a letter that my grandfather 
+            (5) <input type="text" class="gap-input" data-ans="had written,wrote" placeholder="write"> (write) in 1945. 
+            The letter said: "If you (6) <input type="text" class="gap-input" data-ans="are reading,read" placeholder="read"> (read) this now, it means I am gone."
+            <br><br>
+            Currently, I (7) <input type="text" class="gap-input" data-ans="am trying" placeholder="try"> (try) to understand the secret code in the letter. 
+            My sister (8) <input type="text" class="gap-input" data-ans="thinks" placeholder="think"> (think) it leads to a buried treasure. 
+            We (9) <input type="text" class="gap-input" data-ans="have decided" placeholder="decide"> (decide) to start searching tomorrow morning.
+            <br><br>
+            If we (10) <input type="text" class="gap-input" data-ans="find" placeholder="find"> (find) anything valuable, we 
+            (11) <input type="text" class="gap-input" data-ans="will share" placeholder="share"> (share) it with the whole family. 
+            I (12) <input type="text" class="gap-input" data-ans="hope" placeholder="hope"> (hope) this adventure 
+            (13) <input type="text" class="gap-input" data-ans="will be" placeholder="be"> (be) exciting!
+        </div>
+
+        <div class="btn-container">
+            <button type="button" class="check-btn" onclick="checkAnswers()">Check Answers</button>
+        </div>
+        
+        <div id="result-area"></div>
+    </form>
+</div>
+
+<script>
+    function checkAnswers() {
+        const inputs = document.querySelectorAll('.gap-input');
+        let score = 0;
+        let total = inputs.length;
+
+        inputs.forEach(input => {
+            let correctAnswers = input.getAttribute('data-ans').toLowerCase().split(',');
+            let userAnswer = input.value.trim().toLowerCase();
+
+            input.classList.remove('correct', 'incorrect');
+            
+            // Remove old answer key
+            let nextEl = input.nextElementSibling;
+            if(nextEl && nextEl.classList.contains('answer-key')) {
+                nextEl.remove();
+            }
+
+            if (correctAnswers.includes(userAnswer)) {
+                input.classList.add('correct');
+                score++;
+            } else {
+                input.classList.add('incorrect');
+                let span = document.createElement('span');
+                span.className = 'answer-key';
+                span.innerText = `Correct: ${correctAnswers[0]}`;
+                input.parentNode.insertBefore(span, input.nextSibling);
+            }
+        });
+
+        const resultArea = document.getElementById('result-area');
+        resultArea.style.display = 'block';
+        
+        let percentage = Math.round((score / total) * 100);
+        
+        if(percentage === 100) {
+            resultArea.innerHTML = `<span style="color:#00ff88">Perfect! You are a Legend! 💎</span>`;
+        } else if (percentage >= 50) {
+            resultArea.innerHTML = `<span style="color:#ffcc00">Good Job! ${score}/${total} ⭐</span>`;
+        } else {
+            resultArea.innerHTML = `<span style="color:#ff4d4d">Try Again! ${score}/${total} 🚀</span>`;
+        }
+    }
+</script>
+
+</body>
+</html>

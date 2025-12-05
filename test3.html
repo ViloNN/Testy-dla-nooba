@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Interview Quiz 💼</title>
+    <style>
+        /* --- CZYSTY, MATOWY STYL --- */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            background-color: #1a1a1a; /* Ciemne, jednolite tło */
+            color: #e0e0e0;
+        }
+
+        .quiz-container { 
+            background-color: #252525; /* Nieco jaśniejsze tło kontenera */
+            width: 100%; 
+            max-width: 800px; 
+            padding: 40px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 1px solid #333;
+        }
+        
+        h2 { 
+            text-align: center;
+            color: #61dafb; /* Spokojny błękit */
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .subtitle { 
+            text-align: center; 
+            font-size: 1em; 
+            margin-bottom: 40px; 
+            color: #aaa;
+            font-style: italic;
+        }
+
+        .text-content {
+            font-size: 1.15em;
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        /* --- STYLIZACJA PÓL (Inputs) --- */
+        input.gap-input {
+            background: #333;
+            border: 1px solid #444;
+            color: #fff;
+            font-size: 0.95em;
+            padding: 6px 10px;
+            width: 140px;
+            margin: 0 5px;
+            text-align: center;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        input.gap-input:focus {
+            outline: none;
+            border-color: #61dafb;
+            background: #3a3a3a;
+        }
+
+        /* Walidacja - kolory */
+        input.correct {
+            border-color: #4caf50 !important; /* Zielony */
+            background-color: rgba(76, 175, 80, 0.1) !important;
+            color: #81c784 !important;
+        }
+
+        input.incorrect {
+            border-color: #ef5350 !important; /* Czerwony */
+            background-color: rgba(239, 83, 80, 0.1) !important;
+            color: #ef9a9a !important;
+        }
+
+        .answer-key {
+            display: block;
+            color: #ef9a9a;
+            font-size: 0.8em;
+            margin-top: 2px;
+            font-weight: normal;
+        }
+
+        /* --- PRZYCISK --- */
+        .btn-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        button.check-btn { 
+            padding: 12px 40px; 
+            background-color: #0077b6;
+            color: white; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 1.1em; 
+            font-weight: bold; 
+            transition: background 0.2s; 
+        }
+        
+        button.check-btn:hover { 
+            background-color: #0096c7;
+        }
+
+        /* --- WYNIK --- */
+        #result-area {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            display: none;
+            padding: 15px;
+            background: #2a2a2a;
+            border-radius: 8px;
+            border: 1px solid #444;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h2>The Job Interview 💼</h2>
+    <div class="subtitle">Complete the story with the correct verb forms.</div>
+    
+    <form id="quiz-form">
+        <div class="text-content">
+            Last month, I (1) <input type="text" class="gap-input" data-ans="applied" placeholder="apply"> (apply) for a job as a graphic designer. 
+            I (2) <input type="text" class="gap-input" data-ans="have always wanted,have wanted" placeholder="always / want"> (always / want) to work for a creative agency.
+            <br><br>
+            On the day of the interview, while I (3) <input type="text" class="gap-input" data-ans="was waiting" placeholder="wait"> (wait) in the lobby, the manager 
+            (4) <input type="text" class="gap-input" data-ans="walked" placeholder="walk"> (walk) in. I suddenly 
+            (5) <input type="text" class="gap-input" data-ans="felt" placeholder="feel"> (feel) very nervous.
+            <br><br>
+            The interview started. He asked: "How long (6) <input type="text" class="gap-input" data-ans="have you worked,have you been working" placeholder="work"> (you / work) in this industry?"
+            <br>
+            I replied: "I (7) <input type="text" class="gap-input" data-ans="graduated" placeholder="graduate"> (graduate) in 2022. 
+            Before that, I (8) <input type="text" class="gap-input" data-ans="was working,worked" placeholder="work"> (work) as a freelancer while I was studying."
+            <br><br>
+            He looked at my portfolio and said: "You (9) <input type="text" class="gap-input" data-ans="have created,created" placeholder="create"> (create) some amazing logos recently. 
+            This style (10) <input type="text" class="gap-input" data-ans="seems" placeholder="seem"> (seem) perfect for our clients."
+            <br><br>
+            At the moment, they (11) <input type="text" class="gap-input" data-ans="are looking" placeholder="look"> (look) for a junior specialist. 
+            The manager promised: "I (12) <input type="text" class="gap-input" data-ans="will call,will let" placeholder="call"> (call) you next week."
+            <br><br>
+            I (13) <input type="text" class="gap-input" data-ans="haven't heard,have not heard" placeholder="not hear"> (not hear) from them yet, but I am optimistic.
+            If I don't get an email by Friday, I (14) <input type="text" class="gap-input" data-ans="am going to call,will call" placeholder="call"> (call) them myself.
+            I really (15) <input type="text" class="gap-input" data-ans="hope" placeholder="hope"> (hope) I get this job!
+        </div>
+
+        <div class="btn-container">
+            <button type="button" class="check-btn" onclick="checkAnswers()">Check Answers</button>
+        </div>
+        
+        <div id="result-area"></div>
+    </form>
+</div>
+
+<script>
+    function checkAnswers() {
+        const inputs = document.querySelectorAll('.gap-input');
+        let score = 0;
+        let total = inputs.length;
+
+        inputs.forEach(input => {
+            let correctAnswers = input.getAttribute('data-ans').toLowerCase().split(',');
+            let userAnswer = input.value.trim().toLowerCase();
+
+            input.classList.remove('correct', 'incorrect');
+            
+            // Remove old answer key
+            let nextEl = input.nextElementSibling;
+            if(nextEl && nextEl.classList.contains('answer-key')) {
+                nextEl.remove();
+            }
+
+            if (correctAnswers.includes(userAnswer)) {
+                input.classList.add('correct');
+                score++;
+            } else {
+                input.classList.add('incorrect');
+                let span = document.createElement('span');
+                span.className = 'answer-key';
+                span.innerText = `Correct: ${correctAnswers[0]}`;
+                input.parentNode.insertBefore(span, input.nextSibling);
+            }
+        });
+
+        const resultArea = document.getElementById('result-area');
+        resultArea.style.display = 'block';
+        
+        let percentage = Math.round((score / total) * 100);
+        
+        if(percentage === 100) {
+            resultArea.innerHTML = `<span style="color:#81c784">Perfect! 100% 🏆</span>`;
+        } else if (percentage >= 50) {
+            resultArea.innerHTML = `<span style="color:#ffb74d">Good job! ${score}/${total} 👍</span>`;
+        } else {
+            resultArea.innerHTML = `<span style="color:#e57373">Keep trying! ${score}/${total} 💪</span>`;
+        }
+    }
+</script>
+
+</body>
+</html>

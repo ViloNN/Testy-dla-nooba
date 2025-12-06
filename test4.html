@@ -3,135 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English for Graphic Design 🎨</title>
+    <title>Human vs AI 🤖</title>
     <style>
-        /* --- STYL: CZYSTY DARK MODE --- */
+        /* --- STYL: CYBERPUNK TERMINAL --- */
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Courier New', Courier, monospace; /* Czcionka jak w kodzie */
             margin: 0; 
             padding: 20px; 
             min-height: 100vh; 
             display: flex; 
             justify-content: center; 
             align-items: center;
-            background-color: #121212; 
-            color: #e0e0e0;
+            background-color: #0d0d0d; 
+            color: #00ff41; /* Hacker Green */
         }
 
         .quiz-container { 
-            background-color: #1f1f1f; 
+            background-color: #000; 
             width: 100%; 
-            max-width: 850px; 
-            padding: 50px; 
-            border-radius: 10px; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-            border: 1px solid #333;
+            max-width: 800px; 
+            padding: 40px; 
+            border: 2px solid #00ff41;
+            border-radius: 8px; 
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+            position: relative;
+        }
+
+        /* Efekt "skanowania" na górze */
+        .quiz-container::before {
+            content: "SYSTEM_STATUS: ONLINE";
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: #0d0d0d;
+            padding: 0 10px;
+            color: #00ff41;
+            font-size: 0.8em;
+            font-weight: bold;
         }
         
         h2 { 
             text-align: center;
-            color: #00a8ff; /* Designer Blue */
             margin-bottom: 5px;
-            font-weight: 700;
-            letter-spacing: 1px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #00ff41;
         }
         
         .subtitle { 
             text-align: center; 
-            font-size: 1.1em; 
+            font-size: 0.9em; 
             margin-bottom: 40px; 
-            color: #7f8fa6;
-            font-style: italic;
+            opacity: 0.8;
+            border-bottom: 1px dashed #00ff41;
+            padding-bottom: 20px;
         }
 
         .text-content {
-            font-size: 1.2em;
-            line-height: 1.9;
+            font-size: 1.1em;
+            line-height: 1.8;
             text-align: justify;
         }
 
-        /* --- POLA DO WPISYWANIA --- */
+        /* --- INPUTS --- */
         input.gap-input {
-            background: #2f3640;
+            background: #111;
             border: none;
-            border-bottom: 2px solid #718093;
-            color: #00a8ff;
+            border-bottom: 2px solid #00ff41;
+            color: #fff;
             font-size: 1em;
             padding: 5px 10px;
-            width: 160px;
+            width: 150px;
             margin: 0 5px;
             text-align: center;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            font-weight: 600;
+            font-family: inherit;
+            transition: all 0.2s ease;
         }
 
         input.gap-input:focus {
             outline: none;
-            background: #353b48;
-            border-bottom-color: #00a8ff;
+            background: #222;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
         }
 
-        /* --- WALIDACJA --- */
+        /* --- VALIDATION --- */
         input.correct {
-            border-bottom-color: #4cd137 !important;
-            color: #4cd137 !important;
-            background-color: rgba(76, 209, 55, 0.1) !important;
+            border-bottom-color: #00b894 !important;
+            color: #00b894 !important;
+            background-color: rgba(0, 184, 148, 0.1) !important;
         }
 
         input.incorrect {
-            border-bottom-color: #e84118 !important;
-            color: #e84118 !important;
+            border-bottom-color: #ff0055 !important; /* Cyber Red */
+            color: #ff0055 !important;
         }
 
         .answer-key {
             display: block;
-            color: #e84118;
-            font-size: 0.85em;
+            color: #ff0055;
+            font-size: 0.8em;
             margin-top: 2px;
-            font-weight: normal;
         }
 
-        /* --- PRZYCISK --- */
+        /* --- BUTTON --- */
         .btn-container {
             text-align: center;
             margin-top: 40px;
         }
 
         button.check-btn { 
-            padding: 15px 50px; 
-            background-color: #0097e6; 
-            color: white; 
-            border: none; 
-            border-radius: 4px; 
+            padding: 15px 40px; 
+            background-color: transparent; 
+            color: #00ff41; 
+            border: 2px solid #00ff41; 
             cursor: pointer; 
             font-size: 1.2em; 
             font-weight: bold; 
-            transition: background 0.2s; 
-            box-shadow: 0 4px 0 #006296; /* Efekt 3D */
+            font-family: inherit;
+            text-transform: uppercase;
+            transition: all 0.2s; 
         }
         
         button.check-btn:hover { 
-            background-color: #00a8ff;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 0 #006296;
+            background-color: #00ff41;
+            color: #000;
+            box-shadow: 0 0 20px #00ff41;
         }
 
-        button.check-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 0 0 #006296;
-        }
-
-        /* --- WYNIK --- */
+        /* --- RESULT --- */
         #result-area {
             margin-top: 30px;
             text-align: center;
-            font-size: 1.5em;
+            font-size: 1.4em;
             font-weight: bold;
             display: none;
-            padding: 20px;
-            background: #2f3640;
-            border-radius: 8px;
+            padding: 15px;
+            border: 1px dashed #00ff41;
         }
 
     </style>
@@ -139,33 +146,29 @@
 <body>
 
 <div class="quiz-container">
-    <h2>Graphic Design Workflow 🎨</h2>
-    <div class="subtitle">Grammar & Vocabulary for Designers. Fill in the gaps!</div>
+    <h2>Human vs AI 🤖</h2>
+    <div class="subtitle">Can you survive the digital revolution? 10 Gaps.</div>
     
     <form id="quiz-form">
         <div class="text-content">
-            <strong>Part 1: The Brief (Past Simple)</strong><br>
-            Last week, I (1) <input type="text" class="gap-input" data-ans="received" placeholder="receive"> (receive) a new brief from a client. 
-            They (2) <input type="text" class="gap-input" data-ans="wanted" placeholder="want"> (want) a minimalist logo for a coffee shop. 
-            I immediately (3) <input type="text" class="gap-input" data-ans="sketched" placeholder="sketch"> (sketch) some ideas on paper before opening my computer.
+            Recently, the debate about AI in graphic design (1) <input type="text" class="gap-input" data-ans="has become,became" placeholder="become"> (become) very heated. 
+            Last month, I (2) <input type="text" class="gap-input" data-ans="decided" placeholder="decide"> (decide) to participate in a "Man vs Machine" contest.
             <br><br>
-            <strong>Part 2: The Process (Present Simple & Continuous)</strong><br>
-            Usually, I (4) <input type="text" class="gap-input" data-ans="work" placeholder="work"> (work) in Adobe Illustrator because logos 
-            (5) <input type="text" class="gap-input" data-ans="need" placeholder="need"> (need) to be vectors, not pixels.
-            Right now, I (6) <input type="text" class="gap-input" data-ans="am designing,am creating" placeholder="design"> (design) the typography. 
-            I (7) <input type="text" class="gap-input" data-ans="am using" placeholder="use"> (use) a Sans-Serif font because it looks modern.
-            The client (8) <input type="text" class="gap-input" data-ans="doesn't like,does not like" placeholder="not like"> (not like) bright colors, so I am using a pastel palette.
+            While I (3) <input type="text" class="gap-input" data-ans="was sketching" placeholder="sketch"> (sketch) my concept on paper, my opponent 
+            (4) <input type="text" class="gap-input" data-ans="was writing,wrote" placeholder="write"> (write) prompts for an AI generator.
+            In just ten seconds, the AI (5) <input type="text" class="gap-input" data-ans="produced,generated" placeholder="produce"> (produce) fifty variations!
+            I was shocked, but the images looked empty and soulless.
             <br><br>
-            <strong>Part 3: Progress & Future (Present Perfect & Future)</strong><br>
-            I (9) <input type="text" class="gap-input" data-ans="have finished" placeholder="finish"> (finish) the first draft, but I 
-            (10) <input type="text" class="gap-input" data-ans="haven't sent,have not sent" placeholder="not send"> (not send) it yet.
-            I still need to adjust the kerning (spacing).
-            Tomorrow, I (11) <input type="text" class="gap-input" data-ans="will export,am going to export" placeholder="export"> (export) the files to PDF and PNG.
-            If the client accepts the design, they (12) <input type="text" class="gap-input" data-ans="will pay" placeholder="pay"> (pay) the invoice next week.
+            In the end, the judges (6) <input type="text" class="gap-input" data-ans="chose" placeholder="choose"> (choose) my design because it had a human touch.
+            Since then, I (7) <input type="text" class="gap-input" data-ans="have realized" placeholder="realize"> (realize) that AI is just a tool, not a replacement.
+            <br><br>
+            Currently, I (8) <input type="text" class="gap-input" data-ans="am using,use" placeholder="use"> (use) AI only to generate mood boards.
+            I believe that in the future, designers (9) <input type="text" class="gap-input" data-ans="will need" placeholder="need"> (need) to learn new skills.
+            If we ignore technology, we (10) <input type="text" class="gap-input" data-ans="will lose,might lose" placeholder="lose"> (lose) our competitive edge.
         </div>
 
         <div class="btn-container">
-            <button type="button" class="check-btn" onclick="checkAnswers()">Check Answers</button>
+            <button type="button" class="check-btn" onclick="checkAnswers()">Execute_Check</button>
         </div>
         
         <div id="result-area"></div>
@@ -179,13 +182,12 @@
         let total = inputs.length;
 
         inputs.forEach(input => {
-            // Pobieramy poprawne odpowiedzi, zamieniamy na małe litery
             let correctAnswers = input.getAttribute('data-ans').toLowerCase().split(',');
             let userAnswer = input.value.trim().toLowerCase();
 
             input.classList.remove('correct', 'incorrect');
             
-            // Usuwanie starej podpowiedzi
+            // Remove old hint
             let nextEl = input.nextElementSibling;
             if(nextEl && nextEl.classList.contains('answer-key')) {
                 nextEl.remove();
@@ -198,7 +200,7 @@
                 input.classList.add('incorrect');
                 let span = document.createElement('span');
                 span.className = 'answer-key';
-                span.innerText = `Correct: ${correctAnswers[0]}`; // Pokazuje pierwszą poprawną
+                span.innerText = `> Error. Correct: ${correctAnswers[0]}`; 
                 input.parentNode.insertBefore(span, input.nextSibling);
             }
         });
@@ -209,11 +211,11 @@
         let percentage = Math.round((score / total) * 100);
         
         if(percentage === 100) {
-            resultArea.innerHTML = `<span style="color:#4cd137">Excellent! Professional Designer Level! 🖌️</span>`;
+            resultArea.innerHTML = `<span style="color:#00ff41">System Optimized! 100% Success. 💾</span>`;
         } else if (percentage >= 50) {
-            resultArea.innerHTML = `<span style="color:#fbc531">Good Job! Keep practicing! 📐</span>`;
+            resultArea.innerHTML = `<span style="color:#f1c40f">Warning: Data Corruption Detected. ${score}/${total} ⚠️</span>`;
         } else {
-            resultArea.innerHTML = `<span style="color:#e84118">Review your grammar settings ⚙️</span>`;
+            resultArea.innerHTML = `<span style="color:#ff0055">Critical Failure. System Crash. 💀</span>`;
         }
     }
 </script>

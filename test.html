@@ -2,71 +2,77 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>The Traveler 🌍</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Studio: Teamwork 🚀</title>
     <style>
-        /* Styl: Dark Mode / Modern */
+        /* --- STYL: MODERN DARK --- */
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #121212; 
-            color: #e0e0e0; 
-            display: flex; 
-            justify-content: center; 
-            min-height: 100vh; 
             margin: 0; 
             padding: 20px; 
-            line-height: 1.7;
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            background-color: #1e1e1e; 
+            color: #ecf0f1;
         }
-        
+
         .quiz-container { 
-            background: #1e1e1e; 
+            background-color: #2d2d2d; 
             width: 100%; 
             max-width: 800px; 
             padding: 40px; 
-            border-radius: 15px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
-            border: 1px solid #333;
+            border-radius: 12px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            border: 1px solid #444;
         }
         
         h2 { 
-            color: #6c5ce7; 
-            margin-bottom: 10px; 
             text-align: center;
+            color: #00cec9; /* Mint / Teal */
+            margin-bottom: 5px;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
         
         .subtitle { 
-            color: #aaa; 
-            font-size: 0.9em; 
-            margin-bottom: 30px; 
             text-align: center; 
+            font-size: 1em; 
+            margin-bottom: 30px; 
+            color: #b2bec3;
             font-style: italic;
         }
 
         .text-content {
-            font-size: 1.1em;
+            font-size: 1.15em;
+            line-height: 1.8;
             text-align: justify;
         }
 
+        /* --- INPUTS --- */
         input.gap-input {
-            background: #2d3436;
+            background: #3d3d3d;
             border: none;
             border-bottom: 2px solid #636e72;
-            color: #a29bfe;
+            color: #00cec9;
             font-size: 1em;
-            padding: 5px 5px;
-            width: 140px;
+            padding: 5px 10px;
+            width: 170px; /* Nieco szersze dla dłuższych fraz */
             margin: 0 5px;
             text-align: center;
             border-radius: 4px;
-            transition: 0.3s;
-            font-weight: bold;
+            transition: all 0.3s ease;
+            font-weight: 600;
         }
 
         input.gap-input:focus {
             outline: none;
-            background: #353b48;
-            border-bottom-color: #a29bfe;
+            background: #4b4b4b;
+            border-bottom-color: #00cec9;
         }
 
+        /* --- VALIDATION --- */
         input.correct {
             border-bottom-color: #00b894 !important;
             color: #00b894 !important;
@@ -80,71 +86,78 @@
 
         .answer-key {
             display: block;
-            color: #fab1a0;
+            color: #ff7675;
             font-size: 0.85em;
-            margin-top: 5px;
+            margin-top: 2px;
             font-weight: normal;
         }
 
+        /* --- BUTTON --- */
         .btn-container {
             text-align: center;
-            margin-top: 30px;
+            margin-top: 40px;
         }
 
         button.check-btn { 
-            padding: 15px 40px; 
-            background-color: #6c5ce7; 
-            color: #fff; 
+            padding: 15px 50px; 
+            background-color: #00b894; 
+            color: white; 
             border: none; 
             border-radius: 50px; 
             cursor: pointer; 
             font-size: 1.2em; 
-            font-weight: 800; 
-            transition: 0.2s; 
-            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+            font-weight: bold; 
+            transition: transform 0.2s, box-shadow 0.2s; 
+            box-shadow: 0 5px 15px rgba(0, 184, 148, 0.4);
         }
         
         button.check-btn:hover { 
-            background-color: #81ecec;
-            color: #121212; 
+            background-color: #00cec9;
             transform: translateY(-2px);
         }
 
+        /* --- RESULT --- */
         #result-area {
             margin-top: 30px;
             text-align: center;
             font-size: 1.5em;
             font-weight: bold;
             display: none;
+            padding: 20px;
+            background: #3d3d3d;
+            border-radius: 8px;
+            animation: fadeIn 0.5s;
         }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
     </style>
 </head>
 <body>
 
 <div class="quiz-container">
-    <h2>The Traveler 🌍</h2>
-    <div class="subtitle">15 Gaps to fill. Watch out for mixed tenses!</div>
+    <h2>Teamwork & Deadlines 🚀</h2>
+    <div class="subtitle">Complete the 10 gaps. Watch out for mixed tenses!</div>
     
     <form id="quiz-form">
         <div class="text-content">
-            My cousin, Alice, (1) <input type="text" class="gap-input" data-ans="loves" placeholder="love"> (love) adventure more than anyone I know. 
-            She (2) <input type="text" class="gap-input" data-ans="has visited" placeholder="visit"> (visit) ten different countries so far, and she wants to see more.
+            Yesterday was crazy at the studio. We (1) <input type="text" class="gap-input" data-ans="had" placeholder="have"> (have) a huge problem with the new website project.
+            The client (2) <input type="text" class="gap-input" data-ans="called" placeholder="call"> (call) us in the morning and said the images were pixelated.
             <br><br>
-            Last year, she (3) <input type="text" class="gap-input" data-ans="went" placeholder="go"> (go) to Brazil. 
-            While she (4) <input type="text" class="gap-input" data-ans="was hiking" placeholder="hike"> (hike) in the Amazon rainforest, she 
-            (5) <input type="text" class="gap-input" data-ans="saw" placeholder="see"> (see) a very rare parrot. She quickly 
-            (6) <input type="text" class="gap-input" data-ans="took" placeholder="take"> (take) a photo of it before it flew away.
+            Honestly, I (3) <input type="text" class="gap-input" data-ans="have never seen,have not seen" placeholder="never / see"> (never / see) such a messy file before!
+            The previous designer (4) <input type="text" class="gap-input" data-ans="forgot" placeholder="forget"> (forget) to outline the fonts.
             <br><br>
-            Currently, she (7) <input type="text" class="gap-input" data-ans="is planning" placeholder="plan"> (plan) her next big trip. 
-            She (8) <input type="text" class="gap-input" data-ans="believes" placeholder="believe"> (believe) that travel is the best education. 
-            She (9) <input type="text" class="gap-input" data-ans="hasn't decided,has not decided" placeholder="not decide"> (not decide) on the exact destination yet, but she 
-            (10) <input type="text" class="gap-input" data-ans="is thinking,thinks" placeholder="think"> (think) seriously about Japan.
+            Right now, my team (5) <input type="text" class="gap-input" data-ans="is fixing,are fixing" placeholder="fix"> (fix) all the errors.
+            We are working fast because we (6) <input type="text" class="gap-input" data-ans="must,have to" placeholder="must"> (must) send the final version by 5:00 PM today.
             <br><br>
-            I (11) <input type="text" class="gap-input" data-ans="don't travel,do not travel" placeholder="not travel"> (not travel) very often because I 
-            (12) <input type="text" class="gap-input" data-ans="am" placeholder="be"> (be) afraid of flying. 
-            However, Alice (13) <input type="text" class="gap-input" data-ans="told" placeholder="tell"> (tell) me yesterday: 
-            "If you (14) <input type="text" class="gap-input" data-ans="come" placeholder="come"> (come) with me next time, I 
-            (15) <input type="text" class="gap-input" data-ans="will help" placeholder="help"> (help) you overcome your fear."
+            If we (7) <input type="text" class="gap-input" data-ans="finish" placeholder="finish"> (finish) on time, the client 
+            (8) <input type="text" class="gap-input" data-ans="will be" placeholder="be"> (be) very happy.
+            However, if the deadline (9) <input type="text" class="gap-input" data-ans="passes" placeholder="pass"> (pass), we might lose the contract.
+            <br><br>
+            Don't worry! I promise that tomorrow we (10) <input type="text" class="gap-input" data-ans="will celebrate,are going to celebrate" placeholder="celebrate"> (celebrate) with pizza.
         </div>
 
         <div class="btn-container">
@@ -162,12 +175,13 @@
         let total = inputs.length;
 
         inputs.forEach(input => {
+            // Pobieramy poprawne odpowiedzi, dzielimy po przecinku, małe litery
             let correctAnswers = input.getAttribute('data-ans').toLowerCase().split(',');
             let userAnswer = input.value.trim().toLowerCase();
 
             input.classList.remove('correct', 'incorrect');
             
-            // Usunięcie starej odpowiedzi
+            // Usuwanie starej podpowiedzi
             let nextEl = input.nextElementSibling;
             if(nextEl && nextEl.classList.contains('answer-key')) {
                 nextEl.remove();
@@ -180,7 +194,7 @@
                 input.classList.add('incorrect');
                 let span = document.createElement('span');
                 span.className = 'answer-key';
-                span.innerText = `(Correct: ${correctAnswers[0]})`;
+                span.innerText = `Correct: ${correctAnswers[0]}`; 
                 input.parentNode.insertBefore(span, input.nextSibling);
             }
         });
@@ -191,11 +205,11 @@
         let percentage = Math.round((score / total) * 100);
         
         if(percentage === 100) {
-            resultArea.innerHTML = `<span style="color:#00b894">Perfect! ${score}/${total} 🏆</span>`;
+            resultArea.innerHTML = `<span style="color:#00b894">Perfect! Deadline met! ✅</span>`;
         } else if (percentage >= 50) {
-            resultArea.innerHTML = `<span style="color:#e17055">Good job! ${score}/${total} 👍</span>`;
+            resultArea.innerHTML = `<span style="color:#fdcb6e">Good effort! Almost there! ⚠️</span>`;
         } else {
-            resultArea.innerHTML = `<span style="color:#ff7675">Don't give up! ${score}/${total} 💪</span>`;
+            resultArea.innerHTML = `<span style="color:#ff7675">Critical Error! Try again! ❌</span>`;
         }
     }
 </script>

@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Job Interview Quiz 💼</title>
+    <title>Freelance Life 💻</title>
     <style>
-        /* --- CZYSTY, MATOWY STYL --- */
+        /* --- STYL: CYBER DARK --- */
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             margin: 0; 
@@ -14,115 +14,120 @@
             display: flex; 
             justify-content: center; 
             align-items: center;
-            background-color: #1a1a1a; /* Ciemne, jednolite tło */
-            color: #e0e0e0;
+            background-color: #0c0c0c; 
+            color: #ecf0f1;
         }
 
         .quiz-container { 
-            background-color: #252525; /* Nieco jaśniejsze tło kontenera */
+            background-color: #151515; 
             width: 100%; 
             max-width: 800px; 
-            padding: 40px; 
-            border-radius: 8px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            border: 1px solid #333;
+            padding: 45px; 
+            border-radius: 16px; 
+            box-shadow: 0 0 50px rgba(142, 68, 173, 0.15); /* Fioletowa poświata */
+            border: 1px solid #2c2c2c;
         }
         
         h2 { 
             text-align: center;
-            color: #61dafb; /* Spokojny błękit */
+            color: #9b59b6; /* Amethyst Purple */
             margin-bottom: 5px;
-            font-weight: 600;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
         
         .subtitle { 
             text-align: center; 
             font-size: 1em; 
-            margin-bottom: 40px; 
-            color: #aaa;
+            margin-bottom: 35px; 
+            color: #7f8c8d;
             font-style: italic;
         }
 
         .text-content {
             font-size: 1.15em;
-            line-height: 1.8;
+            line-height: 1.9;
             text-align: justify;
         }
 
-        /* --- STYLIZACJA PÓL (Inputs) --- */
+        /* --- INPUTS --- */
         input.gap-input {
-            background: #333;
-            border: 1px solid #444;
-            color: #fff;
-            font-size: 0.95em;
-            padding: 6px 10px;
-            width: 140px;
-            margin: 0 5px;
+            background: #252525;
+            border: none;
+            border-bottom: 2px solid #555;
+            color: #9b59b6;
+            font-size: 1em;
+            padding: 6px 12px;
+            width: 150px;
+            margin: 0 6px;
             text-align: center;
-            border-radius: 4px;
-            transition: all 0.2s ease;
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s ease;
+            font-weight: 600;
         }
 
         input.gap-input:focus {
             outline: none;
-            border-color: #61dafb;
-            background: #3a3a3a;
+            background: #2d2d2d;
+            border-bottom-color: #9b59b6;
         }
 
-        /* Walidacja - kolory */
+        /* --- VALIDATION --- */
         input.correct {
-            border-color: #4caf50 !important; /* Zielony */
-            background-color: rgba(76, 175, 80, 0.1) !important;
-            color: #81c784 !important;
+            border-bottom-color: #2ecc71 !important; /* Green */
+            color: #2ecc71 !important;
+            background-color: rgba(46, 204, 113, 0.1) !important;
         }
 
         input.incorrect {
-            border-color: #ef5350 !important; /* Czerwony */
-            background-color: rgba(239, 83, 80, 0.1) !important;
-            color: #ef9a9a !important;
+            border-bottom-color: #e74c3c !important; /* Red */
+            color: #e74c3c !important;
         }
 
         .answer-key {
             display: block;
-            color: #ef9a9a;
-            font-size: 0.8em;
-            margin-top: 2px;
+            color: #e74c3c;
+            font-size: 0.85em;
+            margin-top: 4px;
             font-weight: normal;
         }
 
-        /* --- PRZYCISK --- */
+        /* --- BUTTON --- */
         .btn-container {
             text-align: center;
-            margin-top: 40px;
+            margin-top: 45px;
         }
 
         button.check-btn { 
-            padding: 12px 40px; 
-            background-color: #0077b6;
+            padding: 15px 55px; 
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
             color: white; 
             border: none; 
-            border-radius: 4px; 
+            border-radius: 50px; 
             cursor: pointer; 
-            font-size: 1.1em; 
-            font-weight: bold; 
-            transition: background 0.2s; 
+            font-size: 1.2em; 
+            font-weight: 800; 
+            transition: transform 0.2s, box-shadow 0.2s; 
+            box-shadow: 0 5px 20px rgba(142, 68, 173, 0.4);
         }
         
         button.check-btn:hover { 
-            background-color: #0096c7;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(142, 68, 173, 0.6);
         }
 
-        /* --- WYNIK --- */
+        /* --- RESULT --- */
         #result-area {
-            margin-top: 30px;
+            margin-top: 35px;
             text-align: center;
-            font-size: 1.5em;
+            font-size: 1.6em;
             font-weight: bold;
             display: none;
-            padding: 15px;
-            background: #2a2a2a;
-            border-radius: 8px;
-            border: 1px solid #444;
+            padding: 20px;
+            background: #202020;
+            border-radius: 12px;
+            border: 1px solid #333;
         }
 
     </style>
@@ -130,32 +135,24 @@
 <body>
 
 <div class="quiz-container">
-    <h2>The Job Interview 💼</h2>
-    <div class="subtitle">Complete the story with the correct verb forms.</div>
+    <h2>Freelance Life 💻</h2>
+    <div class="subtitle">Building a Portfolio. Fill in the 10 gaps.</div>
     
     <form id="quiz-form">
         <div class="text-content">
-            Last month, I (1) <input type="text" class="gap-input" data-ans="applied" placeholder="apply"> (apply) for a job as a graphic designer. 
-            I (2) <input type="text" class="gap-input" data-ans="have always wanted,have wanted" placeholder="always / want"> (always / want) to work for a creative agency.
+            I (1) <input type="text" class="gap-input" data-ans="decided" placeholder="decide"> (decide) to become a freelancer two months ago. 
+            Since then, I (2) <input type="text" class="gap-input" data-ans="have worked,have been working" placeholder="work"> (work) on my personal brand every day.
             <br><br>
-            On the day of the interview, while I (3) <input type="text" class="gap-input" data-ans="was waiting" placeholder="wait"> (wait) in the lobby, the manager 
-            (4) <input type="text" class="gap-input" data-ans="walked" placeholder="walk"> (walk) in. I suddenly 
-            (5) <input type="text" class="gap-input" data-ans="felt" placeholder="feel"> (feel) very nervous.
+            Last week, I finally (3) <input type="text" class="gap-input" data-ans="launched" placeholder="launch"> (launch) my portfolio website on Behance.
+            It (4) <input type="text" class="gap-input" data-ans="contains" placeholder="contain"> (contain) my best logos and illustrations.
+            I think a good portfolio always (5) <input type="text" class="gap-input" data-ans="attracts" placeholder="attract"> (attract) the right clients.
             <br><br>
-            The interview started. He asked: "How long (6) <input type="text" class="gap-input" data-ans="have you worked,have you been working" placeholder="work"> (you / work) in this industry?"
-            <br>
-            I replied: "I (7) <input type="text" class="gap-input" data-ans="graduated" placeholder="graduate"> (graduate) in 2022. 
-            Before that, I (8) <input type="text" class="gap-input" data-ans="was working,worked" placeholder="work"> (work) as a freelancer while I was studying."
+            Currently, I (6) <input type="text" class="gap-input" data-ans="am sending,am currently sending" placeholder="send"> (send) emails to local businesses.
+            Yesterday, while I (7) <input type="text" class="gap-input" data-ans="was editing" placeholder="edit"> (edit) a photo, a gym owner contacted me.
             <br><br>
-            He looked at my portfolio and said: "You (9) <input type="text" class="gap-input" data-ans="have created,created" placeholder="create"> (create) some amazing logos recently. 
-            This style (10) <input type="text" class="gap-input" data-ans="seems" placeholder="seem"> (seem) perfect for our clients."
-            <br><br>
-            At the moment, they (11) <input type="text" class="gap-input" data-ans="are looking" placeholder="look"> (look) for a junior specialist. 
-            The manager promised: "I (12) <input type="text" class="gap-input" data-ans="will call,will let" placeholder="call"> (call) you next week."
-            <br><br>
-            I (13) <input type="text" class="gap-input" data-ans="haven't heard,have not heard" placeholder="not hear"> (not hear) from them yet, but I am optimistic.
-            If I don't get an email by Friday, I (14) <input type="text" class="gap-input" data-ans="am going to call,will call" placeholder="call"> (call) them myself.
-            I really (15) <input type="text" class="gap-input" data-ans="hope" placeholder="hope"> (hope) I get this job!
+            He (8) <input type="text" class="gap-input" data-ans="wants" placeholder="want"> (want) a new visual identity for his brand.
+            We (9) <input type="text" class="gap-input" data-ans="are meeting,are going to meet" placeholder="meet"> (meet) tomorrow at 10:00 AM to discuss details.
+            If I get this job, I (10) <input type="text" class="gap-input" data-ans="will buy" placeholder="buy"> (buy) a better monitor!
         </div>
 
         <div class="btn-container">
@@ -178,7 +175,7 @@
 
             input.classList.remove('correct', 'incorrect');
             
-            // Remove old answer key
+            // Remove old hint
             let nextEl = input.nextElementSibling;
             if(nextEl && nextEl.classList.contains('answer-key')) {
                 nextEl.remove();
@@ -191,7 +188,7 @@
                 input.classList.add('incorrect');
                 let span = document.createElement('span');
                 span.className = 'answer-key';
-                span.innerText = `Correct: ${correctAnswers[0]}`;
+                span.innerText = `Correct: ${correctAnswers[0]}`; 
                 input.parentNode.insertBefore(span, input.nextSibling);
             }
         });
@@ -202,11 +199,11 @@
         let percentage = Math.round((score / total) * 100);
         
         if(percentage === 100) {
-            resultArea.innerHTML = `<span style="color:#81c784">Perfect! 100% 🏆</span>`;
+            resultArea.innerHTML = `<span style="color:#2ecc71">Freelance Master! 💸</span>`;
         } else if (percentage >= 50) {
-            resultArea.innerHTML = `<span style="color:#ffb74d">Good job! ${score}/${total} 👍</span>`;
+            resultArea.innerHTML = `<span style="color:#f1c40f">Good start! Keep pushing! 💪</span>`;
         } else {
-            resultArea.innerHTML = `<span style="color:#e57373">Keep trying! ${score}/${total} 💪</span>`;
+            resultArea.innerHTML = `<span style="color:#e74c3c">Don't give up! Try again! 🚀</span>`;
         }
     }
 </script>

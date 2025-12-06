@@ -3,168 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mystery Quiz 🌌</title>
+    <title>Client Feedback ✍️</title>
     <style>
-        /* --- VISUAL EFFECTS & BACKGROUND --- */
+        /* --- STYL: PROFESSIONAL DARK --- */
         body { 
-            font-family: 'Segoe UI', sans-serif; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             margin: 0; 
             padding: 20px; 
             min-height: 100vh; 
             display: flex; 
             justify-content: center; 
             align-items: center;
-            color: #fff;
-            /* Animowane tło gradientowe */
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background-color: #0f0f10; /* Bardzo ciemne tło */
+            color: #dcdde1;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* --- GLASSMORPHISM CONTAINER --- */
         .quiz-container { 
-            background: rgba(255, 255, 255, 0.1); /* Półprzezroczystość */
-            backdrop-filter: blur(15px); /* Rozmycie tła pod spodem */
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: #19191b; 
             width: 100%; 
             max-width: 800px; 
-            padding: 50px; 
-            border-radius: 20px; 
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            padding: 45px; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            border: 1px solid #2f3640;
         }
         
         h2 { 
             text-align: center;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            /* Efekt Neonu */
-            text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6), 0 0 30px #23a6d5;
+            color: #e1b12c; /* Mustard Yellow */
+            margin-bottom: 5px;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
         
         .subtitle { 
             text-align: center; 
-            font-size: 1.1em; 
-            margin-bottom: 40px; 
-            opacity: 0.9;
+            font-size: 1em; 
+            margin-bottom: 35px; 
+            color: #718093;
             font-style: italic;
         }
 
         .text-content {
             font-size: 1.2em;
-            line-height: 1.8;
+            line-height: 1.9;
             text-align: justify;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
-        /* --- STYLING INPUTS --- */
+        /* --- INPUTS --- */
         input.gap-input {
-            background: rgba(0, 0, 0, 0.3);
+            background: #232529;
             border: none;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.5);
-            color: #fff;
+            border-bottom: 2px solid #718093;
+            color: #e1b12c;
             font-size: 1em;
-            padding: 8px 10px;
-            width: 150px;
-            margin: 0 5px;
+            padding: 6px 12px;
+            width: 160px;
+            margin: 0 6px;
             text-align: center;
-            border-radius: 5px 5px 0 0;
+            border-radius: 4px;
             transition: all 0.3s ease;
-            font-weight: bold;
+            font-weight: 600;
         }
 
         input.gap-input:focus {
             outline: none;
-            background: rgba(0, 0, 0, 0.5);
-            border-bottom-color: #00f2ff;
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+            background: #2f3640;
+            border-bottom-color: #e1b12c;
         }
 
-        input.gap-input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-            font-weight: normal;
-            font-size: 0.9em;
-        }
-
-        /* Validation Colors */
+        /* --- VALIDATION --- */
         input.correct {
-            border-bottom-color: #00ff88 !important;
-            background-color: rgba(0, 255, 136, 0.2) !important;
-            box-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
+            border-bottom-color: #44bd32 !important;
+            color: #44bd32 !important;
+            background-color: rgba(68, 189, 50, 0.1) !important;
         }
 
         input.incorrect {
-            border-bottom-color: #ff4d4d !important;
-            background-color: rgba(255, 77, 77, 0.2) !important;
-            box-shadow: 0 0 10px rgba(255, 77, 77, 0.4);
-            animation: shake 0.4s ease-in-out;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+            border-bottom-color: #c23616 !important;
+            color: #c23616 !important;
         }
 
         .answer-key {
             display: block;
-            color: #ffcccc;
-            font-size: 0.8em;
-            margin-top: 2px;
+            color: #e84118;
+            font-size: 0.85em;
+            margin-top: 4px;
             font-weight: normal;
-            text-shadow: none;
         }
 
         /* --- BUTTON --- */
         .btn-container {
             text-align: center;
-            margin-top: 40px;
+            margin-top: 45px;
         }
 
         button.check-btn { 
-            padding: 15px 50px; 
-            background: linear-gradient(90deg, #00c6ff, #0072ff);
-            color: white; 
+            padding: 15px 55px; 
+            background-color: #e1b12c; 
+            color: #19191b; 
             border: none; 
-            border-radius: 50px; 
+            border-radius: 6px; 
             cursor: pointer; 
-            font-size: 1.3em; 
-            font-weight: bold; 
-            transition: all 0.3s ease; 
-            box-shadow: 0 5px 20px rgba(0, 114, 255, 0.4);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-size: 1.2em; 
+            font-weight: 800; 
+            transition: transform 0.2s, background 0.2s; 
         }
         
         button.check-btn:hover { 
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 10px 30px rgba(0, 114, 255, 0.6);
+            background-color: #fbc531;
+            transform: translateY(-3px);
         }
 
-        /* --- RESULT AREA --- */
+        /* --- RESULT --- */
         #result-area {
-            margin-top: 30px;
+            margin-top: 35px;
             text-align: center;
-            font-size: 1.8em;
+            font-size: 1.6em;
             font-weight: bold;
             display: none;
             padding: 20px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 15px;
-            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes popIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
+            background: #232529;
+            border-radius: 8px;
+            border-left: 5px solid #e1b12c;
         }
 
     </style>
@@ -172,27 +133,26 @@
 <body>
 
 <div class="quiz-container">
-    <h2>The Mysterious Letter ✉️</h2>
-    <div class="subtitle">Fill in the gaps. Good luck!</div>
+    <h2>Feedback & Revisions ✍️</h2>
+    <div class="subtitle">10 Gaps. Handle the client's critique!</div>
     
     <form id="quiz-form">
         <div class="text-content">
-            Last night, while I (1) <input type="text" class="gap-input" data-ans="was cleaning" placeholder="clean"> (clean) the attic, I 
-            (2) <input type="text" class="gap-input" data-ans="found" placeholder="find"> (find) a strange, old envelope. 
-            It (3) <input type="text" class="gap-input" data-ans="was hidden" placeholder="hide"> (hide) under a loose floorboard for decades.
+            Two days ago, I (1) <input type="text" class="gap-input" data-ans="sent" placeholder="send"> (send) the final poster design to the client. 
+            The feedback (2) <input type="text" class="gap-input" data-ans="was" placeholder="be"> (be) surprisingly fast, but mixed.
             <br><br>
-            I (4) <input type="text" class="gap-input" data-ans="opened" placeholder="open"> (open) it carefully. Inside, there was a letter that my grandfather 
-            (5) <input type="text" class="gap-input" data-ans="had written,wrote" placeholder="write"> (write) in 1945. 
-            The letter said: "If you (6) <input type="text" class="gap-input" data-ans="are reading,read" placeholder="read"> (read) this now, it means I am gone."
+            The marketing manager told me she (3) <input type="text" class="gap-input" data-ans="didn't like,did not like" placeholder="not like"> (not like) the blue background.
+            She thinks it (4) <input type="text" class="gap-input" data-ans="looks" placeholder="look"> (look) too sad for a summer festival poster.
             <br><br>
-            Currently, I (7) <input type="text" class="gap-input" data-ans="am trying" placeholder="try"> (try) to understand the secret code in the letter. 
-            My sister (8) <input type="text" class="gap-input" data-ans="thinks" placeholder="think"> (think) it leads to a buried treasure. 
-            We (9) <input type="text" class="gap-input" data-ans="have decided" placeholder="decide"> (decide) to start searching tomorrow morning.
+            Currently, I (5) <input type="text" class="gap-input" data-ans="am changing,am replacing" placeholder="change"> (change) the colors to yellow and orange.
+            I (6) <input type="text" class="gap-input" data-ans="have already deleted,have deleted" placeholder="already / delete"> (already / delete) the dark elements.
+            It looks much better now!
             <br><br>
-            If we (10) <input type="text" class="gap-input" data-ans="find" placeholder="find"> (find) anything valuable, we 
-            (11) <input type="text" class="gap-input" data-ans="will share" placeholder="share"> (share) it with the whole family. 
-            I (12) <input type="text" class="gap-input" data-ans="hope" placeholder="hope"> (hope) this adventure 
-            (13) <input type="text" class="gap-input" data-ans="will be" placeholder="be"> (be) exciting!
+            I hope the client (7) <input type="text" class="gap-input" data-ans="understands" placeholder="understand"> (understand) my new vision.
+            If she (8) <input type="text" class="gap-input" data-ans="approves" placeholder="approve"> (approve) this version, we 
+            (9) <input type="text" class="gap-input" data-ans="will print" placeholder="print"> (print) the posters tomorrow morning.
+            <br><br>
+            Next time, I definitely (10) <input type="text" class="gap-input" data-ans="will ask,am going to ask" placeholder="ask"> (ask) for a color palette before I start!
         </div>
 
         <div class="btn-container">
@@ -215,7 +175,7 @@
 
             input.classList.remove('correct', 'incorrect');
             
-            // Remove old answer key
+            // Remove old hint
             let nextEl = input.nextElementSibling;
             if(nextEl && nextEl.classList.contains('answer-key')) {
                 nextEl.remove();
@@ -228,7 +188,7 @@
                 input.classList.add('incorrect');
                 let span = document.createElement('span');
                 span.className = 'answer-key';
-                span.innerText = `Correct: ${correctAnswers[0]}`;
+                span.innerText = `Correct: ${correctAnswers[0]}`; 
                 input.parentNode.insertBefore(span, input.nextSibling);
             }
         });
@@ -239,11 +199,11 @@
         let percentage = Math.round((score / total) * 100);
         
         if(percentage === 100) {
-            resultArea.innerHTML = `<span style="color:#00ff88">Perfect! You are a Legend! 💎</span>`;
+            resultArea.innerHTML = `<span style="color:#44bd32">Perfect! Design Approved! ✅</span>`;
         } else if (percentage >= 50) {
-            resultArea.innerHTML = `<span style="color:#ffcc00">Good Job! ${score}/${total} ⭐</span>`;
+            resultArea.innerHTML = `<span style="color:#fbc531">Good work! Just a few revisions needed. ⚠️</span>`;
         } else {
-            resultArea.innerHTML = `<span style="color:#ff4d4d">Try Again! ${score}/${total} 🚀</span>`;
+            resultArea.innerHTML = `<span style="color:#c23616">Rejected! Try again. ❌</span>`;
         }
     }
 </script>

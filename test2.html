@@ -3,207 +3,366 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Client Feedback ✍️</title>
+    <title>Clothes Visual Dictionary 🧥</title>
     <style>
-        /* --- STYL: PROFESSIONAL DARK --- */
+        /* --- STYL: MODERN LEARNING CARD --- */
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             margin: 0; 
             padding: 20px; 
-            min-height: 100vh; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            background-color: #0f0f10; /* Bardzo ciemne tło */
-            color: #dcdde1;
+            background-color: #f0f2f5; 
+            color: #333;
         }
 
-        .quiz-container { 
-            background-color: #19191b; 
-            width: 100%; 
-            max-width: 800px; 
-            padding: 45px; 
-            border-radius: 12px; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-            border: 1px solid #2f3640;
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
         }
-        
-        h2 { 
+
+        header {
             text-align: center;
-            color: #e1b12c; /* Mustard Yellow */
-            margin-bottom: 5px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-        
-        .subtitle { 
-            text-align: center; 
-            font-size: 1em; 
-            margin-bottom: 35px; 
-            color: #718093;
-            font-style: italic;
+            margin-bottom: 40px;
         }
 
-        .text-content {
-            font-size: 1.2em;
-            line-height: 1.9;
-            text-align: justify;
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
         }
 
-        /* --- INPUTS --- */
-        input.gap-input {
-            background: #232529;
+        .subtitle {
+            color: #7f8c8d;
+        }
+
+        /* --- PRZYCISK TRYBU NAUKI --- */
+        .controls {
+            text-align: center;
+            margin-bottom: 30px;
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+        }
+
+        button#toggle-btn {
+            background-color: #3498db;
+            color: white;
             border: none;
-            border-bottom: 2px solid #718093;
-            color: #e1b12c;
-            font-size: 1em;
-            padding: 6px 12px;
-            width: 160px;
-            margin: 0 6px;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+            transition: all 0.3s;
+        }
+
+        button#toggle-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        button#toggle-btn.active {
+            background-color: #e74c3c;
+        }
+
+        /* --- GRID KART --- */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
             text-align: center;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            border-bottom: 4px solid #bdc3c7;
+            position: relative;
+            overflow: hidden;
         }
 
-        input.gap-input:focus {
-            outline: none;
-            background: #2f3640;
-            border-bottom-color: #e1b12c;
+        .card:hover {
+            transform: translateY(-5px);
+            border-bottom-color: #3498db;
         }
 
-        /* --- VALIDATION --- */
-        input.correct {
-            border-bottom-color: #44bd32 !important;
-            color: #44bd32 !important;
-            background-color: rgba(68, 189, 50, 0.1) !important;
-        }
-
-        input.incorrect {
-            border-bottom-color: #c23616 !important;
-            color: #c23616 !important;
-        }
-
-        .answer-key {
+        /* IKONA / ZDJĘCIE */
+        .icon {
+            font-size: 4em;
+            margin-bottom: 15px;
             display: block;
-            color: #e84118;
-            font-size: 0.85em;
-            margin-top: 4px;
-            font-weight: normal;
+            animation: float 3s ease-in-out infinite;
         }
 
-        /* --- BUTTON --- */
-        .btn-container {
-            text-align: center;
-            margin-top: 45px;
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
         }
 
-        button.check-btn { 
-            padding: 15px 55px; 
-            background-color: #e1b12c; 
-            color: #19191b; 
-            border: none; 
-            border-radius: 6px; 
-            cursor: pointer; 
-            font-size: 1.2em; 
-            font-weight: 800; 
-            transition: transform 0.2s, background 0.2s; 
+        /* SŁÓWKA */
+        .english {
+            font-size: 1.5em;
+            font-weight: 800;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .pronunciation {
+            color: #95a5a6;
+            font-size: 0.9em;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 15px;
+        }
+
+        .polish {
+            font-size: 1.2em;
+            color: #27ae60;
+            font-weight: 600;
+            margin-bottom: 15px;
+            min-height: 1.5em; /* Żeby karta nie skakała przy ukrywaniu */
+            transition: opacity 0.3s;
+        }
+
+        /* UKRYWANIE POLSKIEGO */
+        .blur .polish {
+            opacity: 0;
         }
         
-        button.check-btn:hover { 
-            background-color: #fbc531;
-            transform: translateY(-3px);
+        .blur .polish::after {
+            content: "???";
+            opacity: 1;
+            color: #ccc;
+            position: absolute;
+            left: 0;
+            right: 0;
         }
 
-        /* --- RESULT --- */
-        #result-area {
-            margin-top: 35px;
-            text-align: center;
-            font-size: 1.6em;
-            font-weight: bold;
-            display: none;
-            padding: 20px;
-            background: #232529;
+        /* SEKJA "CONTEXT" */
+        .context-box {
+            background-color: #f8f9fa;
             border-radius: 8px;
-            border-left: 5px solid #e1b12c;
+            padding: 10px;
+            font-size: 0.85em;
+            color: #555;
+            text-align: left;
+            border-left: 3px solid #f1c40f;
         }
+
+        .context-title {
+            font-weight: bold;
+            font-size: 0.8em;
+            color: #f39c12;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        /* KATEGORIE KOLORYSTYCZNE */
+        .card.top { border-bottom-color: #3498db; }
+        .card.bottom { border-bottom-color: #e67e22; }
+        .card.shoes { border-bottom-color: #9b59b6; }
+        .card.outer { border-bottom-color: #34495e; }
 
     </style>
 </head>
 <body>
 
-<div class="quiz-container">
-    <h2>Feedback & Revisions ✍️</h2>
-    <div class="subtitle">10 Gaps. Handle the client's critique!</div>
-    
-    <form id="quiz-form">
-        <div class="text-content">
-            Two days ago, I (1) <input type="text" class="gap-input" data-ans="sent" placeholder="send"> (send) the final poster design to the client. 
-            The feedback (2) <input type="text" class="gap-input" data-ans="was" placeholder="be"> (be) surprisingly fast, but mixed.
-            <br><br>
-            The marketing manager told me she (3) <input type="text" class="gap-input" data-ans="didn't like,did not like" placeholder="not like"> (not like) the blue background.
-            She thinks it (4) <input type="text" class="gap-input" data-ans="looks" placeholder="look"> (look) too sad for a summer festival poster.
-            <br><br>
-            Currently, I (5) <input type="text" class="gap-input" data-ans="am changing,am replacing" placeholder="change"> (change) the colors to yellow and orange.
-            I (6) <input type="text" class="gap-input" data-ans="have already deleted,have deleted" placeholder="already / delete"> (already / delete) the dark elements.
-            It looks much better now!
-            <br><br>
-            I hope the client (7) <input type="text" class="gap-input" data-ans="understands" placeholder="understand"> (understand) my new vision.
-            If she (8) <input type="text" class="gap-input" data-ans="approves" placeholder="approve"> (approve) this version, we 
-            (9) <input type="text" class="gap-input" data-ans="will print" placeholder="print"> (print) the posters tomorrow morning.
-            <br><br>
-            Next time, I definitely (10) <input type="text" class="gap-input" data-ans="will ask,am going to ask" placeholder="ask"> (ask) for a color palette before I start!
+<div class="container">
+    <header>
+        <h1>Visual Dictionary 🧥</h1>
+        <p class="subtitle">Naucz się ubrań raz a dobrze!</p>
+    </header>
+
+    <div class="controls">
+        <button id="toggle-btn" onclick="toggleTranslation()">👁️ Ukryj polski (Sprawdź się)</button>
+    </div>
+
+    <div class="cards-grid" id="grid">
+        
+        <div class="card top">
+            <span class="icon">👕</span>
+            <p class="english">T-shirt</p>
+            <p class="pronunciation">/ti-szert/</p>
+            <p class="polish">Koszulka</p>
+            <div class="context-box">
+                <span class="context-title">Kiedy użyć?</span>
+                Luźna, na co dzień, ma krótkie rękawy.
+            </div>
         </div>
 
-        <div class="btn-container">
-            <button type="button" class="check-btn" onclick="checkAnswers()">Check Answers</button>
+        <div class="card top">
+            <span class="icon">👔</span>
+            <p class="english">Shirt</p>
+            <p class="pronunciation">/szert/</p>
+            <p class="polish">Koszula</p>
+            <div class="context-box">
+                <span class="context-title">Uwaga!</span>
+                "Shirt" to koszula z kołnierzykiem i guzikami (elegancka). Nie myl z T-shirtem!
+            </div>
         </div>
-        
-        <div id="result-area"></div>
-    </form>
+
+        <div class="card top">
+            <span class="icon">🧥</span>
+            <p class="english">Hoodie</p>
+            <p class="pronunciation">/hudi/</p>
+            <p class="polish">Bluza z kapturem</p>
+            <div class="context-box">
+                <span class="context-title">Skojarzenie</span>
+                Od słowa "Hood" (kaptur). Bardzo popularna, styl sportowy.
+            </div>
+        </div>
+
+        <div class="card top">
+            <span class="icon">🧶</span>
+            <p class="english">Sweater / Jumper</p>
+            <p class="pronunciation">/słeter/ lub /dżamper/</p>
+            <p class="polish">Sweter</p>
+            <div class="context-box">
+                <span class="context-title">Warianty</span>
+                "Sweater" (USA), "Jumper" (UK). Ciepły, z wełny, na zimę.
+            </div>
+        </div>
+
+        <div class="card bottom">
+            <span class="icon">👖</span>
+            <p class="english">Jeans</p>
+            <p class="pronunciation">/dżins/</p>
+            <p class="polish">Dżinsy</p>
+            <div class="context-box">
+                <span class="context-title">Gramatyka</span>
+                Zawsze liczba mnoga! "My jeans ARE blue" (nie 'is').
+            </div>
+        </div>
+
+        <div class="card bottom">
+            <span class="icon">👖</span>
+            <p class="english">Trousers</p>
+            <p class="pronunciation">/trał-zers/</p>
+            <p class="polish">Spodnie</p>
+            <div class="context-box">
+                <span class="context-title">USA vs UK</span>
+                W UK to eleganckie spodnie. W USA mówią na nie "Pants".
+            </div>
+        </div>
+
+        <div class="card bottom">
+            <span class="icon">👗</span>
+            <p class="english">Skirt</p>
+            <p class="pronunciation">/skert/</p>
+            <p class="polish">Spódnica</p>
+            <div class="context-box">
+                <span class="context-title">Różnica</span>
+                Skirt (tylko dół) vs Dress (sukienka - góra i dół).
+            </div>
+        </div>
+
+        <div class="card shoes">
+            <span class="icon">👟</span>
+            <p class="english">Sneakers</p>
+            <p class="pronunciation">/sni-kers/</p>
+            <p class="polish">Trampki / Adidasy</p>
+            <div class="context-box">
+                <span class="context-title">Kontekst</span>
+                Buty sportowe na co dzień. W UK nazywają je "Trainers".
+            </div>
+        </div>
+
+        <div class="card shoes">
+            <span class="icon">👢</span>
+            <p class="english">Boots</p>
+            <p class="pronunciation">/buts/</p>
+            <p class="polish">Kozaki / Buty zimowe</p>
+            <div class="context-box">
+                <span class="context-title">Cecha</span>
+                Wysokie buty, za kostkę. Używane w zimie lub do pracy.
+            </div>
+        </div>
+
+        <div class="card outer">
+            <span class="icon">🧥</span>
+            <p class="english">Coat</p>
+            <p class="pronunciation">/kołt/</p>
+            <p class="polish">Płaszcz</p>
+            <div class="context-box">
+                <span class="context-title">Kiedy użyć?</span>
+                Dłuższy niż kurtka, zazwyczaj elegancki i cieplejszy.
+            </div>
+        </div>
+
+        <div class="card outer">
+            <span class="icon">🧥</span>
+            <p class="english">Jacket</p>
+            <p class="pronunciation">/dżakiet/</p>
+            <p class="polish">Kurtka / Marynarka</p>
+            <div class="context-box">
+                <span class="context-title">Uwaga</span>
+                Może to być kurtka zimowa, dżinsowa, albo marynarka od garnituru.
+            </div>
+        </div>
+
+        <div class="card outer">
+            <span class="icon">🧤</span>
+            <p class="english">Gloves</p>
+            <p class="pronunciation">/glawz/</p>
+            <p class="polish">Rękawiczki</p>
+            <div class="context-box">
+                <span class="context-title">Wymowa</span>
+                Czytamy przez 'A' (gla-wz), nie przez 'O' (glowz).
+            </div>
+        </div>
+
+        <div class="card outer">
+            <span class="icon">🧣</span>
+            <p class="english">Scarf</p>
+            <p class="pronunciation">/skarf/</p>
+            <p class="polish">Szalik</p>
+            <div class="context-box">
+                <span class="context-title">Zastosowanie</span>
+                Może być gruby na zimę (wool scarf) lub lekki jedwabny (silk scarf).
+            </div>
+        </div>
+
+        <div class="card outer">
+            <span class="icon">🧢</span>
+            <p class="english">Hat</p>
+            <p class="pronunciation">/hat/</p>
+            <p class="polish">Czapka / Kapelusz</p>
+            <div class="context-box">
+                <span class="context-title">Ogólne słowo</span>
+                Czapka z daszkiem to "Cap", zimowa to "Beanie", ale "Hat" to słowo ogólne.
+            </div>
+        </div>
+
+         <div class="card outer">
+            <span class="icon">🕴️</span>
+            <p class="english">Suit</p>
+            <p class="pronunciation">/sjut/</p>
+            <p class="polish">Garnitur</p>
+            <div class="context-box">
+                <span class="context-title">Biznes</span>
+                Składa się z marynarki (Jacket) i spodni (Trousers).
+            </div>
+        </div>
+
+    </div>
 </div>
 
 <script>
-    function checkAnswers() {
-        const inputs = document.querySelectorAll('.gap-input');
-        let score = 0;
-        let total = inputs.length;
-
-        inputs.forEach(input => {
-            let correctAnswers = input.getAttribute('data-ans').toLowerCase().split(',');
-            let userAnswer = input.value.trim().toLowerCase();
-
-            input.classList.remove('correct', 'incorrect');
-            
-            // Remove old hint
-            let nextEl = input.nextElementSibling;
-            if(nextEl && nextEl.classList.contains('answer-key')) {
-                nextEl.remove();
-            }
-
-            if (correctAnswers.includes(userAnswer)) {
-                input.classList.add('correct');
-                score++;
-            } else {
-                input.classList.add('incorrect');
-                let span = document.createElement('span');
-                span.className = 'answer-key';
-                span.innerText = `Correct: ${correctAnswers[0]}`; 
-                input.parentNode.insertBefore(span, input.nextSibling);
-            }
-        });
-
-        const resultArea = document.getElementById('result-area');
-        resultArea.style.display = 'block';
+    function toggleTranslation() {
+        const grid = document.getElementById('grid');
+        const btn = document.getElementById('toggle-btn');
         
-        let percentage = Math.round((score / total) * 100);
-        
-        if(percentage === 100) {
-            resultArea.innerHTML = `<span style="color:#44bd32">Perfect! Design Approved! ✅</span>`;
-        } else if (percentage >= 50) {
-            resultArea.innerHTML = `<span style="color:#fbc531">Good work! Just a few revisions needed. ⚠️</span>`;
+        // Dodaj/Usuń klasę 'blur' która ukrywa polski tekst
+        grid.classList.toggle('blur');
+        btn.classList.toggle('active');
+
+        // Zmień tekst przycisku
+        if (grid.classList.contains('blur')) {
+            btn.innerText = "👀 Pokaż polski";
         } else {
-            resultArea.innerHTML = `<span style="color:#c23616">Rejected! Try again. ❌</span>`;
+            btn.innerText = "👁️ Ukryj polski (Sprawdź się)";
         }
     }
 </script>

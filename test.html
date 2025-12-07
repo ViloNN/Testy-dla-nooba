@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Design Studio: Teamwork 🚀</title>
+    <title>Clothes Vocabulary 👗</title>
     <style>
-        /* --- STYL: MODERN DARK --- */
+        /* --- STYL: MIDNIGHT BOUTIQUE --- */
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             margin: 0; 
@@ -13,125 +13,154 @@
             min-height: 100vh; 
             display: flex; 
             justify-content: center; 
-            align-items: center;
-            background-color: #1e1e1e; 
-            color: #ecf0f1;
+            align-items: flex-start; /* Start from top on mobile */
+            background-color: #0f172a; /* Midnight Blue */
+            color: #e2e8f0;
         }
 
         .quiz-container { 
-            background-color: #2d2d2d; 
+            background-color: #1e293b; 
             width: 100%; 
-            max-width: 800px; 
+            max-width: 900px; 
             padding: 40px; 
-            border-radius: 12px; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            border: 1px solid #444;
+            border-radius: 16px; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            border: 1px solid #334155;
+            margin-top: 20px;
+            margin-bottom: 40px;
         }
         
         h2 { 
             text-align: center;
-            color: #00cec9; /* Mint / Teal */
-            margin-bottom: 5px;
+            color: #fbbf24; /* Gold */
+            margin-bottom: 10px;
             font-weight: 700;
-            letter-spacing: 1px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
         
         .subtitle { 
             text-align: center; 
             font-size: 1em; 
-            margin-bottom: 30px; 
-            color: #b2bec3;
+            margin-bottom: 40px; 
+            color: #94a3b8;
             font-style: italic;
         }
 
-        .text-content {
-            font-size: 1.15em;
-            line-height: 1.8;
-            text-align: justify;
+        /* --- GRID LAYOUT --- */
+        .words-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Dwie kolumny */
+            gap: 20px 40px;
+        }
+
+        @media (max-width: 700px) {
+            .words-grid {
+                grid-template-columns: 1fr; /* Jedna kolumna na telefonie */
+            }
+        }
+
+        .word-item {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #334155;
+        }
+
+        .english-word {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #fff;
+            flex: 1;
         }
 
         /* --- INPUTS --- */
-        input.gap-input {
-            background: #3d3d3d;
+        input.vocab-input {
+            background: #334155;
             border: none;
-            border-bottom: 2px solid #636e72;
-            color: #00cec9;
+            border-bottom: 2px solid #64748b;
+            color: #fbbf24; /* Gold text */
             font-size: 1em;
-            padding: 5px 10px;
-            width: 170px; /* Nieco szersze dla dłuższych fraz */
-            margin: 0 5px;
-            text-align: center;
-            border-radius: 4px;
+            padding: 8px 12px;
+            width: 160px;
+            text-align: right;
+            border-radius: 4px 4px 0 0;
             transition: all 0.3s ease;
-            font-weight: 600;
         }
 
-        input.gap-input:focus {
+        input.vocab-input:focus {
             outline: none;
-            background: #4b4b4b;
-            border-bottom-color: #00cec9;
+            background: #475569;
+            border-bottom-color: #fbbf24;
         }
 
-        /* --- VALIDATION --- */
+        input.vocab-input::placeholder {
+            color: #64748b;
+            font-style: italic;
+            font-size: 0.8em;
+        }
+
+        /* --- WALIDACJA --- */
         input.correct {
-            border-bottom-color: #00b894 !important;
-            color: #00b894 !important;
-            background-color: rgba(0, 184, 148, 0.1) !important;
+            border-bottom-color: #4ade80 !important; /* Green */
+            color: #4ade80 !important;
         }
 
         input.incorrect {
-            border-bottom-color: #ff7675 !important;
-            color: #ff7675 !important;
+            border-bottom-color: #f87171 !important; /* Red */
+            color: #f87171 !important;
+            text-decoration: line-through;
         }
 
-        .answer-key {
+        .correction {
             display: block;
-            color: #ff7675;
+            color: #4ade80;
             font-size: 0.85em;
-            margin-top: 2px;
-            font-weight: normal;
+            text-align: right;
+            margin-top: 4px;
+            font-weight: bold;
         }
 
         /* --- BUTTON --- */
         .btn-container {
             text-align: center;
-            margin-top: 40px;
+            margin-top: 50px;
         }
 
         button.check-btn { 
-            padding: 15px 50px; 
-            background-color: #00b894; 
-            color: white; 
+            padding: 15px 60px; 
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #fff; 
             border: none; 
             border-radius: 50px; 
             cursor: pointer; 
             font-size: 1.2em; 
-            font-weight: bold; 
+            font-weight: 800; 
             transition: transform 0.2s, box-shadow 0.2s; 
-            box-shadow: 0 5px 15px rgba(0, 184, 148, 0.4);
+            box-shadow: 0 5px 20px rgba(245, 158, 11, 0.4);
+            text-transform: uppercase;
         }
         
         button.check-btn:hover { 
-            background-color: #00cec9;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.6);
         }
 
         /* --- RESULT --- */
         #result-area {
-            margin-top: 30px;
+            margin-top: 35px;
             text-align: center;
-            font-size: 1.5em;
+            font-size: 1.8em;
             font-weight: bold;
             display: none;
             padding: 20px;
-            background: #3d3d3d;
-            border-radius: 8px;
-            animation: fadeIn 0.5s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            background: #0f172a;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            color: #fbbf24;
         }
 
     </style>
@@ -139,29 +168,109 @@
 <body>
 
 <div class="quiz-container">
-    <h2>Teamwork & Deadlines 🚀</h2>
-    <div class="subtitle">Complete the 10 gaps. Watch out for mixed tenses!</div>
+    <h2>Clothes & Accessories 👗</h2>
+    <div class="subtitle">Translate the words into Polish.</div>
     
     <form id="quiz-form">
-        <div class="text-content">
-            Yesterday was crazy at the studio. We (1) <input type="text" class="gap-input" data-ans="had" placeholder="have"> (have) a huge problem with the new website project.
-            The client (2) <input type="text" class="gap-input" data-ans="called" placeholder="call"> (call) us in the morning and said the images were pixelated.
-            <br><br>
-            Honestly, I (3) <input type="text" class="gap-input" data-ans="have never seen,have not seen" placeholder="never / see"> (never / see) such a messy file before!
-            The previous designer (4) <input type="text" class="gap-input" data-ans="forgot" placeholder="forget"> (forget) to outline the fonts.
-            <br><br>
-            Right now, my team (5) <input type="text" class="gap-input" data-ans="is fixing,are fixing" placeholder="fix"> (fix) all the errors.
-            We are working fast because we (6) <input type="text" class="gap-input" data-ans="must,have to" placeholder="must"> (must) send the final version by 5:00 PM today.
-            <br><br>
-            If we (7) <input type="text" class="gap-input" data-ans="finish" placeholder="finish"> (finish) on time, the client 
-            (8) <input type="text" class="gap-input" data-ans="will be" placeholder="be"> (be) very happy.
-            However, if the deadline (9) <input type="text" class="gap-input" data-ans="passes" placeholder="pass"> (pass), we might lose the contract.
-            <br><br>
-            Don't worry! I promise that tomorrow we (10) <input type="text" class="gap-input" data-ans="will celebrate,are going to celebrate" placeholder="celebrate"> (celebrate) with pizza.
+        <div class="words-grid">
+            
+            <div class="word-item">
+                <span class="english-word">T-shirt</span>
+                <input type="text" class="vocab-input" data-ans="koszulka,t-shirt,podkoszulek" placeholder="wpisz po polsku...">
+            </div>
+            <div class="word-item">
+                <span class="english-word">Shirt</span>
+                <input type="text" class="vocab-input" data-ans="koszula" placeholder="...">
+            </div>
+            <div class="word-item">
+                <span class="english-word">Sweater / Jumper</span>
+                <input type="text" class="vocab-input" data-ans="sweter,bluza" placeholder="...">
+            </div>
+            <div class="word-item">
+                <span class="english-word">Hoodie</span>
+                <input type="text" class="vocab-input" data-ans="bluza z kapturem,bluza" placeholder="...">
+            </div>
+
+            <div class="word-item">
+                <span class="english-word">Trousers</span>
+                <input type="text" class="vocab-input" data-ans="spodnie" placeholder="...">
+            </div>
+            <div class="word-item">
+                <span class="english-word">Jeans</span>
+                <input type="text" class="vocab-input" data-ans="dżinsy,jeansy,spodnie dżinsowe" placeholder="...">
+            </div>
+            <div class="word-item">
+                <span class="english-word">Skirt</span>
+                <input type="text" class="vocab-input" data-ans="spódnica,spódniczka" placeholder="...">
+            </div>
+            <div class="word-item">
+                <span class="english-word">Dress</span>
+                <input type="text" class="vocab-input" data-ans="sukienka,suknia" placeholder="...">
+            </div>
+            <div class="word-item">
+                <span class="english-word">Shorts</span>
+                <input type="text" class="vocab-input" data-ans="szorty,krótkie spodenki,spodenki" placeholder="...">
+            </div>
+
+            <div class="word-item">
+                <span class="english-word">Jacket</span>
+                <input type="text" class="vocab-input" data-ans="kurtka,marynarka,żakiet" placeholder="...">
+            </div>
+            <div class="word-item">
+                <span class="english-word">Coat</span>
+                <input type="text" class="vocab-input" data-ans="płaszcz" placeholder="...">
+            </div>
+
+            <div class="word-item">
+                <span class="english-word">Shoes</span>
+                <input type="text" class="vocab-input" data-ans="buty" placeholder="...">
+            </div>
+            <div class="word-item">
+                <span class="english-word">Sneakers / Trainers</span>
+                <input type="text" class="vocab-input" data-ans="trampki,adidasy,buty sportowe" placeholder="...">
+            </div>
+            <div class="word-item">
+                <span class="english-word">Boots</span>
+                <input type="text" class="vocab-input" data-ans="kozaki,botki,buty zimowe" placeholder="...">
+            </div>
+            <div class="word-item">
+                <span class="english-word">Socks</span>
+                <input type="text" class="vocab-input" data-ans="skarpetki,skarpety" placeholder="...">
+            </div>
+
+            <div class="word-item">
+                <span class="english-word">Hat</span>
+                <input type="text" class="vocab-input" data-ans="czapka,kapelusz" placeholder="...">
+            </div>
+            <div class="word-item">
+                <span class="english-word">Scarf</span>
+                <input type="text" class="vocab-input" data-ans="szalik,apaszka,chusta" placeholder="...">
+            </div>
+            <div class="word-item">
+                <span class="english-word">Gloves</span>
+                <input type="text" class="vocab-input" data-ans="rękawiczki,rękawice" placeholder="...">
+            </div>
+            <div class="word-item">
+                <span class="english-word">Belt</span>
+                <input type="text" class="vocab-input" data-ans="pasek" placeholder="...">
+            </div>
+            <div class="word-item">
+                <span class="english-word">Tie</span>
+                <input type="text" class="vocab-input" data-ans="krawat" placeholder="...">
+            </div>
+            <div class="word-item">
+                <span class="english-word">Suit</span>
+                <input type="text" class="vocab-input" data-ans="garnitur" placeholder="...">
+            </div>
+            <div class="word-item">
+                <span class="english-word">Underwear</span>
+                <input type="text" class="vocab-input" data-ans="bielizna,majtki" placeholder="...">
+            </div>
+
         </div>
 
         <div class="btn-container">
-            <button type="button" class="check-btn" onclick="checkAnswers()">Check Answers</button>
+            <button type="button" class="check-btn" onclick="checkAnswers()">Check</button>
         </div>
         
         <div id="result-area"></div>
@@ -170,7 +279,7 @@
 
 <script>
     function checkAnswers() {
-        const inputs = document.querySelectorAll('.gap-input');
+        const inputs = document.querySelectorAll('.vocab-input');
         let score = 0;
         let total = inputs.length;
 
@@ -181,9 +290,9 @@
 
             input.classList.remove('correct', 'incorrect');
             
-            // Usuwanie starej podpowiedzi
+            // Usuwanie starej korekty
             let nextEl = input.nextElementSibling;
-            if(nextEl && nextEl.classList.contains('answer-key')) {
+            if(nextEl && nextEl.classList.contains('correction')) {
                 nextEl.remove();
             }
 
@@ -192,10 +301,13 @@
                 score++;
             } else {
                 input.classList.add('incorrect');
-                let span = document.createElement('span');
-                span.className = 'answer-key';
-                span.innerText = `Correct: ${correctAnswers[0]}`; 
-                input.parentNode.insertBefore(span, input.nextSibling);
+                // Jeśli pole nie jest puste, pokaż poprawną odpowiedź
+                let div = document.createElement('div');
+                div.className = 'correction';
+                div.innerText = `${correctAnswers[0]}`; 
+                // Wstawiamy korektę pod inputem (wewnątrz .word-item trzeba to zrobić sprytnie)
+                // Najlepiej wstawić PO inputcie
+                input.parentNode.appendChild(div);
             }
         });
 
@@ -205,11 +317,14 @@
         let percentage = Math.round((score / total) * 100);
         
         if(percentage === 100) {
-            resultArea.innerHTML = `<span style="color:#00b894">Perfect! Deadline met! ✅</span>`;
+            resultArea.innerHTML = `Perfect! ${score}/${total} 🌟`;
+            resultArea.style.borderColor = "#4ade80";
         } else if (percentage >= 50) {
-            resultArea.innerHTML = `<span style="color:#fdcb6e">Good effort! Almost there! ⚠️</span>`;
+            resultArea.innerHTML = `Good job! ${score}/${total} 👍`;
+            resultArea.style.borderColor = "#fbbf24";
         } else {
-            resultArea.innerHTML = `<span style="color:#ff7675">Critical Error! Try again! ❌</span>`;
+            resultArea.innerHTML = `Keep learning! ${score}/${total} 📚`;
+            resultArea.style.borderColor = "#f87171";
         }
     }
 </script>

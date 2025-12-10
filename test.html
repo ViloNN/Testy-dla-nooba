@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biologia: Komórki i Życie 🌱</title>
+    <title>Biologia: Poziom Ekspert 🧬</title>
     <style>
-        /* --- STYL: NATURE EXPLORER --- */
+        /* --- STYL: SCIENCE LAB (Deep Blue & Neon) --- */
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             margin: 0; 
@@ -14,140 +14,121 @@
             display: flex; 
             justify-content: center; 
             align-items: flex-start;
-            /* Tło gradientowe jak łąka i niebo */
-            background: linear-gradient(180deg, #a8e6cf 0%, #dcedc1 100%);
-            color: #2d3436;
+            background-color: #0f0c29;
+            background: linear-gradient(to right, #24243e, #302b63, #0f0c29); /* Ciemny kosmos */
+            color: #e0e0e0;
         }
 
         .quiz-container { 
-            background-color: rgba(255, 255, 255, 0.95); 
+            background-color: rgba(20, 20, 40, 0.9); 
             width: 100%; 
-            max-width: 800px; 
+            max-width: 850px; 
             padding: 40px; 
-            border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border-top: 8px solid #2ecc71;
+            border-radius: 15px; 
+            box-shadow: 0 0 40px rgba(123, 31, 162, 0.3);
+            border: 1px solid #4a148c;
             margin-top: 20px;
             margin-bottom: 40px;
-            position: relative;
-            overflow: hidden;
         }
         
-        /* Dekoracja w tle kontenera (liść) */
-        .quiz-container::before {
-            content: "🌿";
-            position: absolute;
-            top: -20px;
-            right: -20px;
-            font-size: 150px;
-            opacity: 0.1;
-            transform: rotate(20deg);
-            z-index: 0;
-        }
-
         h2 { 
             text-align: center;
-            color: #27ae60; 
-            margin-bottom: 5px;
+            color: #ea80fc; /* Neon Purple */
+            margin-bottom: 10px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            z-index: 1;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(234, 128, 252, 0.5);
         }
         
         .subtitle { 
             text-align: center; 
-            font-size: 1.1em; 
-            margin-bottom: 30px; 
-            color: #7f8c8d;
+            font-size: 1em; 
+            margin-bottom: 40px; 
+            color: #b39ddb;
             font-style: italic;
-            position: relative;
-            z-index: 1;
+            border-bottom: 1px solid #4a148c;
+            padding-bottom: 20px;
         }
 
-        /* --- PYTANIA I OPCJE --- */
+        /* --- PYTANIA --- */
         .question-box {
-            margin-bottom: 25px;
-            position: relative;
-            z-index: 1;
-            border-bottom: 1px dashed #b2bec3;
-            padding-bottom: 25px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #1a1a3a;
+            border-radius: 10px;
+            border-left: 5px solid #7b1fa2;
+            transition: transform 0.2s;
+        }
+
+        .question-box:hover {
+            transform: translateX(5px);
         }
 
         .question-text {
-            font-size: 1.2em;
+            font-size: 1.15em;
             font-weight: 600;
             margin-bottom: 15px;
-            color: #2c3e50;
+            color: #fff;
         }
 
         .options-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr; /* Jedna kolumna dla czytelności trudnych odpowiedzi */
             gap: 10px;
         }
 
-        @media (max-width: 600px) {
-            .options-grid { grid-template-columns: 1fr; }
-        }
-
-        /* --- STYLIZACJA RADIO BUTTONÓW JAKO KAFELKI --- */
+        /* --- BUTTONY RADIO (Ukryte) I LABELE --- */
         .option-label {
             display: block;
-            background: #f1f2f6;
+            background: #252545;
             padding: 12px 15px;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             transition: all 0.2s;
-            border: 2px solid transparent;
+            border: 1px solid #3d3d6b;
             font-size: 0.95em;
+            color: #c5c5e6;
         }
 
         .option-label:hover {
-            background: #e9ecef;
-            transform: translateY(-2px);
+            background: #30305a;
+            border-color: #ea80fc;
         }
 
-        /* Ukrywamy standardowe kółko radio */
-        input[type="radio"] {
-            display: none;
-        }
+        input[type="radio"] { display: none; }
 
-        /* Wygląd po zaznaczeniu */
         input[type="radio"]:checked + .option-label {
-            background-color: #d1f2eb;
-            border-color: #2ecc71;
-            color: #16a085;
+            background-color: #4a148c;
+            border-color: #ea80fc;
+            color: #fff;
             font-weight: bold;
-            box-shadow: 0 4px 6px rgba(46, 204, 113, 0.2);
+            box-shadow: 0 0 15px rgba(234, 128, 252, 0.3);
         }
 
-        /* --- WALIDACJA (Klasy dodawane przez JS) --- */
+        /* --- KLASY WYNIKÓW --- */
         .option-label.correct {
-            background-color: #a3e4d7 !important;
-            border-color: #27ae60 !important;
-            color: #145a32 !important;
+            background-color: #00695c !important; /* Ciemny zielony */
+            border-color: #1de9b6 !important; /* Neon turkus */
+            color: #fff !important;
         }
 
         .option-label.wrong {
-            background-color: #fadbd8 !important;
-            border-color: #e74c3c !important;
-            color: #7b241c !important;
-            opacity: 0.7;
+            background-color: #b71c1c !important; /* Ciemny czerwony */
+            border-color: #ff5252 !important; /* Neon czerwień */
+            color: #fff !important;
+            opacity: 0.6;
         }
 
-        /* --- PRZYCISK --- */
+        /* --- PRZYCISK SPRAWDZANIA --- */
         .btn-container {
             text-align: center;
-            margin-top: 30px;
-            position: relative;
-            z-index: 1;
+            margin-top: 40px;
         }
 
         button.check-btn { 
-            padding: 15px 50px; 
-            background: linear-gradient(to right, #2ecc71, #27ae60);
+            padding: 15px 60px; 
+            background: linear-gradient(45deg, #7b1fa2, #ea80fc);
             color: white; 
             border: none; 
             border-radius: 50px; 
@@ -155,12 +136,13 @@
             font-size: 1.2em; 
             font-weight: bold; 
             transition: transform 0.2s, box-shadow 0.2s; 
-            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4);
+            box-shadow: 0 5px 20px rgba(123, 31, 162, 0.5);
+            text-transform: uppercase;
         }
         
         button.check-btn:hover { 
             transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.5);
+            box-shadow: 0 8px 25px rgba(123, 31, 162, 0.7);
         }
 
         /* --- WYNIK --- */
@@ -171,9 +153,9 @@
             font-weight: bold;
             display: none;
             padding: 20px;
-            background: #fff;
-            border-radius: 12px;
-            border: 2px solid #2ecc71;
+            background: #1a1a3a;
+            border-radius: 10px;
+            border: 2px solid #ea80fc;
         }
 
     </style>
@@ -181,163 +163,133 @@
 <body>
 
 <div class="quiz-container">
-    <h2>Budowa i Czynności Organizmów 🧬</h2>
-    <div class="subtitle">Klasa 5 (Puls Życia). Wybierz poprawną odpowiedź.</div>
+    <h2>Biologia: Poziom Ekspert 🧬</h2>
+    <div class="subtitle">Budowa i czynności organizmów. Pytania trudne!</div>
     
     <form id="quiz-form">
         
-        <div class="question-box" data-correct="0">
-            <div class="question-text">1. Podstawowym budulcem organizmów (służącym do wzrostu i regeneracji) są:</div>
+        <div class="question-box" data-correct="2">
+            <div class="question-text">1. Głównym składnikiem budulcowym enzymów oraz hormonów, a także mięśni, są:</div>
             <div class="options-grid">
+                <label><input type="radio" name="q1"> <span class="option-label">Cukry proste (glukoza)</span></label>
+                <label><input type="radio" name="q1"> <span class="option-label">Tłuszcze (lipidy)</span></label>
                 <label><input type="radio" name="q1"> <span class="option-label">Białka</span></label>
-                <label><input type="radio" name="q1"> <span class="option-label">Cukry</span></label>
-                <label><input type="radio" name="q1"> <span class="option-label">Tłuszcze</span></label>
-                <label><input type="radio" name="q1"> <span class="option-label">Witaminy</span></label>
-            </div>
-        </div>
-
-        <div class="question-box" data-correct="2">
-            <div class="question-text">2. Głównym źródłem energii dla organizmu są:</div>
-            <div class="options-grid">
-                <label><input type="radio" name="q2"> <span class="option-label">Kwasy nukleinowe</span></label>
-                <label><input type="radio" name="q2"> <span class="option-label">Sole mineralne</span></label>
-                <label><input type="radio" name="q2"> <span class="option-label">Cukry (węglowodany)</span></label>
-                <label><input type="radio" name="q2"> <span class="option-label">Woda</span></label>
+                <label><input type="radio" name="q1"> <span class="option-label">Sole mineralne (wapń)</span></label>
             </div>
         </div>
 
         <div class="question-box" data-correct="1">
-            <div class="question-text">3. Której części NIE posiada komórka zwierzęca?</div>
+            <div class="question-text">2. Ściana komórkowa u roślin zbudowana jest z cukru złożonego o nazwie:</div>
             <div class="options-grid">
-                <label><input type="radio" name="q3"> <span class="option-label">Jądra komórkowego</span></label>
-                <label><input type="radio" name="q3"> <span class="option-label">Ściany komórkowej</span></label>
-                <label><input type="radio" name="q3"> <span class="option-label">Błony komórkowej</span></label>
-                <label><input type="radio" name="q3"> <span class="option-label">Cytoplazmy</span></label>
+                <label><input type="radio" name="q2"> <span class="option-label">Chityna</span></label>
+                <label><input type="radio" name="q2"> <span class="option-label">Celuloza</span></label>
+                <label><input type="radio" name="q2"> <span class="option-label">Skrobia</span></label>
+                <label><input type="radio" name="q2"> <span class="option-label">Białko</span></label>
             </div>
         </div>
 
         <div class="question-box" data-correct="3">
-            <div class="question-text">4. "Centrum dowodzenia" komórki, zawierające DNA, to:</div>
+            <div class="question-text">3. Gdzie znajduje się materiał genetyczny (DNA) w komórce bakterii?</div>
             <div class="options-grid">
-                <label><input type="radio" name="q4"> <span class="option-label">Wodniczka</span></label>
-                <label><input type="radio" name="q4"> <span class="option-label">Mitochondrium</span></label>
-                <label><input type="radio" name="q4"> <span class="option-label">Chloroplast</span></label>
-                <label><input type="radio" name="q4"> <span class="option-label">Jądro komórkowe</span></label>
+                <label><input type="radio" name="q3"> <span class="option-label">W jądrze komórkowym</span></label>
+                <label><input type="radio" name="q3"> <span class="option-label">W wakuoli</span></label>
+                <label><input type="radio" name="q3"> <span class="option-label">W mitochondrium</span></label>
+                <label><input type="radio" name="q3"> <span class="option-label">Bezpośrednio w cytoplazmie (jako substancja jądrowa)</span></label>
             </div>
         </div>
 
         <div class="question-box" data-correct="0">
-            <div class="question-text">5. Organellum odpowiedzialne za uwalnianie energii (oddychanie komórkowe) to:</div>
+            <div class="question-text">4. Dlaczego mitochondrium nazywamy "elektrownią" komórki?</div>
             <div class="options-grid">
-                <label><input type="radio" name="q5"> <span class="option-label">Mitochondrium</span></label>
-                <label><input type="radio" name="q5"> <span class="option-label">Rybosom</span></label>
-                <label><input type="radio" name="q5"> <span class="option-label">Wodniczka</span></label>
-                <label><input type="radio" name="q5"> <span class="option-label">Ściana komórkowa</span></label>
+                <label><input type="radio" name="q4"> <span class="option-label">Ponieważ tam zachodzi uwalnianie energii z pokarmu</span></label>
+                <label><input type="radio" name="q4"> <span class="option-label">Ponieważ produkuje prąd elektryczny</span></label>
+                <label><input type="radio" name="q4"> <span class="option-label">Ponieważ magazynuje wodę</span></label>
+                <label><input type="radio" name="q4"> <span class="option-label">Ponieważ steruje podziałem komórki</span></label>
             </div>
         </div>
 
         <div class="question-box" data-correct="1">
-            <div class="question-text">6. Cecha charakterystyczna komórki bakteryjnej to:</div>
+            <div class="question-text">5. Wskaż poprawny zestaw SUBSTRATÓW (składników potrzebnych na początku) fotosyntezy:</div>
             <div class="options-grid">
-                <label><input type="radio" name="q6"> <span class="option-label">Obecność wielu jąder</span></label>
-                <label><input type="radio" name="q6"> <span class="option-label">Brak jądra komórkowego</span></label>
-                <label><input type="radio" name="q6"> <span class="option-label">Obecność chloroplastów</span></label>
-                <label><input type="radio" name="q6"> <span class="option-label">Brak błony komórkowej</span></label>
+                <label><input type="radio" name="q5"> <span class="option-label">Glukoza + Tlen</span></label>
+                <label><input type="radio" name="q5"> <span class="option-label">Dwutlenek węgla + Woda (+ Światło)</span></label>
+                <label><input type="radio" name="q5"> <span class="option-label">Tlen + Woda</span></label>
+                <label><input type="radio" name="q5"> <span class="option-label">Skrobia + Dwutlenek węgla</span></label>
             </div>
         </div>
 
         <div class="question-box" data-correct="2">
-            <div class="question-text">7. Co jest potrzebne do procesu fotosyntezy?</div>
+            <div class="question-text">6. Saprofity (np. wiele grzybów i bakterii) to organizmy, które:</div>
             <div class="options-grid">
-                <label><input type="radio" name="q7"> <span class="option-label">Tlen i cukier</span></label>
-                <label><input type="radio" name="q7"> <span class="option-label">Woda i tlen</span></label>
-                <label><input type="radio" name="q7"> <span class="option-label">Światło, woda, dwutlenek węgla</span></label>
-                <label><input type="radio" name="q7"> <span class="option-label">Tylko światło i gleba</span></label>
+                <label><input type="radio" name="q6"> <span class="option-label">Polują na inne organizmy</span></label>
+                <label><input type="radio" name="q6"> <span class="option-label">Żyją kosztem żywego żywiciela</span></label>
+                <label><input type="radio" name="q6"> <span class="option-label">Odżywiają się martwą materią organiczną</span></label>
+                <label><input type="radio" name="q6"> <span class="option-label">Przeprowadzają fotosyntezę</span></label>
             </div>
         </div>
 
         <div class="question-box" data-correct="0">
-            <div class="question-text">8. Organizmy samożywne to głównie:</div>
+            <div class="question-text">7. Która kolejność poziomów organizacji życia jest poprawna (od najmniejszego)?</div>
             <div class="options-grid">
-                <label><input type="radio" name="q8"> <span class="option-label">Rośliny</span></label>
-                <label><input type="radio" name="q8"> <span class="option-label">Grzyby</span></label>
-                <label><input type="radio" name="q8"> <span class="option-label">Zwierzęta</span></label>
-                <label><input type="radio" name="q8"> <span class="option-label">Wirusy</span></label>
+                <label><input type="radio" name="q7"> <span class="option-label">Komórka -> Tkanka -> Narząd -> Układ narządów -> Organizm</span></label>
+                <label><input type="radio" name="q7"> <span class="option-label">Tkanka -> Komórka -> Organizm -> Narząd</span></label>
+                <label><input type="radio" name="q7"> <span class="option-label">Komórka -> Narząd -> Tkanka -> Organizm</span></label>
+                <label><input type="radio" name="q7"> <span class="option-label">Narząd -> Tkanka -> Komórka -> Układ</span></label>
             </div>
         </div>
 
         <div class="question-box" data-correct="3">
-            <div class="question-text">9. Grzyby (np. pieczarka, borowik) są:</div>
+            <div class="question-text">8. Aparaty szparkowe w liściach służą do:</div>
             <div class="options-grid">
-                <label><input type="radio" name="q9"> <span class="option-label">Samożywne (robią fotosyntezę)</span></label>
-                <label><input type="radio" name="q9"> <span class="option-label">Drapieżnikami</span></label>
-                <label><input type="radio" name="q9"> <span class="option-label">Półpasożytami</span></label>
-                <label><input type="radio" name="q9"> <span class="option-label">Cudzożywne (nie mają chlorofilu)</span></label>
+                <label><input type="radio" name="q8"> <span class="option-label">Tylko do pobierania wody z deszczu</span></label>
+                <label><input type="radio" name="q8"> <span class="option-label">Obrony przed roślinożercami</span></label>
+                <label><input type="radio" name="q8"> <span class="option-label">Magazynowania cukru</span></label>
+                <label><input type="radio" name="q8"> <span class="option-label">Wymiany gazowej (pobierania CO2, usuwania tlenu) i parowania wody</span></label>
             </div>
         </div>
 
         <div class="question-box" data-correct="1">
-            <div class="question-text">10. Oddychanie tlenowe polega na:</div>
+            <div class="question-text">9. Niektóre organizmy (np. drożdże) uzyskują energię bez udziału tlenu. Proces ten nazywamy:</div>
             <div class="options-grid">
-                <label><input type="radio" name="q10"> <span class="option-label">Pobieraniu CO2 i usuwaniu tlenu</span></label>
-                <label><input type="radio" name="q10"> <span class="option-label">Pobieraniu tlenu i usuwaniu CO2</span></label>
-                <label><input type="radio" name="q10"> <span class="option-label">Pobieraniu wody i usuwaniu tlenu</span></label>
-                <label><input type="radio" name="q10"> <span class="option-label">Tylko pobieraniu tlenu</span></label>
+                <label><input type="radio" name="q9"> <span class="option-label">Fotosyntezą</span></label>
+                <label><input type="radio" name="q9"> <span class="option-label">Fermentacją</span></label>
+                <label><input type="radio" name="q9"> <span class="option-label">Wymianą gazową</span></label>
+                <label><input type="radio" name="q9"> <span class="option-label">Trawieniem zewnętrznym</span></label>
             </div>
         </div>
 
         <div class="question-box" data-correct="2">
-            <div class="question-text">11. Czy rośliny oddychają?</div>
+            <div class="question-text">10. Który element występuje w komórce roślinnej, ale NIE występuje w zwierzęcej?</div>
             <div class="options-grid">
-                <label><input type="radio" name="q11"> <span class="option-label">Nie, tylko fotosyntezują</span></label>
-                <label><input type="radio" name="q11"> <span class="option-label">Tak, ale tylko w nocy</span></label>
-                <label><input type="radio" name="q11"> <span class="option-label">Tak, nieustannie (w dzień i w nocy)</span></label>
-                <label><input type="radio" name="q11"> <span class="option-label">Tylko w zimie</span></label>
+                <label><input type="radio" name="q10"> <span class="option-label">Błona komórkowa</span></label>
+                <label><input type="radio" name="q10"> <span class="option-label">Mitochondrium</span></label>
+                <label><input type="radio" name="q10"> <span class="option-label">Duża wakuola i chloroplasty</span></label>
+                <label><input type="radio" name="q10"> <span class="option-label">Jądro komórkowe</span></label>
             </div>
         </div>
-
+        
         <div class="question-box" data-correct="0">
-            <div class="question-text">12. Organizmy żywiące się szczątkami martwych organizmów to:</div>
+            <div class="question-text">11. Woda jest dobrym rozpuszczalnikiem, co umożliwia jej:</div>
             <div class="options-grid">
-                <label><input type="radio" name="q12"> <span class="option-label">Padlinożercy</span></label>
-                <label><input type="radio" name="q12"> <span class="option-label">Pasożyty</span></label>
-                <label><input type="radio" name="q12"> <span class="option-label">Drapieżnicy</span></label>
-                <label><input type="radio" name="q12"> <span class="option-label">Roślinożercy</span></label>
-            </div>
-        </div>
-
-        <div class="question-box" data-correct="1">
-            <div class="question-text">13. Wymiana gazowa u ryb zachodzi przez:</div>
-            <div class="options-grid">
-                <label><input type="radio" name="q13"> <span class="option-label">Płuca</span></label>
-                <label><input type="radio" name="q13"> <span class="option-label">Skrzela</span></label>
-                <label><input type="radio" name="q13"> <span class="option-label">Tchawki</span></label>
-                <label><input type="radio" name="q13"> <span class="option-label">Skórę</span></label>
+                <label><input type="radio" name="q11"> <span class="option-label">Transportowanie substancji w organizmie (np. we krwi)</span></label>
+                <label><input type="radio" name="q11"> <span class="option-label">Dostarczanie energii</span></label>
+                <label><input type="radio" name="q11"> <span class="option-label">Budowanie kości</span></label>
+                <label><input type="radio" name="q11"> <span class="option-label">Ochronę przed zimnem (jako tkanka tłuszczowa)</span></label>
             </div>
         </div>
 
         <div class="question-box" data-correct="3">
-            <div class="question-text">14. Tasiemiec i kleszcz to przykłady:</div>
+            <div class="question-text">12. Dlaczego tasiemiec nie musi posiadać układu pokarmowego?</div>
             <div class="options-grid">
-                <label><input type="radio" name="q14"> <span class="option-label">Symbiontów</span></label>
-                <label><input type="radio" name="q14"> <span class="option-label">Drapieżników</span></label>
-                <label><input type="radio" name="q14"> <span class="option-label">Saprofagów</span></label>
-                <label><input type="radio" name="q14"> <span class="option-label">Pasożytów</span></label>
-            </div>
-        </div>
-
-        <div class="question-box" data-correct="0">
-            <div class="question-text">15. Woda stanowi około ... masy ciała człowieka.</div>
-            <div class="options-grid">
-                <label><input type="radio" name="q15"> <span class="option-label">60-70%</span></label>
-                <label><input type="radio" name="q15"> <span class="option-label">10-20%</span></label>
-                <label><input type="radio" name="q15"> <span class="option-label">90-100%</span></label>
-                <label><input type="radio" name="q15"> <span class="option-label">30-40%</span></label>
+                <label><input type="radio" name="q12"> <span class="option-label">Bo żywi się krwią</span></label>
+                <label><input type="radio" name="q12"> <span class="option-label">Bo sam produkuje pokarm</span></label>
+                <label><input type="radio" name="q12"> <span class="option-label">Bo połyka ofiary w całości</span></label>
+                <label><input type="radio" name="q12"> <span class="option-label">Bo wchłania strawiony pokarm żywiciela całą powierzchnią ciała</span></label>
             </div>
         </div>
 
         <div class="btn-container">
-            <button type="button" class="check-btn" onclick="checkAnswers()">Sprawdź wynik 🌿</button>
+            <button type="button" class="check-btn" onclick="checkAnswers()">Analiza Wyników 🧪</button>
         </div>
         
         <div id="result-area"></div>
@@ -356,7 +308,7 @@
             const labels = box.querySelectorAll('.option-label');
             let answered = false;
 
-            // Reset stylów
+            // Reset
             labels.forEach(l => l.classList.remove('correct', 'wrong'));
 
             options.forEach((opt, optIndex) => {
@@ -372,11 +324,6 @@
                     }
                 }
             });
-
-            // Jeśli nie zaznaczono, zaznacz poprawną na zielono (podpowiedź)
-            if (!answered) {
-                // opcjonalnie: labels[correctIndex].classList.add('correct');
-            }
         });
 
         const resultArea = document.getElementById('result-area');
@@ -387,17 +334,17 @@
         let color = "";
 
         if(percentage === 100) {
-            msg = "Wspaniale! Jesteś ekspertem z biologii! 🧬🏆";
-            color = "#27ae60";
+            msg = "GENIUSZ! Jesteś gotowy na olimpiadę biologiczną! 🧬🏆";
+            color = "#1de9b6";
         } else if (percentage >= 80) {
-            msg = "Bardzo dobry wynik! Świetna robota! 🌿";
-            color = "#2ecc71";
+            msg = "Poziom Ekspert zaliczony! Świetna wiedza! 🔬";
+            color = "#ea80fc";
         } else if (percentage >= 50) {
-            msg = "Nieźle, ale powtórz budowę komórki. 📖";
-            color = "#f39c12";
+            msg = "Dobrze, ale to były trudne pytania. Powtórz szczegóły. 🧪";
+            color = "#ffb74d";
         } else {
-            msg = "Musisz zajrzeć do podręcznika. Nie poddawaj się! 💪";
-            color = "#e74c3c";
+            msg = "Trudny test, prawda? Zajrzyj jeszcze raz do notatek. 📖";
+            color = "#ef5350";
         }
 
         resultArea.innerHTML = `<span style="color:${color}">${msg} <br> Twój wynik: ${score} / ${total}</span>`;

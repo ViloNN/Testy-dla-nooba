@@ -3,468 +3,408 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 Engineering Data Hub</title>
+    <title>F1 Telemetry - Live Data</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* --- KONFIGURACJA KOLORYSTYCZNA (NEON DARK MODE) --- */
+        /* --- CONFIG --- */
         :root {
-            --bg-dark: #050507;
-            --bg-panel: #0f0f14;
-            --grid-line: rgba(255, 255, 255, 0.05);
-            
-            --neon-red: #ff2a2a;
+            --bg-dark: #050505;
+            --neon-red: #ff003c;
             --neon-cyan: #00f3ff;
             --neon-green: #0aff0a;
-            --neon-yellow: #fff700;
-            --neon-purple: #bc13fe;
-            
-            --text-main: #e0e0e0;
-            --text-muted: #888888;
-            
+            --grid-color: rgba(0, 243, 255, 0.15);
             --font-tech: 'Orbitron', sans-serif;
-            --font-body: 'Rajdhani', sans-serif;
-            --font-code: 'Share Tech Mono', monospace;
+            --font-data: 'Share Tech Mono', monospace;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-family: var(--font-body);
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
             overflow-x: hidden;
-            /* Tło "Blueprint" - siatka inżynierska */
-            background-image: 
-                linear-gradient(var(--grid-line) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-            background-size: 40px 40px;
         }
 
-        /* --- UI ELEMENTS --- */
-        h1, h2, h3 { font-family: var(--font-tech); text-transform: uppercase; letter-spacing: 2px; }
-        
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
+        /* --- HERO SECTION ANIMATED --- */
+        header {
+            height: 100vh;
             position: relative;
-            display: inline-block;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        
-        .section-header h2 {
-            font-size: 2.5rem;
-            background: linear-gradient(90deg, #fff, #888);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .section-header::after {
-            content: ''; display: block; width: 60%; height: 2px; background: var(--neon-red);
-            margin: 10px auto 0; box-shadow: 0 0 10px var(--neon-red);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            border-bottom: 2px solid var(--neon-cyan);
+            perspective: 1000px; /* Dla efektu 3D */
         }
 
-        .btn-tech {
-            background: transparent;
+        /* Ruchoma siatka 3D */
+        .cyber-grid {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            bottom: -50%;
+            left: -50%;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: rotateX(45deg); /* Pochylenie */
+            animation: gridMove 1s linear infinite;
+            z-index: 1;
+            mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%); /* Zanikanie w dal */
+        }
+
+        @keyframes gridMove {
+            0% { transform: rotateX(45deg) translateY(0); }
+            100% { transform: rotateX(45deg) translateY(50px); }
+        }
+
+        /* Linia skanująca */
+        .scanner-line {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 5px;
+            background: rgba(0, 255, 0, 0.5);
+            box-shadow: 0 0 15px var(--neon-green);
+            animation: scan 3s linear infinite;
+            z-index: 2;
+            opacity: 0.3;
+        }
+
+        @keyframes scan {
+            0% { top: -10%; }
+            100% { top: 110%; }
+        }
+
+        /* Kontent Hero */
+        .hero-content {
+            z-index: 10;
+            text-align: center;
+            background: rgba(5, 5, 5, 0.7);
+            padding: 2rem 4rem;
             border: 1px solid var(--neon-cyan);
-            color: var(--neon-cyan);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.1);
+        }
+
+        .hero-label {
+            font-family: var(--font-data);
+            color: var(--neon-red);
+            letter-spacing: 4px;
+            margin-bottom: 1rem;
+            display: block;
+            font-size: 1.2rem;
+        }
+
+        /* GLITCH EFFECT TEXT */
+        .glitch-title {
+            font-family: var(--font-tech);
+            font-size: 5rem;
+            font-weight: 900;
+            position: relative;
+            color: white;
+            letter-spacing: -2px;
+        }
+
+        .glitch-title::before,
+        .glitch-title::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark);
+        }
+
+        .glitch-title::before {
+            left: 2px;
+            text-shadow: -1px 0 var(--neon-red);
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+
+        .glitch-title::after {
+            left: -2px;
+            text-shadow: -1px 0 var(--neon-cyan);
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim 2.5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(10px, 9999px, 30px, 0); }
+            20% { clip: rect(80px, 9999px, 100px, 0); }
+            40% { clip: rect(10px, 9999px, 60px, 0); }
+            60% { clip: rect(50px, 9999px, 90px, 0); }
+            80% { clip: rect(20px, 9999px, 70px, 0); }
+            100% { clip: rect(90px, 9999px, 100px, 0); }
+        }
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(60px, 9999px, 80px, 0); }
+            20% { clip: rect(10px, 9999px, 40px, 0); }
+            40% { clip: rect(90px, 9999px, 100px, 0); }
+            60% { clip: rect(20px, 9999px, 60px, 0); }
+            80% { clip: rect(50px, 9999px, 90px, 0); }
+            100% { clip: rect(10px, 9999px, 30px, 0); }
+        }
+
+        .btn-start {
+            margin-top: 2rem;
             padding: 15px 40px;
-            font-family: var(--font-code);
-            font-size: 1.1rem;
+            background: transparent;
+            border: 2px solid var(--neon-red);
+            color: var(--neon-red);
+            font-family: var(--font-tech);
+            font-size: 1.2rem;
+            text-transform: uppercase;
             cursor: pointer;
             transition: 0.3s;
             position: relative;
             overflow: hidden;
         }
         
-        .btn-tech:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 20px var(--neon-cyan); }
-
-        /* --- HERO SECTION --- */
-        header {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            border-bottom: 1px solid var(--grid-line);
+        .btn-start:hover {
+            background: var(--neon-red);
+            color: #000;
+            box-shadow: 0 0 30px var(--neon-red);
         }
 
-        /* Animowane koło w tle */
-        .hero-bg-circle {
-            position: absolute; width: 600px; height: 600px;
-            border: 1px dashed rgba(255,255,255,0.1); border-radius: 50%;
-            animation: spin 60s linear infinite; z-index: -1;
-        }
-        .hero-bg-circle::before {
-            content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 400px; height: 400px; border: 1px solid rgba(0, 243, 255, 0.1); border-radius: 50%;
-        }
-
-        .hero-title { font-size: 5rem; line-height: 1.1; text-shadow: 0 0 20px rgba(255, 42, 42, 0.3); text-align: center; }
-        .hero-title span { color: var(--neon-red); }
-        .hero-subtitle { font-family: var(--font-code); color: var(--neon-cyan); margin-top: 1rem; margin-bottom: 3rem; font-size: 1.2rem; }
-
-        /* --- DASHBOARD GRID (Główna sekcja) --- */
+        /* --- DASHBOARD SECTION --- */
         section { padding: 5rem 5%; }
         
+        .section-title {
+            text-align: center;
+            font-family: var(--font-tech);
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--neon-cyan);
+            text-transform: uppercase;
+        }
+
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-auto-rows: minmax(250px, auto);
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
-            max-width: 1600px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
-        .panel {
-            background: rgba(15, 15, 20, 0.8);
-            border: 1px solid rgba(255,255,255,0.1);
+        .card {
+            background: #0f0f12;
+            border: 1px solid #333;
             padding: 2rem;
-            position: relative;
-            backdrop-filter: blur(5px);
             transition: 0.3s;
-            display: flex; flex-direction: column;
-        }
-        
-        .panel:hover { border-color: rgba(255,255,255,0.3); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        
-        /* Klasy rozmiarów kafelków */
-        .span-2 { grid-column: span 2; }
-        .span-3 { grid-column: span 3; }
-        .row-2 { grid-row: span 2; }
-
-        /* Nagłówki kafelków */
-        .panel-header {
-            display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;
-            border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;
-        }
-        .panel-title { font-family: var(--font-code); color: var(--text-muted); font-size: 0.9rem; }
-        .panel-icon { font-size: 1.5rem; }
-
-        /* Treść kafelków */
-        .stat-value { font-size: 3.5rem; font-weight: 700; font-family: var(--font-tech); line-height: 1; }
-        .stat-unit { font-size: 1rem; color: var(--text-muted); font-family: var(--font-body); }
-        .stat-desc { margin-top: 1rem; font-size: 1rem; color: #aaa; line-height: 1.4; }
-
-        /* Kolory kafelków */
-        .border-red { border-top: 3px solid var(--neon-red); } .border-red .panel-icon { color: var(--neon-red); }
-        .border-cyan { border-top: 3px solid var(--neon-cyan); } .border-cyan .panel-icon { color: var(--neon-cyan); }
-        .border-green { border-top: 3px solid var(--neon-green); } .border-green .panel-icon { color: var(--neon-green); }
-        .border-yellow { border-top: 3px solid var(--neon-yellow); } .border-yellow .panel-icon { color: var(--neon-yellow); }
-
-        /* Paski postępu / wykresy */
-        .progress-container { margin-top: auto; }
-        .progress-label { display: flex; justify-content: space-between; font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 5px; color: var(--text-muted); }
-        .progress-bar { width: 100%; height: 6px; background: #333; position: relative; overflow: hidden; }
-        .progress-fill { height: 100%; position: absolute; left: 0; top: 0; }
-        
-        .fill-red { background: var(--neon-red); width: 52%; box-shadow: 0 0 10px var(--neon-red); }
-        .fill-cyan { background: var(--neon-cyan); width: 85%; box-shadow: 0 0 10px var(--neon-cyan); }
-
-        /* --- KIEROWNICA (Schemat) --- */
-        .steering-section { background: #000; border-top: 1px solid var(--grid-line); border-bottom: 1px solid var(--grid-line); }
-        
-        .schematic-container {
             position: relative;
-            max-width: 1000px;
-            height: 600px;
-            margin: 0 auto;
+        }
+        
+        .card:hover { border-color: var(--neon-cyan); transform: translateY(-5px); }
+        .card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent); opacity: 0; transition: 0.3s; }
+        .card:hover::before { opacity: 1; }
+
+        .card-icon { font-size: 2rem; color: #555; margin-bottom: 1rem; }
+        .card-value { font-size: 3rem; font-family: var(--font-tech); font-weight: 700; color: #fff; line-height: 1; }
+        .card-label { font-family: var(--font-data); color: var(--neon-cyan); margin-bottom: 10px; display: block; }
+        .card-desc { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+
+        .big-card { grid-column: span 2; border-color: #333; }
+        .red-accent .card-value { color: var(--neon-red); }
+        .green-accent .card-value { color: var(--neon-green); }
+
+        /* --- KIEROWNICA (NAPRAWIONA) --- */
+        .steering-section {
+            background: #0a0a0c;
+            border-top: 1px solid #333;
+            padding-bottom: 6rem;
         }
 
-        .steering-img {
-            width: 70%;
-            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-            /* Filtr sprawia, że zdjęcie wygląda jak hologram/szkic */
-            filter: grayscale(100%) contrast(1.2) drop-shadow(0 0 15px rgba(255,255,255,0.1));
-            opacity: 0.8;
+        .wheel-container {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .wheel-img {
+            width: 80%;
+            filter: drop-shadow(0 0 20px rgba(0,243,255,0.1));
             transition: 0.5s;
         }
-        .steering-img:hover { filter: grayscale(0%) contrast(1.1); opacity: 1; }
+        .wheel-img:hover { filter: drop-shadow(0 0 30px rgba(0,243,255,0.3)) brightness(1.1); }
 
+        /* HOTSPOTS */
         .hotspot {
             position: absolute;
-            display: flex; align-items: center;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
             transition: 0.3s;
         }
+        .hotspot:hover { transform: scale(1.1); z-index: 100; }
+
+        .hs-dot {
+            width: 12px; height: 12px;
+            background: var(--bg-dark);
+            border: 2px solid var(--neon-red);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--neon-red);
+            animation: pulse 2s infinite;
+        }
         
-        .hotspot-dot {
-            width: 10px; height: 10px; background: var(--bg-dark); border: 2px solid var(--neon-cyan);
-            border-radius: 50%; position: relative; z-index: 2;
-        }
-        .hotspot-line {
-            height: 1px; background: var(--neon-cyan); width: 50px; opacity: 0.5;
-        }
-        .hotspot-text {
-            border: 1px solid var(--neon-cyan); background: rgba(0, 243, 255, 0.1);
-            color: var(--neon-cyan); padding: 5px 10px; font-family: var(--font-code); font-size: 0.8rem;
-            backdrop-filter: blur(4px); min-width: 150px;
-        }
-
-        /* Pozycje Hotspotów */
-        .hs-left { flex-direction: row-reverse; left: 5%; } 
-        .hs-right { left: auto; right: 5%; }
+        .hs-line { width: 40px; height: 1px; background: var(--neon-red); }
         
-        .hs-1 { top: 20%; } /* DRS */
-        .hs-2 { top: 40%; } /* Radio */
-        .hs-3 { top: 60%; } /* Brake Bal */
+        .hs-label {
+            background: rgba(255, 0, 60, 0.1);
+            border: 1px solid var(--neon-red);
+            color: var(--neon-red);
+            padding: 5px 10px;
+            font-family: var(--font-data);
+            font-size: 0.8rem;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Pozycjonowanie (Dostosowane do nowego zdjęcia Mercedes W05) */
+        .hs-1 { top: 30%; left: 10%; } /* Lewa strona */
+        .hs-2 { bottom: 30%; left: 10%; }
+        .hs-3 { top: 30%; right: 10%; flex-direction: row-reverse; } /* Prawa strona */
+        .hs-4 { bottom: 30%; right: 10%; flex-direction: row-reverse; }
         
-        .hs-4 { top: 20%; } /* Engine Map */
-        .hs-5 { top: 40%; } /* Neutral */
-        .hs-6 { top: 60%; } /* Pit Limiter */
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 0, 60, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(255, 0, 60, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 0, 60, 0); } }
 
-        /* --- OPONY (Wizualizacja CSS) --- */
-        .tyre-container {
-            display: flex; gap: 20px; justify-content: center; margin-top: 2rem; flex-wrap: wrap;
-        }
-        .tyre {
-            width: 100px; height: 100px; border-radius: 50%; border: 15px solid #111;
-            display: flex; justify-content: center; align-items: center;
-            position: relative; background: #222;
-            box-shadow: inset 0 0 20px #000;
-        }
-        .tyre::after {
-            content: ''; position: absolute; top: -18px; left: -18px; right: -18px; bottom: -18px;
-            border-radius: 50%; border: 3px solid transparent;
-        }
-        .t-soft::after { border-color: var(--neon-red); } .t-soft .tyre-label { color: var(--neon-red); }
-        .t-medium::after { border-color: var(--neon-yellow); } .t-medium .tyre-label { color: var(--neon-yellow); }
-        .t-hard::after { border-color: #fff; } .t-hard .tyre-label { color: #fff; }
-        .t-inter::after { border-color: var(--neon-green); } .t-inter .tyre-label { color: var(--neon-green); }
-        .t-wet::after { border-color: #0088ff; } .t-wet .tyre-label { color: #0088ff; }
-
-        .tyre-label { font-family: var(--font-tech); font-weight: 700; font-size: 1.2rem; }
-
-        /* --- ANIMACJE --- */
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-        .live-dot {
-            width: 8px; height: 8px; background: var(--neon-red); border-radius: 50%;
-            display: inline-block; margin-right: 8px; animation: blink 1s infinite;
+        /* Fallback dla zdjęcia (gdyby jednak nie zadziałało) */
+        .wheel-fallback {
+            display: none; /* Domyślnie ukryte */
+            width: 80%; height: 400px;
+            margin: 0 auto;
+            border: 2px dashed var(--neon-cyan);
+            background: 
+                linear-gradient(45deg, #111 25%, transparent 25%, transparent 75%, #111 75%, #111), 
+                linear-gradient(45deg, #111 25%, transparent 25%, transparent 75%, #111 75%, #111);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            justify-content: center; align-items: center; flex-direction: column;
+            color: var(--neon-cyan); font-family: var(--font-data);
         }
 
-        /* --- RESPONSYWNOŚĆ --- */
-        @media (max-width: 1200px) {
-            .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
-            .span-3 { grid-column: span 2; }
-        }
+        /* --- FOOTER --- */
+        footer { border-top: 1px solid #333; padding: 2rem; text-align: center; color: #555; font-family: var(--font-data); }
+
+        /* RESPONSYWNOŚĆ */
         @media (max-width: 768px) {
+            .glitch-title { font-size: 3rem; }
             .dashboard-grid { grid-template-columns: 1fr; }
-            .span-2, .span-3 { grid-column: span 1; }
-            .hero-title { font-size: 3rem; }
-            .steering-img { width: 90%; opacity: 0.4; }
-            .hotspot { position: relative; margin: 10px 0; left: auto; right: auto; flex-direction: row; }
-            .hotspot-line { display: none; }
-            .schematic-container { height: auto; display: flex; flex-direction: column; }
+            .big-card { grid-column: span 1; }
+            .hs-line { display: none; }
+            .hotspot { position: relative; margin: 10px auto; width: 80%; top: auto; left: auto; right: auto; flex-direction: row; justify-content: center; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="hero-bg-circle"></div>
-        <div style="font-family: var(--font-code); color: var(--neon-red); letter-spacing: 5px; margin-bottom: 20px;">
-            <span class="live-dot"></span>SYSTEM ONLINE
+        <div class="cyber-grid"></div> <div class="scanner-line"></div> <div class="hero-content">
+            <span class="hero-label"><i class="fa-solid fa-satellite-dish"></i> LIVE TELEMETRY FEED</span>
+            
+            <h1 class="glitch-title" data-text="F1 DATA HUB">F1 DATA HUB</h1>
+            
+            <p style="color: #aaa; margin-top: 1rem; max-width: 500px; margin-bottom: 2rem;">
+                SYSTEM ANALIZY INŻYNIERYJNEJ BOLIDU HYBRYDOWEGO KLASY F1.
+            </p>
+            
+            <button class="btn-start" onclick="document.getElementById('stats').scrollIntoView({behavior: 'smooth'})">
+                ACCESS SYSTEM
+            </button>
         </div>
-        <h1 class="hero-title">F1 <span>TELEMETRY</span><br>DATA HUB</h1>
-        <p class="hero-subtitle">// ADVANCED ENGINEERING ANALYSIS //</p>
-        <a href="#dashboard" class="btn-tech">INITIALIZE DASHBOARD</a>
     </header>
 
-    <section id="dashboard">
-        <div class="section-header">
-            <h2>PARAMETRY BOLIDU</h2>
-        </div>
-
+    <section id="stats">
+        <h2 class="section-title">PARAMETRY JEDNOSTKI</h2>
         <div class="dashboard-grid">
             
-            <div class="panel span-2 row-2 border-red">
-                <div class="panel-header">
-                    <span class="panel-title">PU / INTERNAL COMBUSTION ENGINE</span>
-                    <i class="fa-solid fa-fire-burner panel-icon"></i>
-                </div>
-                <div style="margin-top: 1rem;">
-                    <div class="stat-value" style="color:var(--neon-red)">1036 <span style="font-size:1.5rem">HP</span></div>
-                    <div class="stat-unit">MOC CAŁKOWITA (ICE + ERS)</div>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 3rem;">
-                    <div>
-                        <div class="progress-label"><span>THERMAL EFFICIENCY</span><span>52%</span></div>
-                        <div class="progress-bar"><div class="progress-fill fill-red"></div></div>
-                        <p class="stat-desc" style="font-size: 0.8rem; margin-top: 5px;">Najbardziej wydajny silnik spalinowy w historii motoryzacji.</p>
-                    </div>
-                    <div>
-                        <div class="progress-label"><span>MGU-K RECOVERY</span><span>2 MJ/lap</span></div>
-                        <div class="progress-bar"><div class="progress-fill fill-red" style="width: 100%"></div></div>
-                        <p class="stat-desc" style="font-size: 0.8rem; margin-top: 5px;">Energia odzyskiwana z hamowania przekazywana na wał korbowy.</p>
+            <div class="card big-card red-accent">
+                <i class="fa-solid fa-bolt card-icon" style="color:var(--neon-red)"></i>
+                <span class="card-label">POWER UNIT OUTPUT</span>
+                <div class="card-value">1036 BHP</div>
+                <div class="card-desc">
+                    1.6L V6 TURBO + ERS SYSTEM. SPRAWNOŚĆ CIEPLNA >50%.<br>
+                    <div style="height: 4px; background: #333; margin-top: 10px; width: 100%;">
+                        <div style="height: 100%; background: var(--neon-red); width: 92%; box-shadow: 0 0 10px var(--neon-red);"></div>
                     </div>
                 </div>
-                
-                <div style="margin-top: auto; border-top: 1px dashed #333; padding-top: 1rem; font-family: var(--font-code); color: var(--neon-red);">
-                    WARNING: TURBO TEMP > 900°C
-                </div>
             </div>
 
-            <div class="panel border-cyan">
-                <div class="panel-header">
-                    <span class="panel-title">AERODYNAMICS</span>
-                    <i class="fa-solid fa-wind panel-icon"></i>
-                </div>
-                <div class="stat-value">5.5 <span style="font-size:1.5rem">G</span></div>
-                <div class="stat-unit">LATERAL FORCE</div>
-                <p class="stat-desc">Maksymalne przeciążenie boczne w szybkich zakrętach (np. Silverstone, Suzuka).</p>
-                
-                <div class="progress-container">
-                    <div class="progress-label"><span>DOWNFORCE LOAD</span><span>2500 KG</span></div>
-                    <div class="progress-bar"><div class="progress-fill fill-cyan"></div></div>
-                </div>
+            <div class="card">
+                <i class="fa-solid fa-wind card-icon" style="color:var(--neon-cyan)"></i>
+                <span class="card-label">MAX DOWNFORCE</span>
+                <div class="card-value">2500 KG</div>
+                <div class="card-desc">Przy prędkości 320 km/h.</div>
             </div>
 
-            <div class="panel border-yellow">
-                <div class="panel-header">
-                    <span class="panel-title">PIT STOP CREW</span>
-                    <i class="fa-solid fa-stopwatch panel-icon"></i>
-                </div>
-                <div class="stat-value">1.82 <span style="font-size:1.5rem">s</span></div>
-                <div class="stat-unit">WORLD RECORD</div>
-                <p class="stat-desc">Wymiana 4 kół przez 22 mechaników. Pistolety pneumatyczne obracają się z prędkością 15,000 RPM.</p>
+            <div class="card">
+                <i class="fa-solid fa-magnet card-icon" style="color:var(--neon-green)"></i>
+                <span class="card-label">LATERAL G-FORCE</span>
+                <div class="card-value">6.0 G</div>
+                <div class="card-desc">Max przeciążenie (Zakręt 8, Turcja).</div>
             </div>
 
-            <div class="panel span-2 border-green">
-                <div class="panel-header">
-                    <span class="panel-title">DATA ANALYTICS</span>
-                    <i class="fa-solid fa-network-wired panel-icon"></i>
-                </div>
-                <div style="display: flex; gap: 2rem;">
-                    <div>
-                        <div class="stat-value" style="color:var(--neon-green)">1.5 TB</div>
-                        <div class="stat-unit">DANE Z WEEKENDU</div>
-                    </div>
-                    <div style="border-left: 1px solid #333; padding-left: 2rem;">
-                         <div class="stat-value">300+</div>
-                        <div class="stat-unit">SENSORÓW W BOLIDZIE</div>
-                    </div>
-                </div>
-                <p class="stat-desc">Bolid wysyła telemetrię w czasie rzeczywistym do garażu oraz do fabryki (np. w Wielkiej Brytanii) z opóźnieniem mniejszym niż 0.2s.</p>
-                
-                <div style="background: #000; padding: 10px; margin-top: 1rem; font-family: var(--font-code); font-size: 0.8rem; color: var(--neon-green); opacity: 0.7;">
-                    > SENSOR_FR_SUSPENSION: OK<br>
-                    > TYRE_TEMP_RL: 102°C (HIGH)<br>
-                    > FUEL_FLOW: 98kg/h
-                </div>
+            <div class="card big-card">
+                <i class="fa-solid fa-fire-burner card-icon" style="color: orange;"></i>
+                <span class="card-label">BRAKE TEMP</span>
+                <div class="card-value">1200°C</div>
+                <div class="card-desc">Tarcze węglowe. Zatrzymanie z 300km/h w 4 sekundy.</div>
             </div>
-
-            <div class="panel border-red">
-                <div class="panel-header">
-                    <span class="panel-title">BRAKING SYSTEM</span>
-                    <i class="fa-solid fa-compact-disc panel-icon"></i>
-                </div>
-                <div class="stat-value">1200<span style="font-size:1.5rem">°C</span></div>
-                <div class="stat-unit">CARBON DISCS</div>
-                <p class="stat-desc">Tarcze węglowe rozgrzewają się do czerwoności w mniej niż sekundę. Kierowca naciska pedał z siłą ponad 100kg.</p>
-            </div>
-
-             <div class="panel border-cyan">
-                <div class="panel-header">
-                    <span class="panel-title">BUDGET CAP</span>
-                    <i class="fa-solid fa-coins panel-icon"></i>
-                </div>
-                <div class="stat-value">$135<span style="font-size:1.5rem">M</span></div>
-                <div class="stat-unit">LIMIT ROCZNY</div>
-                <p class="stat-desc">Maksymalny budżet zespołu na rozwój bolidu w sezonie. Wymusza ekstremalną efektywność inżynieryjną.</p>
-            </div>
-
         </div>
     </section>
 
     <section class="steering-section">
-        <div class="section-header">
-            <h2>INTERFACE KIEROWCY</h2>
-        </div>
+        <h2 class="section-title">INTERFACE KIEROWCY</h2>
         
-        <div class="schematic-container">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/F1_steering_wheel_Red_Bull_RB9.jpeg" alt="F1 Steering Wheel" class="steering-img">
+        <div class="wheel-container">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Mercedes_F1_W05_steering_wheel_2014_Goodwood_Festival_of_Speed.jpg/1280px-Mercedes_F1_W05_steering_wheel_2014_Goodwood_Festival_of_Speed.jpg" 
+                 alt="F1 Steering Wheel" 
+                 class="wheel-img"
+                 onerror="this.style.display='none'; document.querySelector('.wheel-fallback').style.display='flex';">
             
-            <div class="hotspot hs-left hs-1">
-                <div class="hotspot-text">DRS (OPEN WING)</div>
-                <div class="hotspot-line"></div>
-                <div class="hotspot-dot"></div>
-            </div>
-            
-            <div class="hotspot hs-left hs-2">
-                <div class="hotspot-text">RADIO VOLUME / TALK</div>
-                <div class="hotspot-line"></div>
-                <div class="hotspot-dot"></div>
+            <div class="wheel-fallback">
+                <i class="fa-solid fa-microchip" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                <h3>CLASSIFIED SCHEMATIC</h3>
+                <p>IMAGE SIGNAL LOST. DISPLAYING BLUEPRINT MODE.</p>
             </div>
 
-             <div class="hotspot hs-left hs-3">
-                <div class="hotspot-text">DIFF ENTRY (Balans Dyferencjału)</div>
-                <div class="hotspot-line"></div>
-                <div class="hotspot-dot"></div>
+            <div class="hotspot hs-1">
+                <div class="hs-label">DRS (OPEN WING)</div>
+                <div class="hs-line"></div>
+                <div class="hs-dot"></div>
             </div>
 
-            <div class="hotspot hs-right hs-4">
-                <div class="hotspot-dot"></div>
-                <div class="hotspot-line"></div>
-                <div class="hotspot-text">ENGINE MAP (STRAT MODE)</div>
+            <div class="hotspot hs-2">
+                <div class="hs-label">RADIO COMMS</div>
+                <div class="hs-line"></div>
+                <div class="hs-dot"></div>
             </div>
 
-            <div class="hotspot hs-right hs-5">
-                <div class="hotspot-dot"></div>
-                <div class="hotspot-line"></div>
-                <div class="hotspot-text">NEUTRAL (SKRZYNIA BIEGÓW)</div>
+            <div class="hotspot hs-3">
+                <div class="hs-dot"></div>
+                <div class="hs-line"></div>
+                <div class="hs-label">STRAT MODE (ENGINE)</div>
             </div>
 
-            <div class="hotspot hs-right hs-6">
-                <div class="hotspot-dot"></div>
-                <div class="hotspot-line"></div>
-                <div class="hotspot-text">PIT LIMITER (80 KM/H)</div>
-            </div>
-        </div>
-        
-        <div style="text-align: center; margin-top: 3rem; color: #666; font-family: var(--font-code);">
-            // INTERFACE COMPLEXITY: HIGH // >30 BUTTONS & ROTARIES //
-        </div>
-    </section>
-
-    <section>
-        <div class="section-header">
-            <h2>MIESZANKI OPON</h2>
-        </div>
-        <div style="text-align: center; max-width: 800px; margin: 0 auto; color: #aaa;">
-            <p>Jedyne punkty styku bolidu z torem. Zarządzanie oponami to klucz do strategii. Każda mieszanka ma inne "okno pracy" temperaturowej.</p>
-        </div>
-
-        <div class="tyre-container">
-            <div class="tyre t-soft">
-                <span class="tyre-label">SOFT</span>
-            </div>
-            <div class="tyre t-medium">
-                <span class="tyre-label">MED</span>
-            </div>
-            <div class="tyre t-hard">
-                <span class="tyre-label">HARD</span>
-            </div>
-            <div class="tyre t-inter">
-                <span class="tyre-label">INT</span>
-            </div>
-             <div class="tyre t-wet">
-                <span class="tyre-label">WET</span>
+            <div class="hotspot hs-4">
+                <div class="hs-dot"></div>
+                <div class="hs-line"></div>
+                <div class="hs-label">PIT LIMITER</div>
             </div>
         </div>
     </section>
 
-    <footer style="border-top: 1px solid #333; padding: 3rem; text-align: center; font-family: var(--font-code); color: #555;">
-        <p>F1 TELEMETRY HUB V 2.0</p>
-        <p style="font-size: 0.8rem; margin-top: 10px;">Projekt edukacyjny. Formula 1 jest znakiem towarowym Formula One Licensing BV.</p>
+    <footer>
+        <p>SYSTEM STATUS: ONLINE | F1 TELEMETRY HUB 2024</p>
     </footer>
 
 </body>

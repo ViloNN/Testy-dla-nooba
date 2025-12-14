@@ -3,474 +3,410 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 Race Control - Live Telemetry</title>
+    <title>PROJECT OVERDRIVE // F1 ECU</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* --- CONFIG --- */
         :root {
-            --bg-dark: #08080a;
-            --panel-bg: rgba(20, 20, 25, 0.9);
-            --neon-cyan: #00f3ff;
+            --bg-color: #050505;
+            --neon-blue: #00f3ff;
             --neon-red: #ff003c;
             --neon-green: #39ff14;
-            --neon-yellow: #fff01f;
             --neon-purple: #bc13fe;
-            --text-main: #e0e0e0;
-            --text-dim: #666;
-            
-            --font-ui: 'Chakra Petch', sans-serif;
-            --font-data: 'Share Tech Mono', monospace;
+            --glass: rgba(255, 255, 255, 0.05);
+            --font-main: 'Share Tech Mono', monospace;
+            --font-head: 'Orbitron', sans-serif;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
         
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-family: var(--font-ui);
-            overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 50% 50%, #1a1a20 0%, #000 100%);
+            background: var(--bg-color);
+            color: #fff;
+            font-family: var(--font-main);
             height: 100vh;
-            display: flex;
-            flex-direction: column;
+            overflow: hidden;
+            position: relative;
         }
 
-        /* --- HEADER --- */
-        header {
-            height: 60px;
-            border-bottom: 1px solid #333;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
+        /* --- EKRAN STARTOWY (BOOT SCREEN) --- */
+        #boot-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000;
-            z-index: 100;
+            z-index: 9999;
+            padding: 50px;
+            display: flex; flex-direction: column; justify-content: flex-start;
+            font-size: 1.2rem;
+            color: var(--neon-green);
         }
+        .boot-line { margin-bottom: 5px; opacity: 0; animation: typeLine 0.1s forwards; }
+        .boot-btn {
+            margin-top: 50px; padding: 20px 40px; border: 2px solid var(--neon-green);
+            background: transparent; color: var(--neon-green); font-family: var(--font-head);
+            font-size: 1.5rem; cursor: pointer; display: none; text-transform: uppercase;
+            transition: 0.3s;
+        }
+        .boot-btn:hover { background: var(--neon-green); color: #000; box-shadow: 0 0 30px var(--neon-green); }
 
-        .logo { font-size: 1.5rem; font-weight: 700; letter-spacing: 2px; }
-        .logo span { color: var(--neon-red); }
-        
-        .top-stats { display: flex; gap: 2rem; font-family: var(--font-data); font-size: 0.9rem; }
-        .stat-item span { color: var(--text-dim); margin-right: 5px; }
-        .live-indicator { color: var(--neon-red); animation: blink 1s infinite; font-weight: bold; }
-
-        /* --- MAIN LAYOUT --- */
-        .main-container {
-            flex: 1;
+        /* --- GŁÓWNY INTERFEJS --- */
+        #main-interface {
+            opacity: 0;
+            transition: opacity 2s;
             display: grid;
-            grid-template-columns: 300px 1fr 350px; /* Lewy panel, Środek (Kierownica), Prawy panel */
-            gap: 10px;
-            padding: 10px;
-            height: calc(100vh - 60px);
+            grid-template-columns: 350px 1fr 350px;
+            grid-template-rows: 80px 1fr 200px;
+            height: 100vh;
+            padding: 20px;
+            gap: 20px;
+            background: radial-gradient(circle at center, #1a1a20 0%, #000 80%);
         }
 
-        /* --- PANELS GENERIC --- */
-        .panel {
-            background: var(--panel-bg);
-            border: 1px solid #333;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            position: relative;
+        /* --- SHIFT LIGHTS (Pasek LED nad kierownicą) --- */
+        .shift-lights-container {
+            grid-column: 2;
+            display: flex; justify-content: center; gap: 5px; align-items: flex-end;
+            padding-bottom: 10px;
         }
-        .panel-title {
-            font-size: 0.8rem;
-            color: var(--neon-cyan);
-            border-bottom: 1px solid #333;
-            padding-bottom: 5px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            justify-content: space-between;
+        .led {
+            width: 40px; height: 15px; background: #333; border-radius: 2px;
+            box-shadow: inset 0 0 5px #000;
+            transition: background 0.05s, box-shadow 0.05s;
         }
+        /* Kolory LED */
+        .led.active-green { background: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); }
+        .led.active-red { background: var(--neon-red); box-shadow: 0 0 15px var(--neon-red); }
+        .led.active-purple { background: var(--neon-purple); box-shadow: 0 0 20px var(--neon-purple); }
 
-        /* --- LEWY PANEL: CZASY I STATYSTYKI --- */
-        .timing-table { width: 100%; border-collapse: collapse; font-family: var(--font-data); font-size: 0.9rem; }
-        .timing-table th { text-align: left; color: #666; padding: 5px; font-weight: 400; }
-        .timing-table td { padding: 5px; border-bottom: 1px solid #222; }
-        
-        .sector-p { color: var(--neon-purple); } /* Purple sector */
-        .sector-g { color: var(--neon-green); }  /* Green sector */
-        .sector-y { color: var(--neon-yellow); } /* Yellow sector */
-
-        .weather-widget {
-            margin-top: 20px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+        /* --- CENTRUM (KIEROWNICA) --- */
+        .wheel-stage {
+            grid-column: 2; grid-row: 2 / 4;
+            position: relative; display: flex; justify-content: center; align-items: center;
         }
-        .weather-box { background: #111; padding: 10px; text-align: center; border: 1px solid #333; }
-        .w-val { font-family: var(--font-data); font-size: 1.2rem; display: block; }
-        .w-label { font-size: 0.7rem; color: #666; }
-
-        /* --- ŚRODKOWY PANEL: KIEROWNICA --- */
-        .center-stage {
-            background: radial-gradient(circle at center, #222 0%, #08080a 70%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            border: 1px solid #333;
-        }
-
-        .wheel-container {
-            position: relative;
-            width: 80%;
-            max-width: 800px;
-        }
-
         .wheel-img {
-            width: 100%;
-            filter: drop-shadow(0 0 30px rgba(0,0,0,0.8));
-            transform: scale(1);
+            width: 90%; max-width: 850px;
+            filter: drop-shadow(0 0 50px rgba(0,0,0,0.8));
             transition: transform 0.1s;
         }
-        /* Efekt wibracji przy "zmianie biegów" - dodamy JS-em */
-        .wheel-img.vibrate { animation: vibrate 0.2s linear; }
-
-        /* HOTSPOTS - DOSTOSOWANE DO TWOJEGO ZDJĘCIA */
+        /* Hotspoty */
         .hotspot {
-            position: absolute;
-            width: 40px; height: 40px;
-            border: 2px solid var(--neon-cyan);
-            border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            cursor: pointer;
-            transition: 0.3s;
-            opacity: 0.6;
-            background: rgba(0, 243, 255, 0.1);
+            position: absolute; width: 50px; height: 50px; border-radius: 50%;
+            cursor: pointer; z-index: 10;
+            /* Debug: border: 1px solid red; */ 
         }
-        .hotspot:hover { opacity: 1; transform: scale(1.2); background: rgba(0, 243, 255, 0.3); box-shadow: 0 0 15px var(--neon-cyan); }
+        .hotspot:active { transform: scale(0.9); }
         
-        /* Tooltip dla hotspotów */
-        .hotspot::after {
-            content: attr(data-label);
-            position: absolute;
-            bottom: 50px;
-            background: #000;
-            color: var(--neon-cyan);
-            padding: 5px 10px;
-            border: 1px solid var(--neon-cyan);
-            font-family: var(--font-data);
-            font-size: 0.8rem;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: 0.2s;
-        }
-        .hotspot:hover::after { opacity: 1; bottom: 45px; }
+        /* Pozycje przycisków (Dostosowane do Twojego zdjęcia) */
+        .hs-pit { top: 22%; right: 18%; }
+        .hs-radio { top: 38%; left: 22%; }
+        .hs-fail { top: 38%; right: 22%; }
+        .hs-mode { bottom: 20%; right: 28%; } /* Mode Rotary */
 
-        /* Pozycje przycisków (przybliżone do Twojego zdjęcia) */
-        .btn-n { top: 20%; left: 18%; border-color: var(--neon-green); } /* Neutral */
-        .btn-pit { top: 20%; right: 18%; border-color: var(--neon-red); } /* Pit */
-        .btn-radio { top: 38%; left: 22%; border-color: #fff; } /* Radio */
-        .btn-fail { top: 38%; right: 22%; border-color: orange; } /* Fail */
-        .btn-tyre { bottom: 35%; left: 38%; width: 60px; height: 60px; border-color: var(--neon-purple); } /* Rotary Tyre */
-        .btn-charge { bottom: 35%; right: 38%; width: 60px; height: 60px; border-color: var(--neon-cyan); } /* Rotary Charge */
+        /* --- PANELE BOCZNE --- */
+        .panel {
+            background: rgba(10, 10, 12, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            display: flex; flex-direction: column;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            position: relative; overflow: hidden;
+        }
+        .panel::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+        }
+        .panel h3 { color: var(--neon-blue); font-size: 1rem; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; letter-spacing: 2px; }
 
-        /* --- PRAWY PANEL: OPONY I SILNIK --- */
-        .tyres-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
-            gap: 10px;
-            height: 250px;
-            margin-bottom: 20px;
+        /* RADAR G-FORCE */
+        .g-force-radar {
+            width: 200px; height: 200px; border: 1px solid #444; border-radius: 50%;
+            margin: 20px auto; position: relative;
+            background: 
+                radial-gradient(circle, transparent 20%, #222 20%, #222 21%, transparent 21%),
+                radial-gradient(circle, transparent 60%, #222 60%, #222 61%, transparent 61%),
+                linear-gradient(0deg, transparent 49%, #333 49%, #333 51%, transparent 51%),
+                linear-gradient(90deg, transparent 49%, #333 49%, #333 51%, transparent 51%);
+            background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+        }
+        .g-dot {
+            width: 14px; height: 14px; background: var(--neon-red); border-radius: 50%;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px var(--neon-red);
+            transition: top 0.2s, left 0.2s;
         }
 
-        .tyre-box {
-            border: 1px solid #333;
-            border-radius: 10px;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #111;
+        /* LIVE RADIO TRANSCRIPT */
+        .radio-box {
+            flex: 1; overflow-y: hidden; position: relative;
+            font-size: 0.9rem; color: #aaa;
         }
+        .msg { margin-bottom: 8px; border-left: 2px solid #555; padding-left: 8px; animation: slideIn 0.3s; }
+        .msg.eng { border-color: var(--neon-blue); color: #fff; }
+        .msg.driver { border-color: var(--neon-green); color: var(--neon-green); }
+        .msg span { font-size: 0.7rem; color: #666; display: block; }
+
+        /* DANE SILNIKA */
+        .big-data { font-size: 4rem; font-family: var(--font-head); color: #fff; line-height: 1; text-align: center; text-shadow: 0 0 20px rgba(255,255,255,0.2); }
+        .sub-data { font-size: 1.2rem; color: #666; text-align: center; }
         
-        .tyre-temp {
-            position: absolute;
-            font-family: var(--font-data);
-            font-size: 1.5rem;
-            color: #fff;
-            z-index: 2;
+        /* ALERT OVERLAY (FAIL MODE) */
+        #alert-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(45deg, rgba(255,0,0,0.1), rgba(255,0,0,0.1) 10px, transparent 10px, transparent 20px);
+            pointer-events: none; display: none; z-index: 50;
+            box-shadow: inset 0 0 100px rgba(255,0,0,0.5);
         }
-        .tyre-wear {
-            position: absolute; bottom: 5px; right: 5px; font-size: 0.7rem; color: #666;
-        }
-        /* Wizualizacja ciepła opony */
-        .tyre-heat-map {
-            width: 80%; height: 80%;
-            border-radius: 50%;
-            border: 8px solid;
-            border-color: #333; /* Zmieni się JS-em */
-            transition: border-color 1s;
+        .fail-text {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 10rem; color: rgba(255,0,0,0.2); font-family: var(--font-head);
+            transform: translate(-50%, -50%) rotate(-10deg);
         }
 
-        .engine-bars { display: flex; flex-direction: column; gap: 10px; }
-        .bar-group { width: 100%; }
-        .bar-label { display: flex; justify-content: space-between; font-size: 0.7rem; color: #888; margin-bottom: 2px; }
-        .bar-track { width: 100%; height: 8px; background: #222; }
-        .bar-fill { height: 100%; background: var(--neon-green); width: 0%; transition: width 0.2s; }
-        
-        .rpm-display {
-            font-family: var(--font-data);
-            font-size: 3rem;
-            text-align: center;
-            color: #fff;
-            margin-top: 20px;
-            text-shadow: 0 0 10px rgba(255,255,255,0.2);
-        }
-        .gear-display {
-            font-size: 6rem;
-            text-align: center;
-            color: var(--neon-cyan);
-            font-weight: bold;
-            line-height: 0.8;
-        }
-
-        /* --- ANIMACJE --- */
+        @keyframes typeLine { to { opacity: 1; } }
+        @keyframes slideIn { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-        @keyframes vibrate { 0% { transform: translate(0); } 25% { transform: translate(-2px, 2px); } 50% { transform: translate(2px, -2px); } 75% { transform: translate(-2px, -2px); } 100% { transform: translate(0); } }
 
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .main-container { grid-template-columns: 1fr; grid-template-rows: auto auto auto; height: auto; }
-            .panel { min-height: 300px; }
-            .center-stage { min-height: 500px; order: -1; } /* Kierownica na górze na mobile */
-        }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">SCUDERIA <span>TELEMETRY</span></div>
-        <div class="top-stats">
-            <div class="stat-item"><span>TRACK:</span> SUZUKA</div>
-            <div class="stat-item"><span>SESSION:</span> FP2</div>
-            <div class="stat-item"><span>AIR:</span> 24°C</div>
-            <div class="stat-item"><span class="live-indicator">●</span> LIVE DATA</div>
-        </div>
-    </header>
+    <div id="boot-layer">
+        <div id="boot-text"></div>
+        <button id="init-btn" class="boot-btn" onclick="startSystem()">INITIALIZE RACE CONTROL</button>
+    </div>
 
-    <div class="main-container">
+    <div id="alert-overlay"><div class="fail-text">SENSOR FAIL</div></div>
+
+    <div id="main-interface">
         
         <div class="panel">
-            <div class="panel-title">
-                <span>SECTOR TIMES</span>
-                <i class="fa-solid fa-stopwatch"></i>
+            <h3>G-FORCE TELEMETRY</h3>
+            <div class="g-force-radar">
+                <div class="g-dot" id="g-dot"></div>
             </div>
-            
-            <table class="timing-table">
-                <thead>
-                    <tr>
-                        <th>LAP</th>
-                        <th>S1</th>
-                        <th>S2</th>
-                        <th>S3</th>
-                    </tr>
-                </thead>
-                <tbody id="timing-body">
-                    <tr>
-                        <td>12</td>
-                        <td class="sector-p">24.521</td>
-                        <td class="sector-g">31.201</td>
-                        <td class="sector-y">18.440</td>
-                    </tr>
-                    <tr>
-                        <td>11</td>
-                        <td class="sector-y">24.890</td>
-                        <td class="sector-g">31.330</td>
-                        <td class="sector-g">18.350</td>
-                    </tr>
-                     <tr>
-                        <td>10</td>
-                        <td class="sector-g">24.600</td>
-                        <td class="sector-y">31.500</td>
-                        <td class="sector-y">18.600</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="panel-title" style="margin-top: 30px;">
-                <span>TRACK CONDITIONS</span>
-                <i class="fa-solid fa-cloud-sun"></i>
-            </div>
-            
-            <div class="weather-widget">
-                <div class="weather-box">
-                    <span class="w-label">TRACK TEMP</span>
-                    <span class="w-val" style="color:orange">38°C</span>
-                </div>
-                <div class="weather-box">
-                    <span class="w-label">HUMIDITY</span>
-                    <span class="w-val" style="color:#00aaff">62%</span>
-                </div>
-                <div class="weather-box">
-                    <span class="w-label">WIND</span>
-                    <span class="w-val">4.2 m/s</span>
-                </div>
-                <div class="weather-box">
-                    <span class="w-label">RAIN PROB</span>
-                    <span class="w-val" style="color:#666">10%</span>
-                </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                <span>LATERAL: <b id="g-lat">0.0</b> G</span>
+                <span>LONG: <b id="g-long">0.0</b> G</span>
             </div>
         </div>
 
-        <div class="center-stage">
-            <div class="wheel-container">
-                <img src="./wheel.png" alt="F1 Steering Wheel" class="wheel-img" id="wheel">
-                
-                <div class="hotspot btn-n" data-label="NEUTRAL">N</div>
-                <div class="hotspot btn-pit" data-label="PIT LIMITER">PIT</div>
-                <div class="hotspot btn-radio" data-label="TEAM RADIO">RAD</div>
-                <div class="hotspot btn-fail" data-label="SENSOR FAIL">FAIL</div>
-                
-                <div class="hotspot btn-tyre" data-label="TYRE COMPOUND"></div>
-                <div class="hotspot btn-charge" data-label="ERS MODE"></div>
+        <div class="panel" style="grid-row: 2 / 4;">
+            <h3>TEAM RADIO <span style="float:right; color:red; animation: blink 1s infinite;">● LIVE</span></h3>
+            <div class="radio-box" id="radio-feed">
+                </div>
+        </div>
+
+        <div class="shift-lights-container" id="shift-bar">
             </div>
+
+        <div class="wheel-stage">
+            <img src="./wheel.png" class="wheel-img" id="wheel-obj">
             
-            <div style="position: absolute; bottom: 20px; color: #444; font-family: var(--font-data);">
-                // STRAT 5 // BBAL 54.5 // DIFF MID 9 //
-            </div>
+            <div class="hotspot hs-pit" onclick="toggleMode('PIT')" title="PIT LIMITER"></div>
+            <div class="hotspot hs-radio" onclick="triggerRadio()" title="RADIO"></div>
+            <div class="hotspot hs-fail" onclick="toggleMode('FAIL')" title="FAIL SENSOR"></div>
+            <div class="hotspot hs-mode" onclick="toggleMode('RACE')" title="RACE MODE"></div>
         </div>
 
         <div class="panel">
-            <div class="panel-title">
-                <span>TYRE MANAGEMENT</span>
-                <i class="fa-solid fa-circle-notch"></i>
-            </div>
+            <h3>POWER UNIT</h3>
+            <div class="big-data" id="rpm-disp">0</div>
+            <div class="sub-data">RPM</div>
             
-            <div class="tyres-grid">
-                <div class="tyre-box">
-                    <div class="tyre-heat-map" id="t-fl"></div>
-                    <span class="tyre-temp" id="temp-fl">98°</span>
-                    <span class="tyre-wear">92%</span>
+            <div style="margin-top: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div style="text-align: center; border: 1px solid #333; padding: 10px;">
+                    <div style="font-size: 2rem; color: var(--neon-blue);" id="gear-disp">N</div>
+                    <div style="font-size: 0.8rem; color: #888;">GEAR</div>
                 </div>
-                <div class="tyre-box">
-                    <div class="tyre-heat-map" id="t-fr"></div>
-                    <span class="tyre-temp" id="temp-fr">102°</span>
-                    <span class="tyre-wear">89%</span>
-                </div>
-                <div class="tyre-box">
-                    <div class="tyre-heat-map" id="t-rl"></div>
-                    <span class="tyre-temp" id="temp-rl">105°</span>
-                    <span class="tyre-wear">85%</span>
-                </div>
-                <div class="tyre-box">
-                    <div class="tyre-heat-map" id="t-rr"></div>
-                    <span class="tyre-temp" id="temp-rr">108°</span>
-                    <span class="tyre-wear">81%</span>
+                <div style="text-align: center; border: 1px solid #333; padding: 10px;">
+                    <div style="font-size: 2rem; color: var(--neon-green);" id="speed-disp">0</div>
+                    <div style="font-size: 0.8rem; color: #888;">KM/H</div>
                 </div>
             </div>
+        </div>
 
-            <div class="panel-title">
-                <span>POWER UNIT</span>
-                <i class="fa-solid fa-bolt"></i>
-            </div>
-            
-            <div class="gear-display" id="gear">4</div>
-            <div class="rpm-display"><span id="rpm">11,240</span> RPM</div>
-
-            <div class="engine-bars" style="margin-top: 20px;">
-                <div class="bar-group">
-                    <div class="bar-label"><span>THROTTLE</span><span id="thr-val">100%</span></div>
-                    <div class="bar-track"><div class="bar-fill" id="bar-thr" style="width: 100%; background: var(--neon-green);"></div></div>
-                </div>
-                <div class="bar-group">
-                    <div class="bar-label"><span>BRAKE</span><span id="brk-val">0%</span></div>
-                    <div class="bar-track"><div class="bar-fill" id="bar-brk" style="width: 0%; background: var(--neon-red);"></div></div>
-                </div>
-                <div class="bar-group">
-                    <div class="bar-label"><span>ERS BATTERY</span><span>68%</span></div>
-                    <div class="bar-track"><div class="bar-fill" style="width: 68%; background: var(--neon-yellow);"></div></div>
+        <div class="panel" style="grid-row: 3;">
+            <h3>TYRE STATUS</h3>
+            <div style="display: flex; gap: 10px; align-items: center; justify-content: center; height: 100%;">
+                <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 3rem; color: var(--neon-red);"></i>
+                <div>
+                    <div style="font-size: 1.5rem;">SOFT C4</div>
+                    <div style="color: #888;">TEMP: 102°C <br> WEAR: 78%</div>
                 </div>
             </div>
-
         </div>
 
     </div>
 
     <script>
-        // Symulacja RPM i Biegów
-        const rpmEl = document.getElementById('rpm');
-        const gearEl = document.getElementById('gear');
-        const thrBar = document.getElementById('bar-thr');
-        const brkBar = document.getElementById('bar-brk');
+        /* --- 1. BOOT SEQUENCE --- */
+        const bootLines = [
+            "BIOS CHECK... OK",
+            "LOADING ECU FIRMWARE v24.1...",
+            "CONNECTING TO SENSORS (342/342)... OK",
+            "HYBRID SYSTEM: CHARGED",
+            "ESTABLISHING UPLINK TO PIT WALL...",
+            "ENCRYPTING DATA STREAM...",
+            "SYSTEM READY."
+        ];
+
+        const bootContainer = document.getElementById('boot-text');
+        const initBtn = document.getElementById('init-btn');
+        let lineIndex = 0;
+
+        function runBoot() {
+            if (lineIndex < bootLines.length) {
+                const div = document.createElement('div');
+                div.className = 'boot-line';
+                div.innerText = "> " + bootLines[lineIndex];
+                bootContainer.appendChild(div);
+                lineIndex++;
+                setTimeout(runBoot, 300);
+            } else {
+                initBtn.style.display = 'block';
+            }
+        }
+
+        function startSystem() {
+            document.getElementById('boot-layer').style.display = 'none';
+            document.getElementById('main-interface').style.opacity = '1';
+            initAudio.play().catch(e => console.log("Audio needs interaction")); // Optional fake sound logic
+            startSimulation();
+        }
         
+        window.onload = runBoot;
+
+        /* --- 2. SHIFT LIGHTS GENERATOR --- */
+        const shiftContainer = document.getElementById('shift-bar');
+        // 5 Green, 5 Red, 5 Purple
+        for(let i=0; i<15; i++) {
+            const led = document.createElement('div');
+            led.className = 'led';
+            led.id = 'led-'+i;
+            shiftContainer.appendChild(led);
+        }
+
+        /* --- 3. SYMULACJA DANYCH --- */
         let rpm = 4000;
         let gear = 1;
-        let mode = 'accel'; // accel lub brake
+        let speed = 0;
+        let isPitMode = false;
+        let isFailMode = false;
 
-        setInterval(() => {
-            if (mode === 'accel') {
-                rpm += Math.random() * 300 + 100;
-                thrBar.style.width = '100%';
-                brkBar.style.width = '0%';
-                
-                // Zmiana biegu
-                if (rpm > 12500 && gear < 8) {
-                    rpm = 9000;
-                    gear++;
-                    // Wibracja koła przy zmianie biegu
-                    const wheel = document.getElementById('wheel');
-                    wheel.classList.remove('vibrate');
-                    void wheel.offsetWidth; // trigger reflow
-                    wheel.classList.add('vibrate');
-                } else if (gear === 8 && rpm > 12000) {
-                    mode = 'brake';
+        function startSimulation() {
+            setInterval(() => {
+                // Fizyka jazdy
+                if (!isPitMode) {
+                    rpm += (Math.random() - 0.4) * 800; // Fluktuacja
+                    if (rpm < 3500) rpm = 3500;
+                    if (rpm > 13000) rpm = 4000; // Zmiana biegu (uproszczona)
+                } else {
+                    rpm = 4000 + Math.random() * 200; // Pit limiter
                 }
-            } else {
-                rpm -= Math.random() * 500 + 300;
-                thrBar.style.width = '0%';
-                brkBar.style.width = Math.random() * 50 + 50 + '%';
+
+                // Aktualizacja UI
+                document.getElementById('rpm-disp').innerText = Math.floor(rpm);
+                updateShiftLights(rpm);
+                updateGForce();
+
+                // Prędkość i biegi
+                if(rpm > 12000) gear = Math.min(gear+1, 8);
+                if(rpm < 4000 && gear > 1) gear--;
                 
-                if (rpm < 6000 && gear > 1) {
-                    rpm = 11000;
-                    gear--;
-                } else if (gear === 1 && rpm < 4000) {
-                    mode = 'accel';
+                speed = Math.floor((rpm / 13000) * (gear * 40));
+                if(isPitMode) speed = 80;
+                
+                document.getElementById('speed-disp').innerText = speed;
+                document.getElementById('gear-disp').innerText = isPitMode ? 'P' : gear;
+
+            }, 50);
+            
+            // Radio Loop
+            setInterval(() => {
+                if(Math.random() > 0.8) triggerRadioRandom();
+            }, 5000);
+        }
+
+        function updateShiftLights(currentRpm) {
+            const maxRpm = 13000;
+            const percentage = (currentRpm - 4000) / (maxRpm - 4000);
+            const ledsActive = Math.floor(percentage * 15);
+
+            for(let i=0; i<15; i++) {
+                const led = document.getElementById('led-'+i);
+                led.className = 'led'; // Reset
+                if(i < ledsActive) {
+                    if(i < 5) led.classList.add('active-green');
+                    else if(i < 10) led.classList.add('active-red');
+                    else led.classList.add('active-purple');
                 }
             }
-            
-            rpmEl.innerText = Math.floor(rpm).toLocaleString();
-            gearEl.innerText = gear;
-        }, 50);
+        }
 
-        // Symulacja temperatur opon
-        const tyres = ['fl', 'fr', 'rl', 'rr'];
-        
-        setInterval(() => {
-            tyres.forEach(t => {
-                const tempEl = document.getElementById(`temp-${t}`);
-                const visualEl = document.getElementById(`t-${t}`);
-                
-                // Lekka fluktuacja
-                let currentTemp = parseInt(tempEl.innerText);
-                let change = (Math.random() - 0.5) * 2;
-                let newTemp = Math.floor(currentTemp + change);
-                
-                // Ograniczniki
-                if(newTemp < 80) newTemp = 80;
-                if(newTemp > 120) newTemp = 120;
-                
-                tempEl.innerText = newTemp + '°';
-                
-                // Kolor w zależności od temperatury
-                if(newTemp < 90) visualEl.style.borderColor = '#00aaff'; // Cold
-                else if(newTemp < 105) visualEl.style.borderColor = '#39ff14'; // Optimal
-                else visualEl.style.borderColor = '#ff003c'; // Overheat
-            });
-        }, 1000);
+        function updateGForce() {
+            // Symulacja kropki latającej po wykresie
+            const dot = document.getElementById('g-dot');
+            const lat = (Math.random() - 0.5) * 4; // -2G do 2G
+            const long = (Math.random() - 0.5) * 3;
+            
+            // Mapowanie na piksele (środek to 50%, 50%)
+            const x = 50 + (lat * 20); 
+            const y = 50 - (long * 20); // Minus bo hamowanie to przód wykresu
+
+            dot.style.left = x + '%';
+            dot.style.top = y + '%';
+            
+            document.getElementById('g-lat').innerText = lat.toFixed(1);
+            document.getElementById('g-long').innerText = long.toFixed(1);
+        }
+
+        /* --- 4. INTERAKTYWNE FUNKCJE --- */
+        const messages = [
+            {who: "ENG", text: "Gap to Norris is 1.5 seconds."},
+            {who: "DRV", text: "No grip in sector 2!"},
+            {who: "ENG", text: "Copy. Change brake balance to +1."},
+            {who: "ENG", text: "Box box, box box."},
+            {who: "DRV", text: "Tyres are getting cold under VSC."},
+            {who: "ENG", text: "Strat 5, Strat 5 available."}
+        ];
+
+        function triggerRadioRandom() {
+            const msg = messages[Math.floor(Math.random() * messages.length)];
+            addRadioLine(msg.who, msg.text);
+        }
+
+        function triggerRadio() {
+            addRadioLine("DRV", "Radio check. Can you hear me?");
+            setTimeout(() => addRadioLine("ENG", "Loud and clear."), 1000);
+        }
+
+        function addRadioLine(who, text) {
+            const box = document.getElementById('radio-feed');
+            const div = document.createElement('div');
+            div.className = `msg ${who === 'ENG' ? 'eng' : 'driver'}`;
+            div.innerHTML = `<span>${who}</span> ${text}`;
+            box.prepend(div);
+            if(box.children.length > 6) box.lastChild.remove();
+        }
+
+        function toggleMode(mode) {
+            const overlay = document.getElementById('alert-overlay');
+            if (mode === 'FAIL') {
+                isFailMode = !isFailMode;
+                overlay.style.display = isFailMode ? 'block' : 'none';
+                addRadioLine("SYS", isFailMode ? "SENSOR FAILURE DETECTED" : "SENSORS RESET");
+            } else if (mode === 'PIT') {
+                isPitMode = !isPitMode;
+                addRadioLine("ENG", isPitMode ? "Pit Limiter ON" : "Pit Limiter OFF");
+            } else if (mode === 'RACE') {
+                isPitMode = false;
+                isFailMode = false;
+                overlay.style.display = 'none';
+                addRadioLine("ENG", "Race Mode Active. Push now.");
+            }
+        }
 
     </script>
 </body>

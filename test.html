@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROJECT OVERDRIVE // F1 ECU</title>
+    <title>F1 RACE ENGINEER // SYSTEM REBOOT</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,11 +11,12 @@
     <style>
         :root {
             --bg-color: #050505;
+            --panel-bg: rgba(15, 15, 20, 0.85);
             --neon-blue: #00f3ff;
             --neon-red: #ff003c;
             --neon-green: #39ff14;
-            --neon-purple: #bc13fe;
-            --glass: rgba(255, 255, 255, 0.05);
+            --neon-yellow: #fff01f;
+            --border: 1px solid rgba(255,255,255,0.15);
             --font-main: 'Share Tech Mono', monospace;
             --font-head: 'Orbitron', sans-serif;
         }
@@ -27,387 +28,387 @@
             color: #fff;
             font-family: var(--font-main);
             height: 100vh;
-            overflow: hidden;
-            position: relative;
+            overflow: hidden; /* Zapobiega paskom przewijania */
+            display: flex;
+            flex-direction: column;
         }
 
         /* --- EKRAN STARTOWY (BOOT SCREEN) --- */
-        #boot-layer {
+        #boot-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000;
             z-index: 9999;
-            padding: 50px;
-            display: flex; flex-direction: column; justify-content: flex-start;
-            font-size: 1.2rem;
-            color: var(--neon-green);
+            display: flex; justify-content: center; align-items: center;
+            flex-direction: column;
+            transition: opacity 1s ease-out;
         }
-        .boot-line { margin-bottom: 5px; opacity: 0; animation: typeLine 0.1s forwards; }
-        .boot-btn {
-            margin-top: 50px; padding: 20px 40px; border: 2px solid var(--neon-green);
-            background: transparent; color: var(--neon-green); font-family: var(--font-head);
-            font-size: 1.5rem; cursor: pointer; display: none; text-transform: uppercase;
-            transition: 0.3s;
-        }
-        .boot-btn:hover { background: var(--neon-green); color: #000; box-shadow: 0 0 30px var(--neon-green); }
+        .loading-bar { width: 300px; height: 4px; background: #333; margin-top: 20px; border-radius: 2px; }
+        .loading-progress { width: 0%; height: 100%; background: var(--neon-green); transition: width 0.5s; box-shadow: 0 0 10px var(--neon-green); }
+        .boot-text { color: var(--neon-green); font-family: var(--font-main); margin-top: 10px; font-size: 0.9rem; }
 
         /* --- GŁÓWNY INTERFEJS --- */
-        #main-interface {
-            opacity: 0;
-            transition: opacity 2s;
+        #main-grid {
             display: grid;
-            grid-template-columns: 350px 1fr 350px;
-            grid-template-rows: 80px 1fr 200px;
-            height: 100vh;
-            padding: 20px;
-            gap: 20px;
-            background: radial-gradient(circle at center, #1a1a20 0%, #000 80%);
+            grid-template-columns: 320px 1fr 320px; /* Lewy panel, Środek, Prawy panel */
+            height: 100%;
+            padding: 15px;
+            gap: 15px;
+            background: radial-gradient(circle at 50% 60%, #1a1a20 0%, #000 90%);
         }
-
-        /* --- SHIFT LIGHTS (Pasek LED nad kierownicą) --- */
-        .shift-lights-container {
-            grid-column: 2;
-            display: flex; justify-content: center; gap: 5px; align-items: flex-end;
-            padding-bottom: 10px;
-        }
-        .led {
-            width: 40px; height: 15px; background: #333; border-radius: 2px;
-            box-shadow: inset 0 0 5px #000;
-            transition: background 0.05s, box-shadow 0.05s;
-        }
-        /* Kolory LED */
-        .led.active-green { background: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); }
-        .led.active-red { background: var(--neon-red); box-shadow: 0 0 15px var(--neon-red); }
-        .led.active-purple { background: var(--neon-purple); box-shadow: 0 0 20px var(--neon-purple); }
-
-        /* --- CENTRUM (KIEROWNICA) --- */
-        .wheel-stage {
-            grid-column: 2; grid-row: 2 / 4;
-            position: relative; display: flex; justify-content: center; align-items: center;
-        }
-        .wheel-img {
-            width: 90%; max-width: 850px;
-            filter: drop-shadow(0 0 50px rgba(0,0,0,0.8));
-            transition: transform 0.1s;
-        }
-        /* Hotspoty */
-        .hotspot {
-            position: absolute; width: 50px; height: 50px; border-radius: 50%;
-            cursor: pointer; z-index: 10;
-            /* Debug: border: 1px solid red; */ 
-        }
-        .hotspot:active { transform: scale(0.9); }
-        
-        /* Pozycje przycisków (Dostosowane do Twojego zdjęcia) */
-        .hs-pit { top: 22%; right: 18%; }
-        .hs-radio { top: 38%; left: 22%; }
-        .hs-fail { top: 38%; right: 22%; }
-        .hs-mode { bottom: 20%; right: 28%; } /* Mode Rotary */
 
         /* --- PANELE BOCZNE --- */
-        .panel {
-            background: rgba(10, 10, 12, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 20px;
-            display: flex; flex-direction: column;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            position: relative; overflow: hidden;
+        .sidebar {
+            display: flex; flex-direction: column; gap: 15px;
+            height: 100%;
         }
+
+        .panel {
+            background: var(--panel-bg);
+            border: var(--border);
+            padding: 15px;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            display: flex; flex-direction: column;
+        }
+        
+        /* Ozdobna linia na górze panelu */
         .panel::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
             background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
         }
-        .panel h3 { color: var(--neon-blue); font-size: 1rem; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; letter-spacing: 2px; }
 
-        /* RADAR G-FORCE */
-        .g-force-radar {
-            width: 200px; height: 200px; border: 1px solid #444; border-radius: 50%;
-            margin: 20px auto; position: relative;
+        h3 { 
+            color: var(--neon-blue); font-size: 0.9rem; margin-bottom: 10px; 
+            border-bottom: 1px solid #333; padding-bottom: 5px; letter-spacing: 1px;
+            display: flex; justify-content: space-between;
+        }
+
+        /* --- SHIFT LIGHTS (Poprawione) --- */
+        .shift-container {
+            display: flex; justify-content: center; gap: 4px; 
+            margin-bottom: 10px; padding: 10px;
+            background: rgba(0,0,0,0.5); border-radius: 20px; border: 1px solid #333;
+        }
+        .led {
+            width: 30px; height: 12px; background: #222; border-radius: 2px;
+            transition: background 0.05s, box-shadow 0.05s;
+        }
+        .led.on-green { background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green); }
+        .led.on-red { background: var(--neon-red); box-shadow: 0 0 10px var(--neon-red); }
+        .led.on-purple { background: var(--neon-purple); box-shadow: 0 0 15px var(--neon-purple); }
+
+        /* --- ŚRODEK (KIEROWNICA) --- */
+        .center-stage {
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            position: relative;
+        }
+        
+        .wheel-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            display: flex; justify-content: center;
+        }
+
+        .wheel-img {
+            width: 90%; 
+            height: auto;
+            filter: drop-shadow(0 0 30px rgba(0,0,0,0.8));
+        }
+
+        /* --- WYKRES G-FORCE --- */
+        .g-radar {
+            width: 180px; height: 180px; 
+            border: 1px solid #444; border-radius: 50%;
+            margin: 10px auto; position: relative;
+            /* Siatka celownika */
             background: 
-                radial-gradient(circle, transparent 20%, #222 20%, #222 21%, transparent 21%),
-                radial-gradient(circle, transparent 60%, #222 60%, #222 61%, transparent 61%),
-                linear-gradient(0deg, transparent 49%, #333 49%, #333 51%, transparent 51%),
-                linear-gradient(90deg, transparent 49%, #333 49%, #333 51%, transparent 51%);
-            background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+                linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-position: center;
+            box-shadow: inset 0 0 20px #000;
         }
         .g-dot {
-            width: 14px; height: 14px; background: var(--neon-red); border-radius: 50%;
+            width: 12px; height: 12px; background: var(--neon-red); border-radius: 50%;
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            box-shadow: 0 0 10px var(--neon-red);
-            transition: top 0.2s, left 0.2s;
+            box-shadow: 0 0 8px var(--neon-red);
+            transition: all 0.1s linear;
         }
 
-        /* LIVE RADIO TRANSCRIPT */
-        .radio-box {
-            flex: 1; overflow-y: hidden; position: relative;
-            font-size: 0.9rem; color: #aaa;
+        /* --- RADIO --- */
+        .radio-feed {
+            flex-grow: 1; overflow-y: hidden; font-size: 0.85rem; color: #aaa;
+            display: flex; flex-direction: column; justify-content: flex-end;
         }
-        .msg { margin-bottom: 8px; border-left: 2px solid #555; padding-left: 8px; animation: slideIn 0.3s; }
+        .msg { margin-top: 8px; padding-left: 8px; border-left: 2px solid #555; animation: fadeIn 0.3s; }
         .msg.eng { border-color: var(--neon-blue); color: #fff; }
-        .msg.driver { border-color: var(--neon-green); color: var(--neon-green); }
-        .msg span { font-size: 0.7rem; color: #666; display: block; }
+        .msg.drv { border-color: var(--neon-green); color: var(--neon-green); }
 
-        /* DANE SILNIKA */
-        .big-data { font-size: 4rem; font-family: var(--font-head); color: #fff; line-height: 1; text-align: center; text-shadow: 0 0 20px rgba(255,255,255,0.2); }
-        .sub-data { font-size: 1.2rem; color: #666; text-align: center; }
+        /* --- POWER UNIT (Naprawione ucinanie) --- */
+        .data-big { font-size: 3.5rem; font-family: var(--font-head); color: #fff; text-align: center; line-height: 1; text-shadow: 0 0 15px rgba(255,255,255,0.2); }
+        .data-label { text-align: center; color: #666; font-size: 0.8rem; margin-bottom: 10px; }
         
-        /* ALERT OVERLAY (FAIL MODE) */
-        #alert-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: repeating-linear-gradient(45deg, rgba(255,0,0,0.1), rgba(255,0,0,0.1) 10px, transparent 10px, transparent 20px);
-            pointer-events: none; display: none; z-index: 50;
-            box-shadow: inset 0 0 100px rgba(255,0,0,0.5);
+        .sub-stats { display: flex; gap: 10px; margin-top: 10px; }
+        .stat-box { 
+            flex: 1; border: 1px solid #333; padding: 10px; text-align: center; 
+            background: rgba(0,0,0,0.3);
         }
-        .fail-text {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            font-size: 10rem; color: rgba(255,0,0,0.2); font-family: var(--font-head);
-            transform: translate(-50%, -50%) rotate(-10deg);
+        .stat-val { font-size: 1.5rem; font-weight: bold; }
+
+        /* --- OPONY --- */
+        .tyre-status {
+            display: flex; align-items: center; justify-content: center; gap: 15px; height: 100%;
         }
 
-        @keyframes typeLine { to { opacity: 1; } }
-        @keyframes slideIn { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        /* --- HOTSPOTS (Przyciski na zdjęciu) --- */
+        .hotspot {
+            position: absolute; width: 45px; height: 45px; border-radius: 50%;
+            cursor: pointer; z-index: 10;
+        }
+        /* Wizualizacja debugowania - usuń border po dopasowaniu */
+        /* .hotspot { border: 2px solid rgba(0, 243, 255, 0.5); } */
+        
+        /* Dopasowane do Twojego zdjęcia */
+        .hs-pit { top: 21%; right: 18%; }
+        .hs-radio { top: 38%; left: 22%; }
+        .hs-fail { top: 38%; right: 22%; }
+        .hs-mode { bottom: 20%; right: 28%; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
+        /* RWD */
+        @media (max-width: 1000px) {
+            #main-grid { grid-template-columns: 1fr; overflow-y: auto; height: auto; }
+            body { overflow: auto; }
+            .center-stage { order: -1; margin-bottom: 20px; }
+        }
     </style>
 </head>
 <body>
 
-    <div id="boot-layer">
-        <div id="boot-text"></div>
-        <button id="init-btn" class="boot-btn" onclick="startSystem()">INITIALIZE RACE CONTROL</button>
+    <div id="boot-overlay">
+        <div style="font-family: 'Orbitron'; font-size: 2rem; letter-spacing: 5px;">SYSTEM REBOOT</div>
+        <div class="loading-bar"><div class="loading-progress" id="progress"></div></div>
+        <div class="boot-text" id="boot-status">INITIALIZING...</div>
     </div>
 
-    <div id="alert-overlay"><div class="fail-text">SENSOR FAIL</div></div>
-
-    <div id="main-interface">
+    <div id="main-grid">
         
-        <div class="panel">
-            <h3>G-FORCE TELEMETRY</h3>
-            <div class="g-force-radar">
-                <div class="g-dot" id="g-dot"></div>
-            </div>
-            <div style="display: flex; justify-content: space-between; margin-top: 10px;">
-                <span>LATERAL: <b id="g-lat">0.0</b> G</span>
-                <span>LONG: <b id="g-long">0.0</b> G</span>
-            </div>
-        </div>
-
-        <div class="panel" style="grid-row: 2 / 4;">
-            <h3>TEAM RADIO <span style="float:right; color:red; animation: blink 1s infinite;">● LIVE</span></h3>
-            <div class="radio-box" id="radio-feed">
+        <div class="sidebar">
+            <div class="panel">
+                <h3>G-FORCE <span style="color:var(--neon-red)">● LIVE</span></h3>
+                <div class="g-radar">
+                    <div class="g-dot" id="g-dot"></div>
                 </div>
-        </div>
-
-        <div class="shift-lights-container" id="shift-bar">
-            </div>
-
-        <div class="wheel-stage">
-            <img src="./wheel.png" class="wheel-img" id="wheel-obj">
-            
-            <div class="hotspot hs-pit" onclick="toggleMode('PIT')" title="PIT LIMITER"></div>
-            <div class="hotspot hs-radio" onclick="triggerRadio()" title="RADIO"></div>
-            <div class="hotspot hs-fail" onclick="toggleMode('FAIL')" title="FAIL SENSOR"></div>
-            <div class="hotspot hs-mode" onclick="toggleMode('RACE')" title="RACE MODE"></div>
-        </div>
-
-        <div class="panel">
-            <h3>POWER UNIT</h3>
-            <div class="big-data" id="rpm-disp">0</div>
-            <div class="sub-data">RPM</div>
-            
-            <div style="margin-top: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <div style="text-align: center; border: 1px solid #333; padding: 10px;">
-                    <div style="font-size: 2rem; color: var(--neon-blue);" id="gear-disp">N</div>
-                    <div style="font-size: 0.8rem; color: #888;">GEAR</div>
-                </div>
-                <div style="text-align: center; border: 1px solid #333; padding: 10px;">
-                    <div style="font-size: 2rem; color: var(--neon-green);" id="speed-disp">0</div>
-                    <div style="font-size: 0.8rem; color: #888;">KM/H</div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-top: 5px;">
+                    <span>LAT: <b id="val-lat" style="color:var(--neon-blue)">0.0</b></span>
+                    <span>LON: <b id="val-lon" style="color:var(--neon-blue)">0.0</b></span>
                 </div>
             </div>
-        </div>
 
-        <div class="panel" style="grid-row: 3;">
-            <h3>TYRE STATUS</h3>
-            <div style="display: flex; gap: 10px; align-items: center; justify-content: center; height: 100%;">
-                <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 3rem; color: var(--neon-red);"></i>
-                <div>
-                    <div style="font-size: 1.5rem;">SOFT C4</div>
-                    <div style="color: #888;">TEMP: 102°C <br> WEAR: 78%</div>
-                </div>
+            <div class="panel" style="flex-grow: 1;">
+                <h3>TEAM RADIO</h3>
+                <div class="radio-feed" id="radio-box">
+                    </div>
             </div>
         </div>
 
+        <div class="center-stage">
+            <div class="shift-container" id="led-strip">
+                </div>
+
+            <div class="wheel-wrapper">
+                <img src="./wheel.png" class="wheel-img" id="wheel-obj" alt="Brak pliku wheel.png">
+                
+                <div class="hotspot hs-pit" onclick="sendMsg('ENG', 'Pit Limiter Toggle')" title="PIT"></div>
+                <div class="hotspot hs-radio" onclick="sendMsg('DRV', 'Radio Check')" title="RADIO"></div>
+                <div class="hotspot hs-fail" onclick="alert('SENSOR RESET')" title="FAIL"></div>
+                <div class="hotspot hs-mode" onclick="sendMsg('ENG', 'Engine Mode 8 Selected')" title="MODE"></div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="panel">
+                <h3>POWER UNIT</h3>
+                <div class="data-big" id="rpm-val">0</div>
+                <div class="data-label">RPM</div>
+                
+                <div class="sub-stats">
+                    <div class="stat-box">
+                        <div class="stat-val" id="gear-val" style="color:var(--neon-blue)">N</div>
+                        <div class="data-label" style="margin:0">GEAR</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-val" id="speed-val" style="color:var(--neon-green)">0</div>
+                        <div class="data-label" style="margin:0">KM/H</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3>ERS BATTERY</h3>
+                <div style="width: 100%; height: 20px; background: #333; margin-top: 10px; border: 1px solid #555;">
+                    <div id="ers-bar" style="width: 85%; height: 100%; background: var(--neon-yellow); transition: width 0.5s;"></div>
+                </div>
+                <div style="text-align: right; margin-top: 5px; color: var(--neon-yellow);">85%</div>
+            </div>
+
+            <div class="panel" style="flex-grow: 1;">
+                <h3>TYRE STATUS</h3>
+                <div class="tyre-status">
+                    <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 3rem; color: var(--neon-red);"></i>
+                    <div>
+                        <div style="font-size: 1.2rem; font-weight: bold;">SOFT C4</div>
+                        <div style="color: #888; font-size: 0.9rem;">
+                            TEMP: <span id="tyre-temp">98</span>°C<br>
+                            WEAR: 82%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        /* --- 1. BOOT SEQUENCE --- */
-        const bootLines = [
-            "BIOS CHECK... OK",
-            "LOADING ECU FIRMWARE v24.1...",
-            "CONNECTING TO SENSORS (342/342)... OK",
-            "HYBRID SYSTEM: CHARGED",
-            "ESTABLISHING UPLINK TO PIT WALL...",
-            "ENCRYPTING DATA STREAM...",
-            "SYSTEM READY."
-        ];
+        // --- 1. BOOT SEQUENCE (AUTOMATYCZNA) ---
+        window.onload = function() {
+            const bar = document.getElementById('progress');
+            const txt = document.getElementById('boot-status');
+            const overlay = document.getElementById('boot-overlay');
+            
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    txt.innerText = "SYSTEM READY";
+                    setTimeout(() => {
+                        overlay.style.opacity = '0';
+                        setTimeout(() => overlay.style.display = 'none', 1000);
+                        startSimulation(); // Startuj dane po załadowaniu
+                    }, 500);
+                } else {
+                    width += Math.random() * 10;
+                    bar.style.width = width + '%';
+                }
+            }, 100);
 
-        const bootContainer = document.getElementById('boot-text');
-        const initBtn = document.getElementById('init-btn');
-        let lineIndex = 0;
+            createLeds();
+        };
 
-        function runBoot() {
-            if (lineIndex < bootLines.length) {
-                const div = document.createElement('div');
-                div.className = 'boot-line';
-                div.innerText = "> " + bootLines[lineIndex];
-                bootContainer.appendChild(div);
-                lineIndex++;
-                setTimeout(runBoot, 300);
-            } else {
-                initBtn.style.display = 'block';
+        // --- 2. TWORZENIE DIOD LED ---
+        function createLeds() {
+            const container = document.getElementById('led-strip');
+            for(let i=0; i<15; i++) {
+                const d = document.createElement('div');
+                d.className = 'led';
+                d.id = 'led-'+i;
+                container.appendChild(d);
             }
         }
 
-        function startSystem() {
-            document.getElementById('boot-layer').style.display = 'none';
-            document.getElementById('main-interface').style.opacity = '1';
-            initAudio.play().catch(e => console.log("Audio needs interaction")); // Optional fake sound logic
-            startSimulation();
-        }
-        
-        window.onload = runBoot;
-
-        /* --- 2. SHIFT LIGHTS GENERATOR --- */
-        const shiftContainer = document.getElementById('shift-bar');
-        // 5 Green, 5 Red, 5 Purple
-        for(let i=0; i<15; i++) {
-            const led = document.createElement('div');
-            led.className = 'led';
-            led.id = 'led-'+i;
-            shiftContainer.appendChild(led);
-        }
-
-        /* --- 3. SYMULACJA DANYCH --- */
+        // --- 3. GŁÓWNA PĘTLA SYMULACJI ---
         let rpm = 4000;
         let gear = 1;
         let speed = 0;
-        let isPitMode = false;
-        let isFailMode = false;
+        let tyreTemp = 98;
 
         function startSimulation() {
+            // Pętla odświeżania danych (20 razy na sekundę)
             setInterval(() => {
-                // Fizyka jazdy
-                if (!isPitMode) {
-                    rpm += (Math.random() - 0.4) * 800; // Fluktuacja
-                    if (rpm < 3500) rpm = 3500;
-                    if (rpm > 13000) rpm = 4000; // Zmiana biegu (uproszczona)
-                } else {
-                    rpm = 4000 + Math.random() * 200; // Pit limiter
-                }
+                // RPM Logic
+                rpm += (Math.random() - 0.45) * 600; 
+                if(rpm < 3800) rpm = 4000;
+                if(rpm > 13500) rpm = 4000; // Shift simulation
 
-                // Aktualizacja UI
-                document.getElementById('rpm-disp').innerText = Math.floor(rpm);
-                updateShiftLights(rpm);
-                updateGForce();
+                // Gear Logic
+                if(rpm > 12000 && gear < 8) gear++;
+                if(rpm < 4500 && gear > 1) gear--;
+                if(rpm < 4500 && gear == 1) gear = 1;
 
-                // Prędkość i biegi
-                if(rpm > 12000) gear = Math.min(gear+1, 8);
-                if(rpm < 4000 && gear > 1) gear--;
+                // Speed calculation
+                speed = Math.floor((rpm / 13000) * (gear * 42));
+
+                // Tyre Temp fluctuation
+                tyreTemp += (Math.random() - 0.5);
+
+                // G-Force Randomizer
+                const lat = (Math.random() - 0.5) * 4;
+                const lon = (Math.random() - 0.5) * 2;
+
+                // UPDATE UI
+                document.getElementById('rpm-val').innerText = Math.floor(rpm);
+                document.getElementById('gear-val').innerText = gear;
+                document.getElementById('speed-val').innerText = speed;
+                document.getElementById('tyre-temp').innerText = Math.floor(tyreTemp);
                 
-                speed = Math.floor((rpm / 13000) * (gear * 40));
-                if(isPitMode) speed = 80;
+                updateLeds(rpm);
+                updateGForce(lat, lon);
                 
-                document.getElementById('speed-disp').innerText = speed;
-                document.getElementById('gear-disp').innerText = isPitMode ? 'P' : gear;
+                // Random battery drain/charge
+                document.getElementById('ers-bar').style.width = (Math.random() * 20 + 70) + '%';
 
             }, 50);
-            
-            // Radio Loop
+
+            // Radio Message Loop
             setInterval(() => {
-                if(Math.random() > 0.8) triggerRadioRandom();
-            }, 5000);
+                if(Math.random() > 0.85) triggerRandomRadio();
+            }, 4000);
         }
 
-        function updateShiftLights(currentRpm) {
-            const maxRpm = 13000;
-            const percentage = (currentRpm - 4000) / (maxRpm - 4000);
-            const ledsActive = Math.floor(percentage * 15);
+        // --- 4. FUNKCJE POMOCNICZE ---
+        function updateLeds(currentRpm) {
+            const max = 13000;
+            const percent = (currentRpm - 4000) / (max - 4000);
+            const activeCount = Math.floor(percent * 15);
 
             for(let i=0; i<15; i++) {
                 const led = document.getElementById('led-'+i);
-                led.className = 'led'; // Reset
-                if(i < ledsActive) {
-                    if(i < 5) led.classList.add('active-green');
-                    else if(i < 10) led.classList.add('active-red');
-                    else led.classList.add('active-purple');
+                led.className = 'led'; // reset
+                if (i < activeCount) {
+                    if (i < 5) led.classList.add('on-green');
+                    else if (i < 10) led.classList.add('on-red');
+                    else led.classList.add('on-purple');
                 }
             }
         }
 
-        function updateGForce() {
-            // Symulacja kropki latającej po wykresie
+        function updateGForce(lat, lon) {
             const dot = document.getElementById('g-dot');
-            const lat = (Math.random() - 0.5) * 4; // -2G do 2G
-            const long = (Math.random() - 0.5) * 3;
+            // Środek to 50%, 50%. Skalujemy ruch.
+            const x = 50 + (lat * 20);
+            const y = 50 - (lon * 20);
             
-            // Mapowanie na piksele (środek to 50%, 50%)
-            const x = 50 + (lat * 20); 
-            const y = 50 - (long * 20); // Minus bo hamowanie to przód wykresu
-
             dot.style.left = x + '%';
             dot.style.top = y + '%';
             
-            document.getElementById('g-lat').innerText = lat.toFixed(1);
-            document.getElementById('g-long').innerText = long.toFixed(1);
+            document.getElementById('val-lat').innerText = lat.toFixed(1);
+            document.getElementById('val-lon').innerText = lon.toFixed(1);
         }
 
-        /* --- 4. INTERAKTYWNE FUNKCJE --- */
-        const messages = [
-            {who: "ENG", text: "Gap to Norris is 1.5 seconds."},
-            {who: "DRV", text: "No grip in sector 2!"},
-            {who: "ENG", text: "Copy. Change brake balance to +1."},
-            {who: "ENG", text: "Box box, box box."},
-            {who: "DRV", text: "Tyres are getting cold under VSC."},
-            {who: "ENG", text: "Strat 5, Strat 5 available."}
+        const radioMsgs = [
+            {w:"ENG", t:"Gap ahead is 1.2s"},
+            {w:"DRV", t:"Tires are overheating!"},
+            {w:"ENG", t:"Copy, switch map to 4"},
+            {w:"ENG", t:"Yellow flag sector 2"},
+            {w:"DRV", t:"No grip on rears"},
+            {w:"ENG", t:"Box box this lap"}
         ];
 
-        function triggerRadioRandom() {
-            const msg = messages[Math.floor(Math.random() * messages.length)];
-            addRadioLine(msg.who, msg.text);
+        function triggerRandomRadio() {
+            const r = radioMsgs[Math.floor(Math.random() * radioMsgs.length)];
+            sendMsg(r.w, r.t);
         }
 
-        function triggerRadio() {
-            addRadioLine("DRV", "Radio check. Can you hear me?");
-            setTimeout(() => addRadioLine("ENG", "Loud and clear."), 1000);
-        }
-
-        function addRadioLine(who, text) {
-            const box = document.getElementById('radio-feed');
+        function sendMsg(who, text) {
+            const box = document.getElementById('radio-box');
             const div = document.createElement('div');
-            div.className = `msg ${who === 'ENG' ? 'eng' : 'driver'}`;
-            div.innerHTML = `<span>${who}</span> ${text}`;
-            box.prepend(div);
-            if(box.children.length > 6) box.lastChild.remove();
+            div.className = `msg ${who === 'ENG' ? 'eng' : 'drv'}`;
+            div.innerHTML = `<b>${who}:</b> ${text}`;
+            box.prepend(div); // Nowe na górze
+            if(box.children.length > 8) box.lastElementChild.remove();
         }
-
-        function toggleMode(mode) {
-            const overlay = document.getElementById('alert-overlay');
-            if (mode === 'FAIL') {
-                isFailMode = !isFailMode;
-                overlay.style.display = isFailMode ? 'block' : 'none';
-                addRadioLine("SYS", isFailMode ? "SENSOR FAILURE DETECTED" : "SENSORS RESET");
-            } else if (mode === 'PIT') {
-                isPitMode = !isPitMode;
-                addRadioLine("ENG", isPitMode ? "Pit Limiter ON" : "Pit Limiter OFF");
-            } else if (mode === 'RACE') {
-                isPitMode = false;
-                isFailMode = false;
-                overlay.style.display = 'none';
-                addRadioLine("ENG", "Race Mode Active. Push now.");
-            }
-        }
-
     </script>
 </body>
 </html>

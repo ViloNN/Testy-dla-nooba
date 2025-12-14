@@ -3,22 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 World - Królowa Motorsportu</title>
+    <title>F1 World - Ewolucja Prędkości</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         /* --- ZMIENNE I RESET --- */
         :root {
             --f1-red: #e10600;
             --f1-dark: #15151e;
-            --f1-grey: #38383f;
-            --f1-light: #f3f3f3;
+            --f1-grey-dark: #2b2b33;
+            --f1-grey-light: #d0d0d5;
             --white: #ffffff;
+            
+            /* Kolory Tech */
+            --tech-blue: #00d2be;
+            --tech-orange: #ff8700;
+            --tech-purple: #bb53ff;
+            --tech-green: #51e800;
         }
 
         * {
@@ -27,9 +33,13 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Titillium Web', sans-serif;
-            background-color: var(--f1-light);
+            background-color: #f4f4f7;
             color: var(--f1-dark);
             line-height: 1.6;
             overflow-x: hidden;
@@ -39,10 +49,11 @@
         ul { list-style: none; }
 
         /* --- TYPOGRAFIA --- */
-        h1, h2, h3 {
+        h1, h2, h3, h4 {
             text-transform: uppercase;
             font-weight: 900;
-            font-style: italic; /* Prędkość */
+            font-style: italic;
+            letter-spacing: 1px;
         }
 
         .section-title {
@@ -50,17 +61,23 @@
             margin-bottom: 3rem;
             position: relative;
             display: inline-block;
-            padding-right: 20px;
+            padding-right: 30px;
         }
 
         .section-title::after {
             content: '';
             position: absolute;
             right: 0;
-            top: 0;
-            height: 100%;
-            width: 8px;
-            background-color: var(--f1-red);
+            top: 5px;
+            height: 90%;
+            width: 12px;
+            background: repeating-linear-gradient(
+                45deg,
+                var(--f1-red),
+                var(--f1-red) 10px,
+                transparent 10px,
+                transparent 20px
+            );
             transform: skew(-20deg);
         }
 
@@ -75,15 +92,19 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 4px solid var(--f1-red);
+            border-bottom: 3px solid var(--f1-red);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
         .logo {
             font-size: 1.8rem;
             font-weight: 900;
             letter-spacing: 2px;
+            display: flex;
+            align-items: center;
         }
         
+        .logo i { margin-right: 10px; color: var(--f1-red); }
         .logo span { color: var(--f1-red); }
 
         .nav-links {
@@ -92,79 +113,97 @@
         }
 
         .nav-links a {
-            font-weight: 600;
+            font-weight: 700;
             transition: color 0.3s;
             text-transform: uppercase;
             font-size: 0.9rem;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--f1-red);
+            transition: width 0.3s;
         }
 
         .nav-links a:hover { color: var(--f1-red); }
+        .nav-links a:hover::after { width: 100%; }
 
         /* --- HERO SECTION --- */
         header {
-            height: 90vh;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1596561245089-63773c52e616?q=80&w=1920&auto=format&fit=crop');
+            height: 85vh;
+            background: linear-gradient(to right, rgba(21, 21, 30, 0.8), rgba(21, 21, 30, 0.4)), url('https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Leclerc_and_Verstappen_Austria_2019.jpg/1920px-Leclerc_and_Verstappen_Austria_2019.jpg');
             background-size: cover;
-            background-position: center;
+            background-position: center 30%;
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
+            justify-content: flex-start;
+            padding: 0 10%;
             color: var(--white);
-            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            position: relative;
+        }
+
+        /* Efekt "Speed lines" na hero */
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(90deg, transparent, transparent 50px, rgba(255,255,255,0.03) 50px, rgba(255,255,255,0.03) 52px);
+            pointer-events: none;
         }
 
         .hero-content h1 {
-            font-size: 5rem;
-            line-height: 1;
-            margin-bottom: 1rem;
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
         }
 
         .hero-content p {
-            font-size: 1.5rem;
-            font-weight: 300;
+            font-size: 1.4rem;
+            font-weight: 400;
+            max-width: 600px;
+            margin-bottom: 2rem;
         }
 
-        .btn {
+        .btn-f1 {
             display: inline-block;
-            margin-top: 2rem;
-            padding: 1rem 2.5rem;
-            background-color: transparent;
-            border: 2px solid var(--white);
-            color: var(--white);
-            font-weight: 700;
-            text-transform: uppercase;
-            transition: 0.3s;
-            transform: skew(-20deg);
-        }
-
-        .btn span {
-            display: block;
-            transform: skew(20deg); /* Prostowanie tekstu wewnątrz */
-        }
-
-        .btn:hover {
+            padding: 1rem 3rem;
             background-color: var(--f1-red);
-            border-color: var(--f1-red);
+            color: var(--white);
+            font-weight: 800;
+            text-transform: uppercase;
+            border: none;
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .btn-f1:hover {
+            transform: scale(1.05);
+            background-color: #c20500;
         }
 
         /* --- SEKCJE OGÓLNE --- */
         section {
-            padding: 5rem 10%;
+            padding: 6rem 10%;
         }
 
-        /* --- KIEROWCY (Karty) --- */
+        /* --- KIEROWCY (Poprawione zdjęcia) --- */
         .drivers-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
         }
 
         .driver-card {
             background: var(--white);
-            border-right: 5px solid var(--f1-red);
-            overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-bottom: 4px solid var(--f1-red);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             transition: transform 0.3s;
         }
 
@@ -172,57 +211,114 @@
             transform: translateY(-10px);
         }
 
-        .driver-img {
-            height: 250px;
-            background-color: var(--f1-grey);
-            background-size: cover;
-            background-position: top;
+        /* Nowy kontener na zdjęcia - naprawia ucinanie */
+        .driver-img-container {
+            width: 100%;
+            height: 350px; /* Stała wysokość */
+            overflow: hidden;
+            position: relative;
+            background-color: var(--f1-grey-dark);
+        }
+
+        .driver-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Kluczowe: wypełnia bez zniekształceń */
+            object-position: top center; /* Skupia się na górnej części (głowie) */
+            transition: transform 0.5s ease;
+        }
+
+        .driver-card:hover .driver-img-container img {
+            transform: scale(1.08); /* Lekki zoom przy najechaniu */
         }
 
         .driver-info {
             padding: 1.5rem;
+            position: relative;
         }
 
-        .driver-info h3 { font-size: 1.8rem; margin-bottom: 0.5rem; }
-        .stats { display: flex; justify-content: space-between; margin-top: 1rem; color: var(--f1-grey); font-weight: 700; }
+        /* Ozdobny numer w tle karty */
+        .driver-info::before {
+            content: attr(data-titles);
+            position: absolute;
+            right: 10px;
+            top: -20px;
+            font-size: 5rem;
+            font-weight: 900;
+            color: rgba(225, 6, 0, 0.1);
+            z-index: 0;
+        }
+
+        .driver-info h3 { font-size: 1.8rem; margin-bottom: 0.5rem; position: relative; z-index: 1; }
+        .driver-info p { position: relative; z-index: 1; color: var(--f1-grey-dark); }
+        .stats { display: flex; gap: 1.5rem; margin-top: 1.5rem; border-top: 1px solid #eee; padding-top: 1rem; font-weight: 700; position: relative; z-index: 1; }
+        .stats div { display: flex; flex-direction: column; }
+        .stats span:first-child { font-size: 1.2rem; color: var(--f1-red); }
+        .stats span:last-child { font-size: 0.8rem; text-transform: uppercase; color: #777; }
 
         /* --- TORY (Lista z tłem) --- */
         #tory {
             background-color: var(--f1-dark);
             color: var(--white);
-            clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
+            position: relative;
+            /* "Wcięcie" w sekcji */
+            clip-path: polygon(0 5%, 100% 0, 100% 95%, 0 100%);
             padding-top: 8rem;
             padding-bottom: 8rem;
         }
+        
+        #tory .section-title::after { background: var(--white); }
 
-        .track-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 3rem;
+        .tracks-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 2rem;
         }
 
-        .track-item:nth-child(even) { flex-direction: row-reverse; }
+        .track-card {
+            background: var(--f1-grey-dark);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #333;
+            transition: 0.3s;
+        }
+        
+        .track-card:hover { border-color: var(--f1-red); }
 
-        .track-img {
-            flex: 1;
-            height: 250px;
-            background-size: cover;
-            background-position: center;
-            border: 2px solid var(--f1-red);
-            border-radius: 10px;
+        .track-img-wrapper {
+            height: 200px;
+            overflow: hidden;
         }
 
-        .track-desc { flex: 1; }
-        .track-desc h3 { font-size: 2rem; color: var(--f1-red); }
+        .track-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .track-card:hover .track-img-wrapper img { transform: scale(1.1); }
+
+        .track-desc { padding: 1.5rem; }
+        .track-desc h3 { color: var(--f1-red); margin-bottom: 0.5rem; }
+        .track-location { font-size: 0.9rem; color: #aaa; margin-bottom: 1rem; display: block; }
+        .track-location i { margin-right: 8px; }
+
 
         /* --- ZWYCIĘSTWA (Timeline) --- */
+        .victory-timeline {
+            border-left: 4px solid var(--f1-red);
+            padding-left: 3rem;
+            margin-left: 1rem;
+        }
+
         .victory-card {
             background: var(--white);
             padding: 2rem;
-            border-left: 5px solid var(--f1-dark);
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-radius: 0 10px 10px 0;
         }
 
         .victory-card::before {
@@ -230,191 +326,421 @@
             font-family: "Font Awesome 6 Free";
             font-weight: 900;
             position: absolute;
-            right: 20px;
+            left: -3rem;
             top: 20px;
-            font-size: 3rem;
-            color: #eee;
+            width: 50px;
+            height: 50px;
+            background: var(--f1-red);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            border: 4px solid var(--white);
         }
 
-        /* --- TECHNOLOGIA (Dodatkowa sekcja) --- */
-        .tech-grid {
+        .victory-card h4 { color: var(--f1-dark); font-size: 1.3rem; margin-bottom: 0.5rem; }
+        .victory-year { color: var(--f1-red); font-weight: 800; }
+
+        /* --- INŻYNIERIA (NOWA, ULEPSZONA SEKCJIA) --- */
+        #tech {
+            background-color: #0a0a0f; /* Bardzo ciemne tło */
+            color: var(--white);
+            /* Subtelny wzór siatki w tle ("blueprint") */
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        #tech .section-title { color: var(--white); }
+        #tech .section-title::after { background: linear-gradient(to bottom, var(--tech-blue), var(--tech-purple)); }
+
+        .tech-intro {
+            max-width: 800px;
+            margin-bottom: 4rem;
+            font-size: 1.2rem;
+            border-left: 3px solid var(--f1-grey-light);
+            padding-left: 2rem;
+        }
+
+        .tech-grid-expanded {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
         }
         
-        .tech-box {
-            background: var(--f1-grey);
-            color: var(--white);
-            padding: 2rem;
-            text-align: center;
+        .tech-card {
+            background: rgba(255,255,255,0.05);
+            padding: 2.5rem 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+            transition: 0.4s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Kolorowe warianty kart */
+        .tech-card.aero { border-top: 3px solid var(--tech-blue); }
+        .tech-card.engine { border-top: 3px solid var(--tech-red); }
+        .tech-card.tyres { border-top: 3px solid var(--tech-orange); }
+        .tech-card.safety { border-top: 3px solid var(--tech-green); }
+        
+        /* Efekt poświaty przy najechaniu */
+        .tech-card:hover { transform: translateY(-5px); }
+        .tech-card.aero:hover { box-shadow: 0 0 25px rgba(0, 210, 190, 0.3); border-color: var(--tech-blue); }
+        .tech-card.engine:hover { box-shadow: 0 0 25px rgba(225, 6, 0, 0.3); border-color: var(--f1-red); }
+        .tech-card.tyres:hover { box-shadow: 0 0 25px rgba(255, 135, 0, 0.3); border-color: var(--tech-orange); }
+        .tech-card.safety:hover { box-shadow: 0 0 25px rgba(81, 232, 0, 0.3); border-color: var(--tech-green); }
+
+        .tech-icon-wrapper {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+
+        .tech-card.aero i { color: var(--tech-blue); }
+        .tech-card.engine i { color: var(--f1-red); }
+        .tech-card.tyres i { color: var(--tech-orange); }
+        .tech-card.safety i { color: var(--tech-green); }
+        
+        .tech-data-point {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px dashed rgba(255,255,255,0.2);
+            font-size: 0.9rem;
+            font-family: monospace; /* Czcionka techniczna */
+            color: var(--f1-grey-light);
         }
         
-        .tech-box i {
-            font-size: 3rem;
-            color: var(--f1-red);
-            margin-bottom: 1rem;
-        }
+        .tech-data-point strong { color: var(--white); display: block; margin-bottom: 5px; }
 
         /* --- FOOTER --- */
         footer {
             background-color: var(--f1-dark);
-            color: var(--white);
+            color: var(--f1-grey-light);
             text-align: center;
-            padding: 2rem;
-            border-top: 4px solid var(--f1-red);
+            padding: 3rem 2rem;
+            border-top: 5px solid var(--f1-red);
         }
+        
+        footer p { margin-top: 1rem; font-size: 0.9rem; }
+        footer i { color: var(--f1-red); }
 
-        /* --- MEDIA QUERIES --- */
+        /* --- MEDIA QUERIES (Responsywność) --- */
         @media (max-width: 768px) {
+            .nav-links { display: none; } /* Ukryj menu na małych ekranach (wersja uproszczona) */
+            nav { padding: 1rem; }
+            .logo { font-size: 1.4rem; }
+            
             .hero-content h1 { font-size: 3rem; }
-            .nav-links { display: none; } /* Uproszczenie dla mobile */
-            .track-item, .track-item:nth-child(even) { flex-direction: column; }
-            .tech-grid { grid-template-columns: 1fr; }
-            section { padding: 3rem 5%; }
-            #tory { clip-path: none; }
+            section { padding: 4rem 5%; }
+            
+            #tory { clip-path: none; padding-top: 4rem; padding-bottom: 4rem; }
+            
+            .driver-img-container { height: 300px; }
+            
+            .victory-timeline { padding-left: 2rem; }
+            .victory-card::before { left: -2.5rem; width: 40px; height: 40px; font-size: 1rem; top: 25px; }
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo">F1 <span>WORLD</span></div>
+        <div class="logo"><i class="fa-solid fa-flag-checkered"></i> F1 <span>WORLD</span></div>
         <div class="nav-links">
-            <a href="#kierowcy">Legendy</a>
+            <a href="#kierowcy">Kierowcy</a>
             <a href="#tory">Tory</a>
             <a href="#zwyciestwa">Momenty</a>
-            <a href="#tech">Technologia</a>
+            <a href="#tech">Inżynieria</a>
         </div>
     </nav>
 
     <header>
         <div class="hero-content">
-            <h1>SZYBKOŚĆ.<br>PRECYZJA.<br>CHWAŁA.</h1>
-            <p>Witamy w świecie Formuły 1 – szczytu inżynierii i ludzkich możliwości.</p>
-            <a href="#kierowcy" class="btn"><span>Poznaj Historię</span></a>
+            <h1>SZYBKOŚĆ JEST<br>RELIGIĄ.</h1>
+            <p>Odkryj świat, gdzie ułamki sekund decydują o chwale, a technologia przekracza granice wyobraźni.</p>
+            <a href="#tech" class="btn-f1">Poznaj Maszyny</a>
         </div>
     </header>
 
     <section id="kierowcy">
-        <h2 class="section-title">Bogowie Prędkości</h2>
-        
+        <h2 class="section-title">Tytani Kierownicy</h2>
         <div class="drivers-grid">
+            
             <div class="driver-card">
-                <div class="driver-img" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Michael_Schumacher_2010_Malaysia_qualifying.jpg/640px-Michael_Schumacher_2010_Malaysia_qualifying.jpg');"></div>
-                <div class="driver-info">
+                <div class="driver-img-container">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Michael_Schumacher_2005_United_States_GP.jpg/800px-Michael_Schumacher_2005_United_States_GP.jpg" alt="Michael Schumacher">
+                </div>
+                <div class="driver-info" data-titles="7">
                     <h3>Michael Schumacher</h3>
-                    <p>Niemiecka maszyna. Dominator ery Ferrari, który zdefiniował pojęcie "profesjonalizm" w F1.</p>
+                    <p>Czerwony Baron. Zmienił Ferrari w niepokonaną maszynę, definiując profesjonalizm współczesnej F1.</p>
                     <div class="stats">
-                        <span>7 Tytułów</span>
-                        <span>91 Zwycięstw</span>
+                        <div><span>7</span><span>Tytułów</span></div>
+                        <div><span>91</span><span>Zwycięstw</span></div>
                     </div>
                 </div>
             </div>
 
             <div class="driver-card">
-                <div class="driver-img" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/1/18/Lewis_Hamilton_2016_Malaysia_2.jpg');"></div>
-                <div class="driver-info">
+                <div class="driver-img-container">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Lewis_Hamilton_2016_Malaysia_2.jpg/800px-Lewis_Hamilton_2016_Malaysia_2.jpg" alt="Lewis Hamilton">
+                </div>
+                <div class="driver-info" data-titles="7">
                     <h3>Lewis Hamilton</h3>
-                    <p>Brytyjski rekordzista. Pierwszy kierowca, który przekroczył barierę 100 zwycięstw i Pole Positions.</p>
+                    <p>Rekordzista wszech czasów. Pierwszy kierowca, który przekroczył barierę 100 zwycięstw i pole positions.</p>
                     <div class="stats">
-                        <span>7 Tytułów</span>
-                        <span>103+ Zwycięstw</span>
+                        <div><span>7</span><span>Tytułów</span></div>
+                        <div><span>103+</span><span>Zwycięstw</span></div>
                     </div>
                 </div>
             </div>
 
             <div class="driver-card">
-                <div class="driver-img" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Ayrton_Senna_Imola_1989.jpg/640px-Ayrton_Senna_Imola_1989.jpg');"></div>
-                <div class="driver-info">
+                <div class="driver-img-container">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Ayrton_Senna_Imola_1989.jpg/800px-Ayrton_Senna_Imola_1989.jpg" alt="Ayrton Senna">
+                </div>
+                <div class="driver-info" data-titles="3">
                     <h3>Ayrton Senna</h3>
-                    <p>Magik z Brazylii. Mistrz jazdy w deszczu, którego pasja i talent stały się legendą motorsportu.</p>
+                    <p>Mistyk z Brazylii. Jego jazda w deszczu i bezkompromisowy styl stały się legendą motorsportu.</p>
                     <div class="stats">
-                        <span>3 Tytuły</span>
-                        <span>41 Zwycięstw</span>
+                        <div><span>3</span><span>Tytuły</span></div>
+                        <div><span>41</span><span>Zwycięstw</span></div>
                     </div>
                 </div>
             </div>
+
+             <div class="driver-card">
+                <div class="driver-img-container">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Fangio_agosto_1957.jpg/640px-Fangio_agosto_1957.jpg" alt="Juan Manuel Fangio">
+                </div>
+                <div class="driver-info" data-titles="5">
+                    <h3>Juan Manuel Fangio</h3>
+                    <p>"El Maestro". Dominator lat 50-tych, który zdobywał tytuły z czterema różnymi zespołami. </p>
+                    <div class="stats">
+                        <div><span>5</span><span>Tytułów</span></div>
+                        <div><span>46%</span><span>Skuteczność</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="driver-card">
+                <div class="driver-img-container">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Alain_Prost_1985.jpg/640px-Alain_Prost_1985.jpg" alt="Alain Prost">
+                </div>
+                <div class="driver-info" data-titles="4">
+                    <h3>Alain Prost</h3>
+                    <p>"Profesor". Arcyrywalo Senny, znany z chłodnej kalkulacji i perfekcyjnego zarządzania wyścigiem.</p>
+                    <div class="stats">
+                        <div><span>4</span><span>Tytuły</span></div>
+                        <div><span>51</span><span>Zwycięstw</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="driver-card">
+                <div class="driver-img-container">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Max_Verstappen_2017_Malaysia_3.jpg/800px-Max_Verstappen_2017_Malaysia_3.jpg" alt="Max Verstappen">
+                </div>
+                <div class="driver-info" data-titles="3">
+                    <h3>Max Verstappen</h3>
+                    <p>Nowa siła. Holenderski talent, który przerwał dominację Mercedesa agresywnym i bezbłędnym stylem jazdy.</p>
+                    <div class="stats">
+                        <div><span>3+</span><span>Tytuły</span></div>
+                        <div><span>50+</span><span>Zwycięstw</span></div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
 
     <section id="tory">
-        <h2 class="section-title" style="color: var(--f1-red);">Świątynie Asfaltu</h2>
+        <h2 class="section-title">Świątynie Prędkości</h2>
         
-        
-        <div class="track-item">
-            <div class="track-img" style="background-image: url('https://images.unsplash.com/photo-1533237265691-d24c30c3453a?q=80&w=1000&auto=format&fit=crop');"></div>
-            <div class="track-desc">
-                <h3>Circuit de Monaco</h3>
-                <p>Klejnot w koronie. Najwolniejszy, a zarazem najtrudniejszy tor w kalendarzu. Jeden błąd oznacza koniec wyścigu.</p>
+        <div class="tracks-container">
+            <div class="track-card">
+                <div class="track-img-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Circuit_de_Monaco_in_2008.jpg/1024px-Circuit_de_Monaco_in_2008.jpg" alt="Monaco GP">
+                </div>
+                <div class="track-desc">
+                    <h3>Circuit de Monaco</h3>
+                    <span class="track-location"><i class="fa-solid fa-location-dot"></i> Monte Carlo, Monako</span>
+                    <p>Klejnot w koronie. Jazda tutaj to jak "pilotowanie helikoptera w salonie". Zero miejsca na błąd.</p>
+                </div>
             </div>
-        </div>
 
-        <div class="track-item">
-            <div class="track-img" style="background-image: url('https://images.unsplash.com/photo-1621932066708-59c558c4c79f?q=80&w=1000&auto=format&fit=crop');"></div>
-            <div class="track-desc">
-                <h3>Silverstone, UK</h3>
-                <p>Dom brytyjskiego motorsportu. Słynie z niesamowicie szybkich zakrętów Maggotts i Becketts.</p>
+            <div class="track-card">
+                <div class="track-img-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Silverstone_Circuit_aerial_photo_2019.jpg/1024px-Silverstone_Circuit_aerial_photo_2019.jpg" alt="Silverstone">
+                </div>
+                <div class="track-desc">
+                    <h3>Silverstone Circuit</h3>
+                    <span class="track-location"><i class="fa-solid fa-location-dot"></i> Wielka Brytania</span>
+                    <p>Dom F1. Słynie z niesamowicie szybkiej sekwencji zakrętów Maggotts, Becketts i Chapel.</p>
+                </div>
             </div>
-        </div>
 
-        <div class="track-item">
-            <div class="track-img" style="background-image: url('https://images.unsplash.com/photo-1599955376722-1d5952c28669?q=80&w=1000&auto=format&fit=crop');"></div>
-            <div class="track-desc">
-                <h3>Spa-Francorchamps, Belgia</h3>
-                <p>Najdłuższy tor w kalendarzu. Słynny Eau Rouge to test odwagi dla każdego kierowcy.</p>
+            <div class="track-card">
+                <div class="track-img-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Spa-Francorchamps_of_the_air%2C_Eau_Rouge_and_Raidillon.jpg/1024px-Spa-Francorchamps_of_the_air%2C_Eau_Rouge_and_Raidillon.jpg" alt="Spa Francorchamps">
+                </div>
+                <div class="track-desc">
+                    <h3>Spa-Francorchamps</h3>
+                    <span class="track-location"><i class="fa-solid fa-location-dot"></i> Belgia</span>
+                    <p>Najdłuższy i najbardziej malowniczy. Eau Rouge to najsłynniejszy zakręt świata, pokonywany "na pełnym gazie".</p>
+                </div>
             </div>
+
+             <div class="track-card">
+                <div class="track-img-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Monza_circuit_aerial_view.jpg/1024px-Monza_circuit_aerial_view.jpg" alt="Monza Circuit">
+                </div>
+                <div class="track-desc">
+                    <h3>Autodromo Nazionale Monza</h3>
+                    <span class="track-location"><i class="fa-solid fa-location-dot"></i> Włochy</span>
+                    <p>"Świątynia Prędkości". Tor o najniższym docisku, gdzie bolidy osiągają najwyższe prędkości w kalendarzu.</p>
+                </div>
+            </div>
+
+            <div class="track-card">
+                <div class="track-img-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Suzuka_Circuit_2006.jpg/1024px-Suzuka_Circuit_2006.jpg" alt="Suzuka Circuit">
+                </div>
+                <div class="track-desc">
+                    <h3>Suzuka International Circuit</h3>
+                    <span class="track-location"><i class="fa-solid fa-location-dot"></i> Japonia</span>
+                    <p>Ulubiony tor kierowców. Unikalny układ "ósemki" i legendarne "S-ki" w pierwszym sektorze to test precyzji.</p>
+                </div>
+            </div>
+
+             <div class="track-card">
+                <div class="track-img-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Aut%C3%B3dromo_de_Interlagos_2013.jpg/1024px-Aut%C3%B3dromo_de_Interlagos_2013.jpg" alt="Interlagos">
+                </div>
+                <div class="track-desc">
+                    <h3>Autódromo José Carlos Pace</h3>
+                    <span class="track-location"><i class="fa-solid fa-location-dot"></i> Brazylia</span>
+                    <p>Interlagos. Miejsce dramatycznych finałów sezonu, zmiennej pogody i namiętnych kibiców.</p>
+                </div>
+            </div>
+
         </div>
     </section>
 
     <section id="zwyciestwa">
-        <h2 class="section-title">Najlepsze Zwycięstwa</h2>
+        <h2 class="section-title">Momenty, które wstrząsnęły światem</h2>
         
-        <div class="victory-card">
-            <h4>GP Kanady 2011 - Jenson Button</h4>
-            <p>Najdłuższy wyścig w historii (ponad 4h). Button spadł na ostatnie miejsce, zaliczył 6 zjazdów do boksu, a mimo to wyprzedził Vettela na ostatnim okrążeniu.</p>
-        </div>
+        <div class="victory-timeline">
+            <div class="victory-card">
+                <span class="victory-year">2011</span>
+                <h4>GP Kanady - Niemożliwe Jenson Buttona</h4>
+                <p>Wyścig trwał ponad 4 godziny w deszczu. Button spadł na ostatnie miejsce, zaliczył 6 wizyt w boksie, karę przejazdu, a mimo to wyprzedził Vettela na ostatnim okrążeniu, wygrywając najbardziej szalony wyścig dekady.</p>
+            </div>
 
-        <div class="victory-card">
-            <h4>GP Brazylii 2008 - Lewis Hamilton</h4>
-            <p>Ostatni zakręt ostatniego okrążenia. Hamilton wyprzedza Timo Glocka, zdobywając punkt potrzebny do wygrania tytułu jednym punktem nad Felipe Massą.</p>
-        </div>
+            <div class="victory-card">
+                <span class="victory-year">2008</span>
+                <h4>GP Brazylii - Ostatni Zakręt Hamiltona</h4>
+                <p>"Is that Glock?!" Na ostatnim zakręcie ostatniego wyścigu sezonu, Lewis Hamilton wyprzedził jadącego na suchych oponach Timo Glocka, zdobywając 5. miejsce potrzebne do zdobycia tytułu mistrza świata jednym punktem nad Felipe Massą.</p>
+            </div>
 
-        <div class="victory-card">
-            <h4>GP Japonii 2005 - Kimi Raikkonen</h4>
-            <p>Startując z 17. pozycji, "Iceman" przebijał się przez stawkę, by wyprzedzić Giancarlo Fisichellę na wejściu w pierwszy zakręt ostatniego okrążenia.</p>
+            <div class="victory-card">
+                <span class="victory-year">2005</span>
+                <h4>GP Japonii - Szarża Kimiego Raikkonena</h4>
+                <p>Startując z 17. pozycji, Kimi "Iceman" Raikkonen w McLarenie przebijał się przez całą stawkę, by w spektakularnym stylu wyprzedzić lidera Giancarlo Fisichellę na wejściu w pierwszy zakręt ostatniego okrążenia.</p>
+            </div>
+             <div class="victory-card">
+                <span class="victory-year">2021</span>
+                <h4>GP Abu Zabi - Kontrowersyjny Finał</h4>
+                <p>Jeden z najbardziej dyskutowanych momentów w historii. Max Verstappen wyprzedza Lewisa Hamiltona na ostatnim okrążeniu po restarcie za samochodem bezpieczeństwa, zdobywając swój pierwszy tytuł mistrzowski.</p>
+            </div>
         </div>
     </section>
 
-    <section id="tech" style="background-color: #f9f9f9;">
-        <h2 class="section-title">Inżynieria</h2>
-        <p style="margin-bottom: 2rem;">Formuła 1 to nie tylko kierowcy, to poligon doświadczalny dla technologii jutra.</p>
+    <section id="tech">
+        <h2 class="section-title">Laboratorium Przyszłości</h2>
+        <div class="tech-intro">
+            <p>Bolid Formuły 1 to nie samochód – to myśliwiec odwrócony do góry nogami, złożony z ponad 14 500 precyzyjnych komponentów.</p>
+        </div>
         
-        <div class="tech-grid">
-            <div class="tech-box">
-                <i class="fas fa-wind"></i>
-                <h4>Aerodynamika</h4>
-                <p>Bolidy generują tak duży docisk (downforce), że teoretycznie mogłyby jechać po suficie tunelu przy prędkości powyżej 150 km/h.</p>
+        <div class="tech-grid-expanded">
+            
+            <div class="tech-card aero">
+                <div class="tech-icon-wrapper">
+                    <i class="fa-solid fa-wind"></i>
+                </div>
+                <h4>Aerodynamika i Docisk</h4>
+                <p>Klucz do prędkości w zakrętach. Skomplikowane skrzydła i podłoga generują "downforce", przysysając auto do toru.</p>
+                <div class="tech-data-point">
+                    <strong>FAKT TECHNICZNY:</strong>
+                    Przy 150 km/h bolid generuje wystarczający docisk, by teoretycznie jechać po suficie tunelu.
+                </div>
             </div>
-            <div class="tech-box">
-                <i class="fas fa-bolt"></i>
-                <h4>Jednostki Hybrydowe</h4>
-                <p>Obecne silniki V6 Turbo o pojemności 1.6L osiągają sprawność cieplną ponad 50% – to najbardziej wydajne silniki na świecie.</p>
+
+            <div class="tech-card engine">
+                <div class="tech-icon-wrapper">
+                    <i class="fa-solid fa-bolt-lightning"></i>
+                </div>
+                <h4>Power Unit (Hybryda V6)</h4>
+                <p>Serce bestii. Silnik spalinowy 1.6L V6 Turbo wspomagany przez dwa silniki elektryczne (MGU-K i MGU-H).</p>
+                <div class="tech-data-point">
+                    <strong>FAKT TECHNICZNY:</strong>
+                    Sprawność cieplna przekracza 50%. To najbardziej wydajne silniki spalinowe w historii ludzkości.
+                </div>
             </div>
+
+            <div class="tech-card tyres">
+                <div class="tech-icon-wrapper">
+                    <i class="fa-solid fa-circle-dot"></i>
+                </div>
+                <h4>Czarne Złoto (Pirelli)</h4>
+                <p>Jedyny punkt styku z torem. Zarządzanie temperaturą opon to kluczowa umiejętność kierowcy podczas wyścigu.</p>
+                <div class="tech-data-point">
+                    <strong>FAKT TECHNICZNY:</strong>
+                    Opona wyścigowa w szczytowym momencie (np. 300 km/h) obraca się około 50 razy na sekundę.
+                </div>
+            </div>
+
+            <div class="tech-card safety">
+                <div class="tech-icon-wrapper">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h4>Monokok i System Halo</h4>
+                <p>Kierowca siedzi w "kapsule przetrwania" z włókna węglowego. Tytanowy pałąk Halo chroni głowę przed uderzeniami.</p>
+                <div class="tech-data-point">
+                    <strong>FAKT TECHNICZNY:</strong>
+                    System Halo jest w stanie wytrzymać nacisk 12 ton – to jak postawienie na nim dwóch słoni afrykańskich.
+                </div>
+            </div>
+
         </div>
     </section>
 
     <footer>
-        <p>&copy; 2023 F1 Fan Page. Stworzone z pasji do motorsportu.</p>
+        <div class="logo" style="justify-content: center; margin-bottom: 1rem;">
+            <i class="fa-solid fa-flag-checkered"></i> F1 <span>WORLD</span>
+        </div>
+        <p>Strona stworzona w celach edukacyjnych i hobbystycznych.</p>
+        <p>Formuła 1 jest znakiem towarowym Formula One Licensing BV. Ta strona nie jest powiązana z oficjalną organizacją F1.</p>
+        <p style="margin-top: 2rem; opacity: 0.6;">&copy; 2023 Code & Speed.</p>
     </footer>
 
     <script>
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
             });
         });
     </script>

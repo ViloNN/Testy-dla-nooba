@@ -3,354 +3,420 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biologia: Poziom Ekspert 🧬</title>
+    <title>F1 World - Królowa Motorsportu</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
-        /* --- STYL: SCIENCE LAB (Deep Blue & Neon) --- */
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0; 
-            padding: 20px; 
-            min-height: 100vh; 
-            display: flex; 
-            justify-content: center; 
-            align-items: flex-start;
-            background-color: #0f0c29;
-            background: linear-gradient(to right, #24243e, #302b63, #0f0c29); /* Ciemny kosmos */
-            color: #e0e0e0;
+        /* --- ZMIENNE I RESET --- */
+        :root {
+            --f1-red: #e10600;
+            --f1-dark: #15151e;
+            --f1-grey: #38383f;
+            --f1-light: #f3f3f3;
+            --white: #ffffff;
         }
 
-        .quiz-container { 
-            background-color: rgba(20, 20, 40, 0.9); 
-            width: 100%; 
-            max-width: 850px; 
-            padding: 40px; 
-            border-radius: 15px; 
-            box-shadow: 0 0 40px rgba(123, 31, 162, 0.3);
-            border: 1px solid #4a148c;
-            margin-top: 20px;
-            margin-bottom: 40px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Titillium Web', sans-serif;
+            background-color: var(--f1-light);
+            color: var(--f1-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- TYPOGRAFIA --- */
+        h1, h2, h3 {
+            text-transform: uppercase;
+            font-weight: 900;
+            font-style: italic; /* Prędkość */
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+            padding-right: 20px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 8px;
+            background-color: var(--f1-red);
+            transform: skew(-20deg);
+        }
+
+        /* --- NAWIGACJA --- */
+        nav {
+            background-color: var(--f1-dark);
+            color: var(--white);
+            padding: 1rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid var(--f1-red);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: 2px;
         }
         
-        h2 { 
+        .logo span { color: var(--f1-red); }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+            transition: color 0.3s;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .nav-links a:hover { color: var(--f1-red); }
+
+        /* --- HERO SECTION --- */
+        header {
+            height: 90vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1596561245089-63773c52e616?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            color: #ea80fc; /* Neon Purple */
-            margin-bottom: 10px;
+            color: var(--white);
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        }
+
+        .hero-content h1 {
+            font-size: 5rem;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            font-weight: 300;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 1rem 2.5rem;
+            background-color: transparent;
+            border: 2px solid var(--white);
+            color: var(--white);
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(234, 128, 252, 0.5);
-        }
-        
-        .subtitle { 
-            text-align: center; 
-            font-size: 1em; 
-            margin-bottom: 40px; 
-            color: #b39ddb;
-            font-style: italic;
-            border-bottom: 1px solid #4a148c;
-            padding-bottom: 20px;
+            transition: 0.3s;
+            transform: skew(-20deg);
         }
 
-        /* --- PYTANIA --- */
-        .question-box {
-            margin-bottom: 30px;
-            padding: 20px;
-            background: #1a1a3a;
-            border-radius: 10px;
-            border-left: 5px solid #7b1fa2;
-            transition: transform 0.2s;
-        }
-
-        .question-box:hover {
-            transform: translateX(5px);
-        }
-
-        .question-text {
-            font-size: 1.15em;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #fff;
-        }
-
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr; /* Jedna kolumna dla czytelności trudnych odpowiedzi */
-            gap: 10px;
-        }
-
-        /* --- BUTTONY RADIO (Ukryte) I LABELE --- */
-        .option-label {
+        .btn span {
             display: block;
-            background: #252545;
-            padding: 12px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 1px solid #3d3d6b;
-            font-size: 0.95em;
-            color: #c5c5e6;
+            transform: skew(20deg); /* Prostowanie tekstu wewnątrz */
         }
 
-        .option-label:hover {
-            background: #30305a;
-            border-color: #ea80fc;
+        .btn:hover {
+            background-color: var(--f1-red);
+            border-color: var(--f1-red);
         }
 
-        input[type="radio"] { display: none; }
-
-        input[type="radio"]:checked + .option-label {
-            background-color: #4a148c;
-            border-color: #ea80fc;
-            color: #fff;
-            font-weight: bold;
-            box-shadow: 0 0 15px rgba(234, 128, 252, 0.3);
+        /* --- SEKCJE OGÓLNE --- */
+        section {
+            padding: 5rem 10%;
         }
 
-        /* --- KLASY WYNIKÓW --- */
-        .option-label.correct {
-            background-color: #00695c !important; /* Ciemny zielony */
-            border-color: #1de9b6 !important; /* Neon turkus */
-            color: #fff !important;
+        /* --- KIEROWCY (Karty) --- */
+        .drivers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
         }
 
-        .option-label.wrong {
-            background-color: #b71c1c !important; /* Ciemny czerwony */
-            border-color: #ff5252 !important; /* Neon czerwień */
-            color: #fff !important;
-            opacity: 0.6;
+        .driver-card {
+            background: var(--white);
+            border-right: 5px solid var(--f1-red);
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
         }
 
-        /* --- PRZYCISK SPRAWDZANIA --- */
-        .btn-container {
-            text-align: center;
-            margin-top: 40px;
+        .driver-card:hover {
+            transform: translateY(-10px);
         }
 
-        button.check-btn { 
-            padding: 15px 60px; 
-            background: linear-gradient(45deg, #7b1fa2, #ea80fc);
-            color: white; 
-            border: none; 
-            border-radius: 50px; 
-            cursor: pointer; 
-            font-size: 1.2em; 
-            font-weight: bold; 
-            transition: transform 0.2s, box-shadow 0.2s; 
-            box-shadow: 0 5px 20px rgba(123, 31, 162, 0.5);
-            text-transform: uppercase;
+        .driver-img {
+            height: 250px;
+            background-color: var(--f1-grey);
+            background-size: cover;
+            background-position: top;
+        }
+
+        .driver-info {
+            padding: 1.5rem;
+        }
+
+        .driver-info h3 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .stats { display: flex; justify-content: space-between; margin-top: 1rem; color: var(--f1-grey); font-weight: 700; }
+
+        /* --- TORY (Lista z tłem) --- */
+        #tory {
+            background-color: var(--f1-dark);
+            color: var(--white);
+            clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
+            padding-top: 8rem;
+            padding-bottom: 8rem;
+        }
+
+        .track-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 3rem;
+            gap: 2rem;
+        }
+
+        .track-item:nth-child(even) { flex-direction: row-reverse; }
+
+        .track-img {
+            flex: 1;
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            border: 2px solid var(--f1-red);
+            border-radius: 10px;
+        }
+
+        .track-desc { flex: 1; }
+        .track-desc h3 { font-size: 2rem; color: var(--f1-red); }
+
+        /* --- ZWYCIĘSTWA (Timeline) --- */
+        .victory-card {
+            background: var(--white);
+            padding: 2rem;
+            border-left: 5px solid var(--f1-dark);
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .victory-card::before {
+            content: '\f091'; /* Ikona pucharu */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 3rem;
+            color: #eee;
+        }
+
+        /* --- TECHNOLOGIA (Dodatkowa sekcja) --- */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
         }
         
-        button.check-btn:hover { 
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(123, 31, 162, 0.7);
-        }
-
-        /* --- WYNIK --- */
-        #result-area {
-            margin-top: 30px;
+        .tech-box {
+            background: var(--f1-grey);
+            color: var(--white);
+            padding: 2rem;
             text-align: center;
-            font-size: 1.5em;
-            font-weight: bold;
-            display: none;
-            padding: 20px;
-            background: #1a1a3a;
-            border-radius: 10px;
-            border: 2px solid #ea80fc;
+        }
+        
+        .tech-box i {
+            font-size: 3rem;
+            color: var(--f1-red);
+            margin-bottom: 1rem;
         }
 
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--f1-dark);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem;
+            border-top: 4px solid var(--f1-red);
+        }
+
+        /* --- MEDIA QUERIES --- */
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 3rem; }
+            .nav-links { display: none; } /* Uproszczenie dla mobile */
+            .track-item, .track-item:nth-child(even) { flex-direction: column; }
+            .tech-grid { grid-template-columns: 1fr; }
+            section { padding: 3rem 5%; }
+            #tory { clip-path: none; }
+        }
     </style>
 </head>
 <body>
 
-<div class="quiz-container">
-    <h2>Biologia: Poziom Ekspert 🧬</h2>
-    <div class="subtitle">Budowa i czynności organizmów. Pytania trudne!</div>
-    
-    <form id="quiz-form">
+    <nav>
+        <div class="logo">F1 <span>WORLD</span></div>
+        <div class="nav-links">
+            <a href="#kierowcy">Legendy</a>
+            <a href="#tory">Tory</a>
+            <a href="#zwyciestwa">Momenty</a>
+            <a href="#tech">Technologia</a>
+        </div>
+    </nav>
+
+    <header>
+        <div class="hero-content">
+            <h1>SZYBKOŚĆ.<br>PRECYZJA.<br>CHWAŁA.</h1>
+            <p>Witamy w świecie Formuły 1 – szczytu inżynierii i ludzkich możliwości.</p>
+            <a href="#kierowcy" class="btn"><span>Poznaj Historię</span></a>
+        </div>
+    </header>
+
+    <section id="kierowcy">
+        <h2 class="section-title">Bogowie Prędkości</h2>
         
-        <div class="question-box" data-correct="2">
-            <div class="question-text">1. Głównym składnikiem budulcowym enzymów oraz hormonów, a także mięśni, są:</div>
-            <div class="options-grid">
-                <label><input type="radio" name="q1"> <span class="option-label">Cukry proste (glukoza)</span></label>
-                <label><input type="radio" name="q1"> <span class="option-label">Tłuszcze (lipidy)</span></label>
-                <label><input type="radio" name="q1"> <span class="option-label">Białka</span></label>
-                <label><input type="radio" name="q1"> <span class="option-label">Sole mineralne (wapń)</span></label>
+        <div class="drivers-grid">
+            <div class="driver-card">
+                <div class="driver-img" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Michael_Schumacher_2010_Malaysia_qualifying.jpg/640px-Michael_Schumacher_2010_Malaysia_qualifying.jpg');"></div>
+                <div class="driver-info">
+                    <h3>Michael Schumacher</h3>
+                    <p>Niemiecka maszyna. Dominator ery Ferrari, który zdefiniował pojęcie "profesjonalizm" w F1.</p>
+                    <div class="stats">
+                        <span>7 Tytułów</span>
+                        <span>91 Zwycięstw</span>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="question-box" data-correct="1">
-            <div class="question-text">2. Ściana komórkowa u roślin zbudowana jest z cukru złożonego o nazwie:</div>
-            <div class="options-grid">
-                <label><input type="radio" name="q2"> <span class="option-label">Chityna</span></label>
-                <label><input type="radio" name="q2"> <span class="option-label">Celuloza</span></label>
-                <label><input type="radio" name="q2"> <span class="option-label">Skrobia</span></label>
-                <label><input type="radio" name="q2"> <span class="option-label">Białko</span></label>
+            <div class="driver-card">
+                <div class="driver-img" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/1/18/Lewis_Hamilton_2016_Malaysia_2.jpg');"></div>
+                <div class="driver-info">
+                    <h3>Lewis Hamilton</h3>
+                    <p>Brytyjski rekordzista. Pierwszy kierowca, który przekroczył barierę 100 zwycięstw i Pole Positions.</p>
+                    <div class="stats">
+                        <span>7 Tytułów</span>
+                        <span>103+ Zwycięstw</span>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="question-box" data-correct="3">
-            <div class="question-text">3. Gdzie znajduje się materiał genetyczny (DNA) w komórce bakterii?</div>
-            <div class="options-grid">
-                <label><input type="radio" name="q3"> <span class="option-label">W jądrze komórkowym</span></label>
-                <label><input type="radio" name="q3"> <span class="option-label">W wakuoli</span></label>
-                <label><input type="radio" name="q3"> <span class="option-label">W mitochondrium</span></label>
-                <label><input type="radio" name="q3"> <span class="option-label">Bezpośrednio w cytoplazmie (jako substancja jądrowa)</span></label>
+            <div class="driver-card">
+                <div class="driver-img" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Ayrton_Senna_Imola_1989.jpg/640px-Ayrton_Senna_Imola_1989.jpg');"></div>
+                <div class="driver-info">
+                    <h3>Ayrton Senna</h3>
+                    <p>Magik z Brazylii. Mistrz jazdy w deszczu, którego pasja i talent stały się legendą motorsportu.</p>
+                    <div class="stats">
+                        <span>3 Tytuły</span>
+                        <span>41 Zwycięstw</span>
+                    </div>
+                </div>
             </div>
         </div>
+    </section>
 
-        <div class="question-box" data-correct="0">
-            <div class="question-text">4. Dlaczego mitochondrium nazywamy "elektrownią" komórki?</div>
-            <div class="options-grid">
-                <label><input type="radio" name="q4"> <span class="option-label">Ponieważ tam zachodzi uwalnianie energii z pokarmu</span></label>
-                <label><input type="radio" name="q4"> <span class="option-label">Ponieważ produkuje prąd elektryczny</span></label>
-                <label><input type="radio" name="q4"> <span class="option-label">Ponieważ magazynuje wodę</span></label>
-                <label><input type="radio" name="q4"> <span class="option-label">Ponieważ steruje podziałem komórki</span></label>
-            </div>
-        </div>
-
-        <div class="question-box" data-correct="1">
-            <div class="question-text">5. Wskaż poprawny zestaw SUBSTRATÓW (składników potrzebnych na początku) fotosyntezy:</div>
-            <div class="options-grid">
-                <label><input type="radio" name="q5"> <span class="option-label">Glukoza + Tlen</span></label>
-                <label><input type="radio" name="q5"> <span class="option-label">Dwutlenek węgla + Woda (+ Światło)</span></label>
-                <label><input type="radio" name="q5"> <span class="option-label">Tlen + Woda</span></label>
-                <label><input type="radio" name="q5"> <span class="option-label">Skrobia + Dwutlenek węgla</span></label>
-            </div>
-        </div>
-
-        <div class="question-box" data-correct="2">
-            <div class="question-text">6. Saprofity (np. wiele grzybów i bakterii) to organizmy, które:</div>
-            <div class="options-grid">
-                <label><input type="radio" name="q6"> <span class="option-label">Polują na inne organizmy</span></label>
-                <label><input type="radio" name="q6"> <span class="option-label">Żyją kosztem żywego żywiciela</span></label>
-                <label><input type="radio" name="q6"> <span class="option-label">Odżywiają się martwą materią organiczną</span></label>
-                <label><input type="radio" name="q6"> <span class="option-label">Przeprowadzają fotosyntezę</span></label>
-            </div>
-        </div>
-
-        <div class="question-box" data-correct="0">
-            <div class="question-text">7. Która kolejność poziomów organizacji życia jest poprawna (od najmniejszego)?</div>
-            <div class="options-grid">
-                <label><input type="radio" name="q7"> <span class="option-label">Komórka -> Tkanka -> Narząd -> Układ narządów -> Organizm</span></label>
-                <label><input type="radio" name="q7"> <span class="option-label">Tkanka -> Komórka -> Organizm -> Narząd</span></label>
-                <label><input type="radio" name="q7"> <span class="option-label">Komórka -> Narząd -> Tkanka -> Organizm</span></label>
-                <label><input type="radio" name="q7"> <span class="option-label">Narząd -> Tkanka -> Komórka -> Układ</span></label>
-            </div>
-        </div>
-
-        <div class="question-box" data-correct="3">
-            <div class="question-text">8. Aparaty szparkowe w liściach służą do:</div>
-            <div class="options-grid">
-                <label><input type="radio" name="q8"> <span class="option-label">Tylko do pobierania wody z deszczu</span></label>
-                <label><input type="radio" name="q8"> <span class="option-label">Obrony przed roślinożercami</span></label>
-                <label><input type="radio" name="q8"> <span class="option-label">Magazynowania cukru</span></label>
-                <label><input type="radio" name="q8"> <span class="option-label">Wymiany gazowej (pobierania CO2, usuwania tlenu) i parowania wody</span></label>
-            </div>
-        </div>
-
-        <div class="question-box" data-correct="1">
-            <div class="question-text">9. Niektóre organizmy (np. drożdże) uzyskują energię bez udziału tlenu. Proces ten nazywamy:</div>
-            <div class="options-grid">
-                <label><input type="radio" name="q9"> <span class="option-label">Fotosyntezą</span></label>
-                <label><input type="radio" name="q9"> <span class="option-label">Fermentacją</span></label>
-                <label><input type="radio" name="q9"> <span class="option-label">Wymianą gazową</span></label>
-                <label><input type="radio" name="q9"> <span class="option-label">Trawieniem zewnętrznym</span></label>
-            </div>
-        </div>
-
-        <div class="question-box" data-correct="2">
-            <div class="question-text">10. Który element występuje w komórce roślinnej, ale NIE występuje w zwierzęcej?</div>
-            <div class="options-grid">
-                <label><input type="radio" name="q10"> <span class="option-label">Błona komórkowa</span></label>
-                <label><input type="radio" name="q10"> <span class="option-label">Mitochondrium</span></label>
-                <label><input type="radio" name="q10"> <span class="option-label">Duża wakuola i chloroplasty</span></label>
-                <label><input type="radio" name="q10"> <span class="option-label">Jądro komórkowe</span></label>
-            </div>
-        </div>
+    <section id="tory">
+        <h2 class="section-title" style="color: var(--f1-red);">Świątynie Asfaltu</h2>
         
-        <div class="question-box" data-correct="0">
-            <div class="question-text">11. Woda jest dobrym rozpuszczalnikiem, co umożliwia jej:</div>
-            <div class="options-grid">
-                <label><input type="radio" name="q11"> <span class="option-label">Transportowanie substancji w organizmie (np. we krwi)</span></label>
-                <label><input type="radio" name="q11"> <span class="option-label">Dostarczanie energii</span></label>
-                <label><input type="radio" name="q11"> <span class="option-label">Budowanie kości</span></label>
-                <label><input type="radio" name="q11"> <span class="option-label">Ochronę przed zimnem (jako tkanka tłuszczowa)</span></label>
-            </div>
-        </div>
-
-        <div class="question-box" data-correct="3">
-            <div class="question-text">12. Dlaczego tasiemiec nie musi posiadać układu pokarmowego?</div>
-            <div class="options-grid">
-                <label><input type="radio" name="q12"> <span class="option-label">Bo żywi się krwią</span></label>
-                <label><input type="radio" name="q12"> <span class="option-label">Bo sam produkuje pokarm</span></label>
-                <label><input type="radio" name="q12"> <span class="option-label">Bo połyka ofiary w całości</span></label>
-                <label><input type="radio" name="q12"> <span class="option-label">Bo wchłania strawiony pokarm żywiciela całą powierzchnią ciała</span></label>
-            </div>
-        </div>
-
-        <div class="btn-container">
-            <button type="button" class="check-btn" onclick="checkAnswers()">Analiza Wyników 🧪</button>
-        </div>
         
-        <div id="result-area"></div>
-    </form>
-</div>
+        <div class="track-item">
+            <div class="track-img" style="background-image: url('https://images.unsplash.com/photo-1533237265691-d24c30c3453a?q=80&w=1000&auto=format&fit=crop');"></div>
+            <div class="track-desc">
+                <h3>Circuit de Monaco</h3>
+                <p>Klejnot w koronie. Najwolniejszy, a zarazem najtrudniejszy tor w kalendarzu. Jeden błąd oznacza koniec wyścigu.</p>
+            </div>
+        </div>
 
-<script>
-    function checkAnswers() {
-        const questions = document.querySelectorAll('.question-box');
-        let score = 0;
-        let total = questions.length;
+        <div class="track-item">
+            <div class="track-img" style="background-image: url('https://images.unsplash.com/photo-1621932066708-59c558c4c79f?q=80&w=1000&auto=format&fit=crop');"></div>
+            <div class="track-desc">
+                <h3>Silverstone, UK</h3>
+                <p>Dom brytyjskiego motorsportu. Słynie z niesamowicie szybkich zakrętów Maggotts i Becketts.</p>
+            </div>
+        </div>
 
-        questions.forEach((box, index) => {
-            const correctIndex = parseInt(box.getAttribute('data-correct'));
-            const options = box.querySelectorAll('input[type="radio"]');
-            const labels = box.querySelectorAll('.option-label');
-            let answered = false;
+        <div class="track-item">
+            <div class="track-img" style="background-image: url('https://images.unsplash.com/photo-1599955376722-1d5952c28669?q=80&w=1000&auto=format&fit=crop');"></div>
+            <div class="track-desc">
+                <h3>Spa-Francorchamps, Belgia</h3>
+                <p>Najdłuższy tor w kalendarzu. Słynny Eau Rouge to test odwagi dla każdego kierowcy.</p>
+            </div>
+        </div>
+    </section>
 
-            // Reset
-            labels.forEach(l => l.classList.remove('correct', 'wrong'));
+    <section id="zwyciestwa">
+        <h2 class="section-title">Najlepsze Zwycięstwa</h2>
+        
+        <div class="victory-card">
+            <h4>GP Kanady 2011 - Jenson Button</h4>
+            <p>Najdłuższy wyścig w historii (ponad 4h). Button spadł na ostatnie miejsce, zaliczył 6 zjazdów do boksu, a mimo to wyprzedził Vettela na ostatnim okrążeniu.</p>
+        </div>
 
-            options.forEach((opt, optIndex) => {
-                if (opt.checked) {
-                    answered = true;
-                    if (optIndex === correctIndex) {
-                        score++;
-                        labels[optIndex].classList.add('correct');
-                    } else {
-                        labels[optIndex].classList.add('wrong');
-                        // Pokaż poprawną
-                        labels[correctIndex].classList.add('correct');
-                    }
-                }
+        <div class="victory-card">
+            <h4>GP Brazylii 2008 - Lewis Hamilton</h4>
+            <p>Ostatni zakręt ostatniego okrążenia. Hamilton wyprzedza Timo Glocka, zdobywając punkt potrzebny do wygrania tytułu jednym punktem nad Felipe Massą.</p>
+        </div>
+
+        <div class="victory-card">
+            <h4>GP Japonii 2005 - Kimi Raikkonen</h4>
+            <p>Startując z 17. pozycji, "Iceman" przebijał się przez stawkę, by wyprzedzić Giancarlo Fisichellę na wejściu w pierwszy zakręt ostatniego okrążenia.</p>
+        </div>
+    </section>
+
+    <section id="tech" style="background-color: #f9f9f9;">
+        <h2 class="section-title">Inżynieria</h2>
+        <p style="margin-bottom: 2rem;">Formuła 1 to nie tylko kierowcy, to poligon doświadczalny dla technologii jutra.</p>
+        
+        <div class="tech-grid">
+            <div class="tech-box">
+                <i class="fas fa-wind"></i>
+                <h4>Aerodynamika</h4>
+                <p>Bolidy generują tak duży docisk (downforce), że teoretycznie mogłyby jechać po suficie tunelu przy prędkości powyżej 150 km/h.</p>
+            </div>
+            <div class="tech-box">
+                <i class="fas fa-bolt"></i>
+                <h4>Jednostki Hybrydowe</h4>
+                <p>Obecne silniki V6 Turbo o pojemności 1.6L osiągają sprawność cieplną ponad 50% – to najbardziej wydajne silniki na świecie.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2023 F1 Fan Page. Stworzone z pasji do motorsportu.</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
             });
         });
-
-        const resultArea = document.getElementById('result-area');
-        resultArea.style.display = 'block';
-        
-        let percentage = Math.round((score / total) * 100);
-        let msg = "";
-        let color = "";
-
-        if(percentage === 100) {
-            msg = "GENIUSZ! Jesteś gotowy na olimpiadę biologiczną! 🧬🏆";
-            color = "#1de9b6";
-        } else if (percentage >= 80) {
-            msg = "Poziom Ekspert zaliczony! Świetna wiedza! 🔬";
-            color = "#ea80fc";
-        } else if (percentage >= 50) {
-            msg = "Dobrze, ale to były trudne pytania. Powtórz szczegóły. 🧪";
-            color = "#ffb74d";
-        } else {
-            msg = "Trudny test, prawda? Zajrzyj jeszcze raz do notatek. 📖";
-            color = "#ef5350";
-        }
-
-        resultArea.innerHTML = `<span style="color:${color}">${msg} <br> Twój wynik: ${score} / ${total}</span>`;
-        resultArea.style.borderColor = color;
-    }
-</script>
-
+    </script>
 </body>
 </html>

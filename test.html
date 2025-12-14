@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 World - Ultimate Edition</title>
+    <title>F1 Tech Hub - Ultimate Edition</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -17,25 +18,18 @@
         :root {
             --f1-red: #e10600;
             --f1-dark: #15151e;
-            --f1-grey-dark: #2b2b33;
-            --f1-grey-light: #d0d0d5;
             --white: #ffffff;
             
-            /* Tech Colors */
+            /* Tech Colors (Neon) */
             --tech-cyan: #00f0ff;
             --tech-yellow: #fcee0a;
             --tech-purple: #bc13fe;
             --tech-green: #00ff41;
+            --tech-bg: #0a0a0f;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-
         body {
             font-family: 'Titillium Web', sans-serif;
             background-color: #f0f0f3;
@@ -43,11 +37,11 @@
             line-height: 1.6;
             overflow-x: hidden;
         }
-
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
+        .mono { font-family: 'Roboto Mono', monospace; }
 
-        /* --- TYPOGRAFIA --- */
+        /* --- TYPOGRAFIA NAGŁÓWKÓW --- */
         h1, h2, h3 {
             text-transform: uppercase;
             font-weight: 900;
@@ -66,17 +60,8 @@
         .section-title::after {
             content: '';
             position: absolute;
-            right: 0;
-            top: 5px;
-            height: 90%;
-            width: 20px;
-            background: repeating-linear-gradient(
-                -45deg,
-                var(--f1-red),
-                var(--f1-red) 5px,
-                transparent 5px,
-                transparent 10px
-            );
+            right: 0; top: 5px; height: 90%; width: 20px;
+            background: repeating-linear-gradient(-45deg, var(--f1-red), var(--f1-red) 5px, transparent 5px, transparent 10px);
             transform: skew(-20deg);
         }
 
@@ -85,270 +70,174 @@
             background-color: var(--f1-dark);
             color: var(--white);
             padding: 1rem 5%;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            position: sticky; top: 0; z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
             border-bottom: 3px solid var(--f1-red);
         }
-
-        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; }
+        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; font-family: 'Orbitron', sans-serif; }
         .logo span { color: var(--f1-red); }
-
         .nav-links { display: flex; gap: 2rem; }
         .nav-links a { font-weight: 700; transition: color 0.3s; text-transform: uppercase; font-size: 0.9rem; }
         .nav-links a:hover { color: var(--f1-red); }
 
-        /* --- HERO SECTION (NAPRAWIONE) --- */
+        /* --- HERO SECTION --- */
         header {
-            height: 90vh;
-            /* Używamy sprawdzonego zdjęcia z Unsplash */
-            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1597856627047-49772d547aa5?q=80&w=1920&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed; /* Efekt paralaksy */
-            display: flex;
-            align-items: center;
-            padding: 0 10%;
-            color: var(--white);
-            position: relative;
+            height: 85vh;
+            /* Niezawodne zdjęcie z Unsplash */
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1504198070170-4ca53bb1c1fa?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            display: flex; align-items: center; padding: 0 10%; color: var(--white);
         }
+        .hero-content h1 { font-size: 4rem; line-height: 1; margin-bottom: 1rem; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+        .btn { padding: 12px 35px; background: var(--f1-red); color: white; font-weight: bold; display: inline-block; transition: 0.3s; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); }
+        .btn:hover { background: #b00500; transform: scale(1.05); }
 
-        .hero-content {
-            background: rgba(0,0,0,0.6);
-            padding: 2rem;
-            backdrop-filter: blur(5px);
-            border-left: 5px solid var(--f1-red);
-            transform: skew(-10deg);
-        }
-
-        .hero-content > * { transform: skew(10deg); } /* Prostowanie tekstu */
-
-        .hero-content h1 { font-size: 4rem; line-height: 1; margin-bottom: 1rem; }
-        .hero-content p { font-size: 1.2rem; max-width: 500px; margin-bottom: 2rem; }
-
-        .btn {
-            padding: 10px 30px;
-            background: var(--f1-red);
-            color: white;
-            font-weight: bold;
-            display: inline-block;
-            transition: 0.3s;
-        }
-        .btn:hover { background: #b00500; }
-
-        /* --- SEKCJE OGÓLNE --- */
         section { padding: 6rem 10%; }
 
-        /* --- KIEROWCY (NAPRAWIONE ZDJĘCIA) --- */
-        .drivers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .driver-card {
-            background: var(--white);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
+        /* --- KIEROWCY (Nowe, działające linki Imgur) --- */
+        .drivers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .driver-card { background: var(--white); box-shadow: 0 10px 20px rgba(0,0,0,0.05); border-radius: 8px; overflow: hidden; transition: transform 0.3s; }
         .driver-card:hover { transform: translateY(-10px); }
-
-        .driver-img-box {
-            height: 320px;
-            width: 100%;
-            background-color: #333; /* Fallback color */
-            overflow: hidden;
-            position: relative;
-        }
-
-        .driver-img-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: top center; /* Ważne: centruje na twarzy */
-            transition: transform 0.5s;
-        }
-
-        .driver-card:hover .driver-img-box img { transform: scale(1.1); }
-
+        .driver-img-box { height: 350px; width: 100%; background-color: #222; overflow: hidden; }
+        .driver-img-box img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform 0.5s; }
+        .driver-card:hover .driver-img-box img { transform: scale(1.05); }
         .driver-info { padding: 1.5rem; }
-        .driver-info h3 { margin-bottom: 0.5rem; color: var(--f1-dark); }
-        .driver-info p { font-size: 0.9rem; color: #666; margin-bottom: 1rem; }
-        
-        .stats-row {
-            display: flex;
-            justify-content: space-between;
-            border-top: 1px solid #eee;
-            padding-top: 10px;
-            font-weight: 700;
-        }
-        .stats-row span { display: block; font-size: 0.8rem; color: #999; }
-        .stats-row strong { font-size: 1.2rem; color: var(--f1-red); }
+        .stats-row { display: flex; justify-content: space-between; border-top: 1px solid #eee; padding-top: 15px; margin-top: 15px; }
+        .stats-row div { display: flex; flex-direction: column; }
+        .stats-row strong { font-size: 1.4rem; color: var(--f1-red); line-height: 1; }
+        .stats-row span { font-size: 0.8rem; color: #888; }
 
-        /* --- TORY --- */
-        #tory {
-            background: var(--f1-dark);
-            color: var(--white);
-            padding-top: 8rem;
-            padding-bottom: 8rem;
-            position: relative;
-        }
-        
-        /* Ozdobny pasek */
-        #tory::before {
-            content: '';
-            position: absolute;
-            top: -20px; left: 0; width: 100%; height: 50px;
-            background: var(--f1-red);
-            transform: skewY(-2deg);
-        }
-
-        .track-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        .track-card {
-            background: #222;
-            border: 1px solid #333;
-            transition: 0.3s;
-        }
-        
-        .track-card:hover { border-color: var(--f1-red); }
-
-        .track-img {
-            height: 200px;
-            width: 100%;
-            object-fit: cover;
-            opacity: 0.8;
-            transition: opacity 0.3s;
-        }
-        
-        .track-card:hover .track-img { opacity: 1; }
-
-        .track-details { padding: 1.5rem; }
-        .track-details h3 { color: var(--white); }
-        .track-location { color: var(--f1-red); font-size: 0.9rem; margin-bottom: 10px; display: block; }
-
-        /* --- INŻYNIERIA (ULTIMATE VERSION) --- */
+        /* --- INŻYNIERIA (ULTIMATE BENTO GRID - WIĘCEJ DETALI) --- */
         #tech {
-            background-color: #050505;
-            color: #fff;
-            padding-top: 4rem;
-            background-image: 
-                radial-gradient(circle at 50% 50%, rgba(20, 20, 30, 0.8), #050505),
-                linear-gradient(0deg, rgba(255,255,255,0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 100% 100%, 40px 40px, 40px 40px;
+            background-color: var(--tech-bg); color: #fff; padding-top: 4rem;
+            /* Tło "Blueprint" */
+            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
         }
-
         .tech-header { text-align: center; margin-bottom: 4rem; }
-        .tech-header h2 { font-size: 3rem; color: var(--white); text-shadow: 0 0 20px rgba(255,255,255,0.2); }
-        .tech-header p { color: var(--f1-grey-light); max-width: 600px; margin: 0 auto; font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
-
-        /* BENTO GRID LAYOUT */
+        .tech-header h2 { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; color: var(--white); letter-spacing: 2px; }
+        
         .tech-dashboard {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(2, auto);
-            gap: 1.5rem;
-            max-width: 1400px;
-            margin: 0 auto;
+            display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, auto);
+            gap: 1.5rem; max-width: 1400px; margin: 0 auto;
         }
-
         .tech-box {
-            background: rgba(20, 20, 25, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-            transition: 0.3s;
+            background: rgba(20, 20, 30, 0.6); border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2rem; position: relative; overflow: hidden; backdrop-filter: blur(5px); transition: 0.3s;
+            display: flex; flex-direction: column;
         }
-
-        .tech-box:hover { border-color: rgba(255, 255, 255, 0.3); background: rgba(30, 30, 40, 0.8); }
-
-        /* Specyficzne kafelki */
+        .tech-box:hover { background: rgba(30, 30, 40, 0.8); border-color: rgba(255, 255, 255, 0.2); }
         .box-large { grid-column: span 2; }
         .box-tall { grid-row: span 2; }
         
-        .box-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.5);
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .box-value { font-size: 2.5rem; font-weight: 700; color: var(--white); }
-        .box-desc { font-size: 0.9rem; color: #aaa; margin-top: 10px; }
+        .box-title { font-family: 'Orbitron', sans-serif; font-size: 0.8rem; color: rgba(255,255,255,0.6); letter-spacing: 1px; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;}
+        .box-main-value { font-family: 'Orbitron', sans-serif; font-size: 2.8rem; font-weight: 700; color: var(--white); line-height: 1; margin-bottom: 10px; }
+        .box-desc { font-size: 0.9rem; color: #aaa; margin-bottom: 1.5rem; }
+        
+        /* Sub-data w boxach */
+        .tech-data-list { margin-top: auto; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 1rem; }
+        .tech-data-item { display: flex; justify-content: space-between; margin-bottom: 5px; font-family: 'Roboto Mono', monospace; font-size: 0.85rem; }
+        .tech-data-item span.label { color: #666; }
+        .tech-data-item span.value { color: var(--white); }
 
         /* Akcenty kolorystyczne */
-        .accent-aero { border-top: 2px solid var(--tech-cyan); }
-        .accent-engine { border-top: 2px solid var(--f1-red); }
-        .accent-pit { border-top: 2px solid var(--tech-yellow); }
-        .accent-data { border-top: 2px solid var(--tech-green); }
-
-        /* Animacja Telemetrii */
-        .telemetry-bars {
-            display: flex;
-            gap: 5px;
-            align-items: flex-end;
-            height: 60px;
-            margin-top: 20px;
-        }
-        .bar {
-            width: 10px;
-            background: var(--tech-green);
-            animation: bounce 1s infinite ease-in-out;
-        }
-        .bar:nth-child(1) { height: 40%; animation-delay: 0.1s; }
-        .bar:nth-child(2) { height: 70%; animation-delay: 0.3s; }
-        .bar:nth-child(3) { height: 50%; animation-delay: 0.2s; }
-        .bar:nth-child(4) { height: 90%; animation-delay: 0.4s; }
-        .bar:nth-child(5) { height: 20%; animation-delay: 0.1s; }
+        .accent-aero { border-top: 3px solid var(--tech-cyan); } .accent-aero .box-main-value { color: var(--tech-cyan); }
+        .accent-engine { border-top: 3px solid var(--f1-red); } .accent-engine .box-main-value { color: var(--f1-red); }
+        .accent-pit { border-top: 3px solid var(--tech-yellow); } .accent-pit .box-main-value { color: var(--tech-yellow); }
+        .accent-data { border-top: 3px solid var(--tech-green); }
         
-        @keyframes bounce {
-            0%, 100% { transform: scaleY(1); opacity: 0.5; }
-            50% { transform: scaleY(1.5); opacity: 1; background-color: #fff; }
+        .tech-icon-bg { position: absolute; right: -20px; bottom: -20px; font-size: 8rem; opacity: 0.05; pointer-events: none; }
+
+        /* --- NOWA SEKCJA: KIEROWNICA --- */
+        #steering-wheel {
+            background-color: #111;
+            color: var(--white);
+            padding-top: 4rem;
+            padding-bottom: 6rem;
+            overflow: hidden; /* Ukrywa wychodzące linie */
+        }
+        
+        .steering-container {
+            position: relative;
+            max-width: 1000px;
+            margin: 4rem auto 0;
+            height: 600px; /* Stała wysokość dla diagramu */
         }
 
-        /* Ikony */
-        .tech-icon-large {
-            font-size: 4rem;
+        .wheel-img-wrapper {
             position: absolute;
-            right: 20px;
-            bottom: 20px;
-            opacity: 0.1;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%; /* Rozmiar kierownicy */
+            z-index: 2;
         }
+
+        .wheel-img-wrapper img {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 0 30px rgba(225,6,0,0.2));
+        }
+
+        /* Etykiety i linie */
+        .wheel-label {
+            position: absolute;
+            width: 200px;
+            padding: 10px 15px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--f1-red);
+            backdrop-filter: blur(5px);
+            z-index: 3;
+        }
+        .wheel-label h4 { color: var(--f1-red); font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 5px; }
+        .wheel-label p { font-size: 0.8rem; color: #ccc; }
+
+        /* Linie łączące (pseudo-elementy) */
+        .wheel-label::after {
+            content: '';
+            position: absolute;
+            height: 2px;
+            background: var(--f1-red);
+            z-index: 1;
+        }
+
+        /* Pozycjonowanie etykiet i linii - Metoda prób i błędów */
+        
+        /* Lewa strona */
+        .label-drs { top: 10%; left: 0; }
+        .label-drs::after { width: 150px; right: -150px; top: 50%; transform: rotate(15deg); transform-origin: left center; }
+
+        .label-brake { top: 40%; left: -5%; }
+        .label-brake::after { width: 120px; right: -120px; top: 50%; }
+
+        .label-radio { bottom: 20%; left: 0; }
+        .label-radio::after { width: 150px; right: -150px; top: 50%; transform: rotate(-20deg); transform-origin: left center; }
+
+        /* Prawa strona */
+        .label-engine { top: 10%; right: 0; text-align: right; }
+        .label-engine::after { width: 150px; left: -150px; top: 50%; transform: rotate(-15deg); transform-origin: right center; }
+
+        .label-pit { top: 40%; right: -5%; text-align: right; }
+        .label-pit::after { width: 120px; left: -120px; top: 50%; }
+
+        .label-confirm { bottom: 20%; right: 0; text-align: right; }
+        .label-confirm::after { width: 180px; left: -180px; top: 50%; transform: rotate(25deg); transform-origin: right center; }
+
 
         /* --- FOOTER --- */
-        footer {
-            background-color: #000;
-            color: #555;
-            text-align: center;
-            padding: 3rem;
-            border-top: 2px solid var(--f1-red);
-        }
+        footer { background: #000; color: #555; text-align: center; padding: 3rem; border-top: 2px solid var(--f1-red); }
 
-        /* --- MEDIA QUERIES --- */
+        /* --- RESPANSYWNOŚĆ --- */
         @media (max-width: 1024px) {
             .tech-dashboard { grid-template-columns: repeat(2, 1fr); }
-            .box-large { grid-column: span 2; }
-            .box-tall { grid-row: span 1; }
+            .box-large { grid-column: span 2; } .box-tall { grid-row: span 1; }
+            .steering-container { height: auto; }
+            .wheel-img-wrapper { position: relative; width: 80%; left: auto; top: auto; transform: none; margin: 0 auto 2rem; }
+            .wheel-label { position: relative; top: auto; left: auto; right: auto; width: 90%; margin: 1rem auto; text-align: left; }
+            .wheel-label::after { display: none; /* Ukryj linie na mobile */ }
         }
-
         @media (max-width: 768px) {
-            .hero-content h1 { font-size: 2.5rem; }
+            .hero-content h1 { font-size: 2.8rem; }
             .nav-links { display: none; }
             .tech-dashboard { grid-template-columns: 1fr; }
             .box-large { grid-column: span 1; }
@@ -358,126 +247,62 @@
 <body>
 
     <nav>
-        <div class="logo"><i class="fa-solid fa-flag-checkered" style="color:var(--f1-red);"></i> F1 <span>HUB</span></div>
+        <div class="logo">F1 <span style="color:var(--f1-red);">TECH</span>HUB</div>
         <div class="nav-links">
             <a href="#kierowcy">Kierowcy</a>
-            <a href="#tory">Tory</a>
-            <a href="#tech">Centrum Danych</a>
+            <a href="#tech">Inżynieria</a>
+            <a href="#steering-wheel">Centrum Dowodzenia</a>
         </div>
     </nav>
 
     <header>
         <div class="hero-content">
-            <h1>CZYSTA<br>ADRENALINA</h1>
-            <p>Witamy w świecie, gdzie technologia spotyka się z odwagą. Przeglądaj legendy, tory i inżynierię F1.</p>
-            <a href="#tech" class="btn">ZOBACZ TECHNOLOGIĘ</a>
+            <h1>SZCZYT<br>TECHNOLOGII</h1>
+            <p style="font-size: 1.2rem; max-width: 600px; margin-bottom: 2rem;">Poznaj maszyny, które definiują granice fizyki. Od aerodynamiki po systemy hybrydowe.</p>
+            <a href="#tech" class="btn">ANALIZUJ DANE</a>
         </div>
     </header>
 
     <section id="kierowcy">
-        <h2 class="section-title">Hall of Fame</h2>
+        <h2 class="section-title">Legendy Toru</h2>
         <div class="drivers-grid">
-            
             <div class="driver-card">
                 <div class="driver-img-box">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Michael_Schumacher_2010_Malaysia_qualifying.jpg/640px-Michael_Schumacher_2010_Malaysia_qualifying.jpg" alt="Schumacher">
+                    <img src="https://i.imgur.com/KzXjWfJ.jpeg" alt="Michael Schumacher">
                 </div>
                 <div class="driver-info">
                     <h3>Michael Schumacher</h3>
-                    <p>Legenda Ferrari. 7-krotny mistrz świata, który zdefiniował nowoczesną erę sportu.</p>
+                    <p>Perfekcjonista, który zmienił Ferrari w dominującą siłę.</p>
                     <div class="stats-row">
                         <div><span>TYTUŁY</span><strong>7</strong></div>
-                        <div><span>ZWYCIĘSTWA</span><strong>91</strong></div>
+                        <div><span>WYGRANE</span><strong>91</strong></div>
                     </div>
                 </div>
             </div>
-
             <div class="driver-card">
                 <div class="driver-img-box">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Lewis_Hamilton_2016_Malaysia_2.jpg/640px-Lewis_Hamilton_2016_Malaysia_2.jpg" alt="Hamilton">
+                    <img src="https://i.imgur.com/Uq2uX7a.jpeg" alt="Lewis Hamilton">
                 </div>
                 <div class="driver-info">
                     <h3>Lewis Hamilton</h3>
-                    <p>Brytyjski mistrz. Rekordzista w ilości wygranych wyścigów i pole positions.</p>
+                    <p>Statystycznie najlepszy kierowca w historii sportu.</p>
                     <div class="stats-row">
                         <div><span>TYTUŁY</span><strong>7</strong></div>
-                        <div><span>ZWYCIĘSTWA</span><strong>103+</strong></div>
+                        <div><span>WYGRANE</span><strong>103+</strong></div>
                     </div>
                 </div>
             </div>
-
             <div class="driver-card">
                 <div class="driver-img-box">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Max_Verstappen_2017_Malaysia_3.jpg/640px-Max_Verstappen_2017_Malaysia_3.jpg" alt="Verstappen">
+                    <img src="https://i.imgur.com/9N8zYhR.jpeg" alt="Max Verstappen">
                 </div>
                 <div class="driver-info">
                     <h3>Max Verstappen</h3>
-                    <p>Holenderska dominacja. Agresywny styl jazdy i niesamowita kontrola bolidu.</p>
+                    <p>Obecny dominator. Bezwzględny styl i kontrola.</p>
                     <div class="stats-row">
                         <div><span>TYTUŁY</span><strong>3+</strong></div>
-                        <div><span>ZWYCIĘSTWA</span><strong>54+</strong></div>
+                        <div><span>WYGRANE</span><strong>54+</strong></div>
                     </div>
-                </div>
-            </div>
-
-            <div class="driver-card">
-                <div class="driver-img-box">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Ayrton_Senna_1991.jpg/640px-Ayrton_Senna_1991.jpg" alt="Senna">
-                    </div>
-                <div class="driver-info">
-                    <h3>Ayrton Senna</h3>
-                    <p>Król deszczu. Jego rywalizacja z Prostem przeszła do historii jako najbardziej zacięta.</p>
-                    <div class="stats-row">
-                        <div><span>TYTUŁY</span><strong>3</strong></div>
-                        <div><span>ZWYCIĘSTWA</span><strong>41</strong></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="driver-card">
-                <div class="driver-img-box">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Fangio_agosto_1957.jpg/640px-Fangio_agosto_1957.jpg" alt="Fangio">
-                </div>
-                <div class="driver-info">
-                    <h3>J.M. Fangio</h3>
-                    <p>El Maestro. Wygrywał tytuły z 4 różnymi zespołami w latach 50-tych.</p>
-                    <div class="stats-row">
-                        <div><span>TYTUŁY</span><strong>5</strong></div>
-                        <div><span>SKUTECZNOŚĆ</span><strong>46%</strong></div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <section id="tory">
-        <h2 class="section-title">Global Circuits</h2>
-        <div class="track-grid">
-            <div class="track-card">
-                <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=800&auto=format&fit=crop" class="track-img" alt="Tor Wyścigowy">
-                <div class="track-details">
-                    <h3>Monza</h3>
-                    <span class="track-location">Włochy</span>
-                    <p>Świątynia prędkości. Najszybszy tor w kalendarzu, gdzie średnia prędkość przekracza 260 km/h.</p>
-                </div>
-            </div>
-            
-            <div class="track-card">
-                <img src="https://images.unsplash.com/photo-1533237265691-d24c30c3453a?q=80&w=800&auto=format&fit=crop" class="track-img" alt="Tor Wyścigowy">
-                <div class="track-details">
-                    <h3>Spa-Francorchamps</h3>
-                    <span class="track-location">Belgia</span>
-                    <p>Najdłuższy tor. Słynny zakręt Eau Rouge to test odwagi dla każdego kierowcy.</p>
-                </div>
-            </div>
-
-            <div class="track-card">
-                <img src="https://images.unsplash.com/photo-1516215354530-5b583f71587d?q=80&w=800&auto=format&fit=crop" class="track-img" alt="Monaco">
-                <div class="track-details">
-                    <h3>Monaco</h3>
-                    <span class="track-location">Monte Carlo</span>
-                    <p>Najtrudniejszy technicznie. Wąskie ulice nie wybaczają nawet milimetrowych błędów.</p>
                 </div>
             </div>
         </div>
@@ -485,91 +310,121 @@
 
     <section id="tech">
         <div class="tech-header">
-            <h2>F1 Engineering Hub</h2>
-            <p>ANALIZA SYSTEMÓW BOLIDU HYBRYDOWEGO</p>
+            <h2>SYSTEMY BOLIDU HYBRYDOWEGO</h2>
+            <p class="mono" style="color:var(--f1-red);">// DANE TELEMETRYCZNE // POZIOM ZAAWANSOWANY //</p>
         </div>
 
         <div class="tech-dashboard">
             
             <div class="tech-box box-large accent-aero">
-                <div class="box-title">
-                    <span>AERODYNAMICS</span>
-                    <i class="fa-solid fa-wind" style="color:var(--tech-cyan)"></i>
+                <div class="box-title"><span>AERODYNAMICS & DOWNFORCE</span> <i class="fa-solid fa-wind"></i></div>
+                <div class="box-main-value">~5.5 G</div>
+                <div class="box-desc">Maksymalne przeciążenie boczne w szybkich zakrętach (np. Suzuka, Silverstone).</div>
+                <div class="tech-data-list">
+                    <div class="tech-data-item"><span class="label">MAX DOCISK:</span><span class="value">>2500 KG (przy 320km/h)</span></div>
+                    <div class="tech-data-item"><span class="label">EFEKTYWNOŚĆ DRS:</span><span class="value">+15-20 km/h</span></div>
+                    <div class="tech-data-item"><span class="label">KOMPONENTY:</span><span class="value">Podłoga (60% docisku), Skrzydła</span></div>
                 </div>
-                <div class="box-value">5G</div>
-                <div class="box-desc">Przeciążenie w zakrętach. Bolid generuje 2000kg docisku przy 300km/h.</div>
-                <i class="fa-solid fa-plane-up tech-icon-large"></i>
+                <i class="fa-solid fa-plane-up tech-icon-bg"></i>
             </div>
 
             <div class="tech-box accent-engine">
-                <div class="box-title">
-                    <span>POWER UNIT</span>
-                    <i class="fa-solid fa-bolt" style="color:var(--f1-red)"></i>
+                <div class="box-title"><span>POWER UNIT (V6 HYBRID)</span> <i class="fa-solid fa-bolt"></i></div>
+                <div class="box-main-value">1050+ KM</div>
+                <div class="box-desc">Najbardziej wydajny silnik spalinowy na świecie (sprawność >52%).</div>
+                <div class="tech-data-list">
+                    <div class="tech-data-item"><span class="label">ICE (Spalinowy):</span><span class="value">1.6L V6 Turbo, 15k RPM</span></div>
+                    <div class="tech-data-item"><span class="label">MGU-K (Kinetyczny):</span><span class="value">Odzysk z hamowania (160 KM)</span></div>
+                    <div class="tech-data-item"><span class="label">MGU-H (Ciepło):</span><span class="value">Odzysk z turbo (nielimitowany)</span></div>
                 </div>
-                <div class="box-value">1000+ HP</div>
-                <div class="box-desc">1.6L V6 Turbo + Hybryda. Sprawność cieplna >50%.</div>
             </div>
 
             <div class="tech-box box-tall accent-pit">
-                <div class="box-title">
-                    <span>PIT STOP PERFORMANCE</span>
-                    <i class="fa-solid fa-stopwatch" style="color:var(--tech-yellow)"></i>
+                <div class="box-title"><span>PIT STOP EXECUTION</span> <i class="fa-solid fa-stopwatch"></i></div>
+                <div class="box-main-value">1.80s</div>
+                <div class="box-desc">Światowy rekord wymiany 4 kół (McLaren 2023). Perfekcyjna choreografia.</div>
+                
+                <div style="margin: 2rem 0; text-align: center;">
+                     <i class="fa-solid fa-people-group" style="font-size: 3rem; color: var(--tech-yellow);"></i>
                 </div>
-                <div class="box-value" style="color:var(--tech-yellow)">1.82s</div>
-                <div class="box-desc">Rekord zmiany 4 kół (Red Bull Racing).</div>
-                <div style="margin-top: 2rem; border: 1px dashed #555; padding: 10px;">
-                    <small style="color:#888">CREW MEMBERS:</small><br>
-                    <span style="color:white; font-size:1.2rem;">20+ OSÓB</span>
+                
+                <div class="tech-data-list">
+                    <div class="tech-data-item"><span class="label">ZAŁOGA:</span><span class="value">~22 Mechaników</span></div>
+                    <div class="tech-data-item"><span class="label">KLUCZE PNEUMAT.:</span><span class="value">Moment obr. >3000 Nm</span></div>
+                    <div class="tech-data-item"><span class="label">KOSZT BŁĘDU:</span><span class="value">Utrata pozycji / Kara</span></div>
                 </div>
-                <div style="margin-top: 1rem; border: 1px dashed #555; padding: 10px;">
-                    <small style="color:#888">WHEEL GUN RPM:</small><br>
-                    <span style="color:white; font-size:1.2rem;">15,000</span>
-                </div>
-                <i class="fa-solid fa-wrench tech-icon-large"></i>
+                <i class="fa-solid fa-wrench tech-icon-bg"></i>
             </div>
 
             <div class="tech-box">
-                <div class="box-title">
-                    <span>TYRE TEMPS</span>
-                    <i class="fa-solid fa-circle-notch"></i>
-                </div>
-                <div class="box-value">100°C</div>
-                <div class="box-desc">Optymalne okno pracy opon typu Soft.</div>
-            </div>
-
-            <div class="tech-box box-large accent-data">
-                <div class="box-title">
-                    <span>LIVE TELEMETRY</span>
-                    <i class="fa-solid fa-chart-simple" style="color:var(--tech-green)"></i>
-                </div>
-                <div class="box-desc" style="font-family: monospace; color: var(--tech-green);">
-                    SYSTEM STATUS: NORMAL<br>
-                    ERS DEPLOYMENT: 85%<br>
-                    FUEL FLOW: 100kg/h MAX
-                </div>
-                <div class="telemetry-bars">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
+                <div class="box-title"><span>TYRES (PIRELLI 18")</span> <i class="fa-regular fa-circle-dot"></i></div>
+                <div class="box-main-value">80-110°C</div>
+                <div class="box-desc">Optymalne okno pracy. Przegrzanie oznacza natychmiastową utratę przyczepności.</div>
+                <div class="tech-data-list">
+                    <div class="tech-data-item"><span class="label">CIŚNIENIE (PRZÓD):</span><span class="value">~22.5 PSI (Start)</span></div>
+                    <div class="tech-data-item"><span class="label">CIŚNIENIE (TYŁ):</span><span class="value">~20.5 PSI (Start)</span></div>
+                    <div class="tech-data-item"><span class="label">MIESZANKI:</span><span class="value">C1 (Twarda) do C5 (Miękka)</span></div>
                 </div>
             </div>
 
-             <div class="tech-box">
-                <div class="box-title">
-                    <span>STEERING</span>
-                    <i class="fa-solid fa-gamepad"></i>
+             <div class="tech-box accent-data">
+                <div class="box-title"><span>BRAKING SYSTEM</span> <i class="fa-solid fa-shield-halved"></i></div>
+                <div class="box-main-value">1000°C+</div>
+                <div class="box-desc">Temperatura tarcz węglowych podczas ostrego hamowania (np. 340km/h do 80km/h).</div>
+                <div class="tech-data-list">
+                    <div class="tech-data-item"><span class="label">MATERIAŁ:</span><span class="value">Carbon-Carbon</span></div>
+                    <div class="tech-data-item"><span class="label">SIŁA NA PEDAŁ:</span><span class="value">~150 kg nacisku kierowcy</span></div>
+                    <div class="tech-data-item"><span class="label">DROGA HAM.:</span><span class="value">< 100m (z 300km/h)</span></div>
                 </div>
-                <div class="box-value">25+</div>
-                <div class="box-desc">Przycisków i pokręteł do zmiany ustawień mapowania silnika i dyferencjału podczas jazdy.</div>
+                <i class="fa-solid fa-fire-burner tech-icon-bg"></i>
             </div>
 
         </div>
     </section>
 
+    <section id="steering-wheel">
+        <div class="tech-header">
+            <h2>CENTRUM DOWODZENIA KIEROWCY</h2>
+            <p>Interfejs człowiek-maszyna. Ponad 30 przycisków i pokręteł kontrolujących każdy aspekt bolidu w czasie rzeczywistym.</p>
+        </div>
+
+        <div class="steering-container">
+            <div class="wheel-img-wrapper">
+                <img src="https://i.imgur.com/Q7Z9Z8x.png" alt="F1 Steering Wheel">
+            </div>
+
+            <div class="wheel-label label-drs">
+                <h4>DRS (Drag Reduction)</h4>
+                <p>Otwiera tylne skrzydło w strefach DRS, zwiększając prędkość maksymalną o ok. 15 km/h.</p>
+            </div>
+            <div class="wheel-label label-brake">
+                <h4>BBAL (Brake Balance)</h4>
+                <p>Pokrętło do zmiany balansu hamulców przód/tył w trakcie jazdy, zależnie od zużycia opon i zakrętu.</p>
+            </div>
+            <div class="wheel-label label-radio">
+                <h4>RADIO (Team Comm)</h4>
+                <p>Bezpośrednia komunikacja z inżynierem wyścigowym. "Box, box, box".</p>
+            </div>
+
+            <div class="wheel-label label-engine">
+                <h4>ENG MODE (Strat Mode)</h4>
+                <p>Wybór mapowania silnika. Od trybu oszczędzania paliwa po pełną moc kwalifikacyjną.</p>
+            </div>
+             <div class="wheel-label label-pit">
+                <h4>PL (Pit Limiter)</h4>
+                <p>Ogranicznik prędkości w alei serwisowej (zazwyczaj 80 km/h). Zapobiega karom.</p>
+            </div>
+             <div class="wheel-label label-confirm">
+                <h4>OK / ACKNOWLEDGE</h4>
+                <p>Potwierdzenie instrukcji od zespołu bez konieczności mówienia przez radio.</p>
+            </div>
+        </div>
+    </section>
+
     <footer>
-        <p>&copy; 2023 F1 Fan Project. Stworzone dla pasji.</p>
+        <div class="logo" style="font-size: 1.2rem;">F1 <span style="color:var(--f1-red);">TECH</span>HUB</div>
+        <p style="margin-top:1rem; font-size:0.9rem;">Projekt edukacyjny non-profit.</p>
+        <p style="font-size:0.8rem; color:#444;">F1 jest znakiem towarowym Formula One Licensing BV. Ta strona nie jest powiązana z oficjalną serią.</p>
     </footer>
 
 </body>

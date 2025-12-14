@@ -3,428 +3,468 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 Tech Hub - Ultimate Edition</title>
+    <title>F1 Engineering Data Hub</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* --- ZMIENNE I RESET --- */
+        /* --- KONFIGURACJA KOLORYSTYCZNA (NEON DARK MODE) --- */
         :root {
-            --f1-red: #e10600;
-            --f1-dark: #15151e;
-            --white: #ffffff;
+            --bg-dark: #050507;
+            --bg-panel: #0f0f14;
+            --grid-line: rgba(255, 255, 255, 0.05);
             
-            /* Tech Colors (Neon) */
-            --tech-cyan: #00f0ff;
-            --tech-yellow: #fcee0a;
-            --tech-purple: #bc13fe;
-            --tech-green: #00ff41;
-            --tech-bg: #0a0a0f;
+            --neon-red: #ff2a2a;
+            --neon-cyan: #00f3ff;
+            --neon-green: #0aff0a;
+            --neon-yellow: #fff700;
+            --neon-purple: #bc13fe;
+            
+            --text-main: #e0e0e0;
+            --text-muted: #888888;
+            
+            --font-tech: 'Orbitron', sans-serif;
+            --font-body: 'Rajdhani', sans-serif;
+            --font-code: 'Share Tech Mono', monospace;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+        
         body {
-            font-family: 'Titillium Web', sans-serif;
-            background-color: #f0f0f3;
-            color: var(--f1-dark);
-            line-height: 1.6;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-body);
             overflow-x: hidden;
-        }
-        a { text-decoration: none; color: inherit; }
-        ul { list-style: none; }
-        .mono { font-family: 'Roboto Mono', monospace; }
-
-        /* --- TYPOGRAFIA NAGŁÓWKÓW --- */
-        h1, h2, h3 {
-            text-transform: uppercase;
-            font-weight: 900;
-            font-style: italic;
-            letter-spacing: 1px;
+            /* Tło "Blueprint" - siatka inżynierska */
+            background-image: 
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 40px 40px;
         }
 
-        .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
+        /* --- UI ELEMENTS --- */
+        h1, h2, h3 { font-family: var(--font-tech); text-transform: uppercase; letter-spacing: 2px; }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
             position: relative;
             display: inline-block;
-            padding-right: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .section-header h2 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-header::after {
+            content: ''; display: block; width: 60%; height: 2px; background: var(--neon-red);
+            margin: 10px auto 0; box-shadow: 0 0 10px var(--neon-red);
         }
 
-        .section-title::after {
-            content: '';
-            position: absolute;
-            right: 0; top: 5px; height: 90%; width: 20px;
-            background: repeating-linear-gradient(-45deg, var(--f1-red), var(--f1-red) 5px, transparent 5px, transparent 10px);
-            transform: skew(-20deg);
+        .btn-tech {
+            background: transparent;
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            padding: 15px 40px;
+            font-family: var(--font-code);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
         }
-
-        /* --- NAWIGACJA --- */
-        nav {
-            background-color: var(--f1-dark);
-            color: var(--white);
-            padding: 1rem 5%;
-            position: sticky; top: 0; z-index: 1000;
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 3px solid var(--f1-red);
-        }
-        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; font-family: 'Orbitron', sans-serif; }
-        .logo span { color: var(--f1-red); }
-        .nav-links { display: flex; gap: 2rem; }
-        .nav-links a { font-weight: 700; transition: color 0.3s; text-transform: uppercase; font-size: 0.9rem; }
-        .nav-links a:hover { color: var(--f1-red); }
+        
+        .btn-tech:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 20px var(--neon-cyan); }
 
         /* --- HERO SECTION --- */
         header {
-            height: 85vh;
-            /* Niezawodne zdjęcie z Unsplash */
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1504198070170-4ca53bb1c1fa?q=80&w=1920&auto=format&fit=crop');
-            background-size: cover; background-position: center; background-attachment: fixed;
-            display: flex; align-items: center; padding: 0 10%; color: var(--white);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            border-bottom: 1px solid var(--grid-line);
         }
-        .hero-content h1 { font-size: 4rem; line-height: 1; margin-bottom: 1rem; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
-        .btn { padding: 12px 35px; background: var(--f1-red); color: white; font-weight: bold; display: inline-block; transition: 0.3s; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); }
-        .btn:hover { background: #b00500; transform: scale(1.05); }
 
-        section { padding: 6rem 10%; }
-
-        /* --- KIEROWCY (Nowe, działające linki Imgur) --- */
-        .drivers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
-        .driver-card { background: var(--white); box-shadow: 0 10px 20px rgba(0,0,0,0.05); border-radius: 8px; overflow: hidden; transition: transform 0.3s; }
-        .driver-card:hover { transform: translateY(-10px); }
-        .driver-img-box { height: 350px; width: 100%; background-color: #222; overflow: hidden; }
-        .driver-img-box img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform 0.5s; }
-        .driver-card:hover .driver-img-box img { transform: scale(1.05); }
-        .driver-info { padding: 1.5rem; }
-        .stats-row { display: flex; justify-content: space-between; border-top: 1px solid #eee; padding-top: 15px; margin-top: 15px; }
-        .stats-row div { display: flex; flex-direction: column; }
-        .stats-row strong { font-size: 1.4rem; color: var(--f1-red); line-height: 1; }
-        .stats-row span { font-size: 0.8rem; color: #888; }
-
-        /* --- INŻYNIERIA (ULTIMATE BENTO GRID - WIĘCEJ DETALI) --- */
-        #tech {
-            background-color: var(--tech-bg); color: #fff; padding-top: 4rem;
-            /* Tło "Blueprint" */
-            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 30px 30px;
+        /* Animowane koło w tle */
+        .hero-bg-circle {
+            position: absolute; width: 600px; height: 600px;
+            border: 1px dashed rgba(255,255,255,0.1); border-radius: 50%;
+            animation: spin 60s linear infinite; z-index: -1;
         }
-        .tech-header { text-align: center; margin-bottom: 4rem; }
-        .tech-header h2 { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; color: var(--white); letter-spacing: 2px; }
+        .hero-bg-circle::before {
+            content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 400px; height: 400px; border: 1px solid rgba(0, 243, 255, 0.1); border-radius: 50%;
+        }
+
+        .hero-title { font-size: 5rem; line-height: 1.1; text-shadow: 0 0 20px rgba(255, 42, 42, 0.3); text-align: center; }
+        .hero-title span { color: var(--neon-red); }
+        .hero-subtitle { font-family: var(--font-code); color: var(--neon-cyan); margin-top: 1rem; margin-bottom: 3rem; font-size: 1.2rem; }
+
+        /* --- DASHBOARD GRID (Główna sekcja) --- */
+        section { padding: 5rem 5%; }
         
-        .tech-dashboard {
-            display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, auto);
-            gap: 1.5rem; max-width: 1400px; margin: 0 auto;
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: minmax(250px, auto);
+            gap: 20px;
+            max-width: 1600px;
+            margin: 0 auto;
         }
-        .tech-box {
-            background: rgba(20, 20, 30, 0.6); border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 2rem; position: relative; overflow: hidden; backdrop-filter: blur(5px); transition: 0.3s;
+
+        .panel {
+            background: rgba(15, 15, 20, 0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 2rem;
+            position: relative;
+            backdrop-filter: blur(5px);
+            transition: 0.3s;
             display: flex; flex-direction: column;
         }
-        .tech-box:hover { background: rgba(30, 30, 40, 0.8); border-color: rgba(255, 255, 255, 0.2); }
-        .box-large { grid-column: span 2; }
-        .box-tall { grid-row: span 2; }
         
-        .box-title { font-family: 'Orbitron', sans-serif; font-size: 0.8rem; color: rgba(255,255,255,0.6); letter-spacing: 1px; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;}
-        .box-main-value { font-family: 'Orbitron', sans-serif; font-size: 2.8rem; font-weight: 700; color: var(--white); line-height: 1; margin-bottom: 10px; }
-        .box-desc { font-size: 0.9rem; color: #aaa; margin-bottom: 1.5rem; }
+        .panel:hover { border-color: rgba(255,255,255,0.3); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
-        /* Sub-data w boxach */
-        .tech-data-list { margin-top: auto; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 1rem; }
-        .tech-data-item { display: flex; justify-content: space-between; margin-bottom: 5px; font-family: 'Roboto Mono', monospace; font-size: 0.85rem; }
-        .tech-data-item span.label { color: #666; }
-        .tech-data-item span.value { color: var(--white); }
+        /* Klasy rozmiarów kafelków */
+        .span-2 { grid-column: span 2; }
+        .span-3 { grid-column: span 3; }
+        .row-2 { grid-row: span 2; }
 
-        /* Akcenty kolorystyczne */
-        .accent-aero { border-top: 3px solid var(--tech-cyan); } .accent-aero .box-main-value { color: var(--tech-cyan); }
-        .accent-engine { border-top: 3px solid var(--f1-red); } .accent-engine .box-main-value { color: var(--f1-red); }
-        .accent-pit { border-top: 3px solid var(--tech-yellow); } .accent-pit .box-main-value { color: var(--tech-yellow); }
-        .accent-data { border-top: 3px solid var(--tech-green); }
-        
-        .tech-icon-bg { position: absolute; right: -20px; bottom: -20px; font-size: 8rem; opacity: 0.05; pointer-events: none; }
-
-        /* --- NOWA SEKCJA: KIEROWNICA --- */
-        #steering-wheel {
-            background-color: #111;
-            color: var(--white);
-            padding-top: 4rem;
-            padding-bottom: 6rem;
-            overflow: hidden; /* Ukrywa wychodzące linie */
+        /* Nagłówki kafelków */
+        .panel-header {
+            display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;
         }
+        .panel-title { font-family: var(--font-code); color: var(--text-muted); font-size: 0.9rem; }
+        .panel-icon { font-size: 1.5rem; }
+
+        /* Treść kafelków */
+        .stat-value { font-size: 3.5rem; font-weight: 700; font-family: var(--font-tech); line-height: 1; }
+        .stat-unit { font-size: 1rem; color: var(--text-muted); font-family: var(--font-body); }
+        .stat-desc { margin-top: 1rem; font-size: 1rem; color: #aaa; line-height: 1.4; }
+
+        /* Kolory kafelków */
+        .border-red { border-top: 3px solid var(--neon-red); } .border-red .panel-icon { color: var(--neon-red); }
+        .border-cyan { border-top: 3px solid var(--neon-cyan); } .border-cyan .panel-icon { color: var(--neon-cyan); }
+        .border-green { border-top: 3px solid var(--neon-green); } .border-green .panel-icon { color: var(--neon-green); }
+        .border-yellow { border-top: 3px solid var(--neon-yellow); } .border-yellow .panel-icon { color: var(--neon-yellow); }
+
+        /* Paski postępu / wykresy */
+        .progress-container { margin-top: auto; }
+        .progress-label { display: flex; justify-content: space-between; font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 5px; color: var(--text-muted); }
+        .progress-bar { width: 100%; height: 6px; background: #333; position: relative; overflow: hidden; }
+        .progress-fill { height: 100%; position: absolute; left: 0; top: 0; }
         
-        .steering-container {
+        .fill-red { background: var(--neon-red); width: 52%; box-shadow: 0 0 10px var(--neon-red); }
+        .fill-cyan { background: var(--neon-cyan); width: 85%; box-shadow: 0 0 10px var(--neon-cyan); }
+
+        /* --- KIEROWNICA (Schemat) --- */
+        .steering-section { background: #000; border-top: 1px solid var(--grid-line); border-bottom: 1px solid var(--grid-line); }
+        
+        .schematic-container {
             position: relative;
             max-width: 1000px;
-            margin: 4rem auto 0;
-            height: 600px; /* Stała wysokość dla diagramu */
+            height: 600px;
+            margin: 0 auto;
         }
 
-        .wheel-img-wrapper {
+        .steering-img {
+            width: 70%;
+            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+            /* Filtr sprawia, że zdjęcie wygląda jak hologram/szkic */
+            filter: grayscale(100%) contrast(1.2) drop-shadow(0 0 15px rgba(255,255,255,0.1));
+            opacity: 0.8;
+            transition: 0.5s;
+        }
+        .steering-img:hover { filter: grayscale(0%) contrast(1.1); opacity: 1; }
+
+        .hotspot {
             position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 60%; /* Rozmiar kierownicy */
-            z-index: 2;
+            display: flex; align-items: center;
+            transition: 0.3s;
         }
-
-        .wheel-img-wrapper img {
-            width: 100%;
-            height: auto;
-            filter: drop-shadow(0 0 30px rgba(225,6,0,0.2));
-        }
-
-        /* Etykiety i linie */
-        .wheel-label {
-            position: absolute;
-            width: 200px;
-            padding: 10px 15px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--f1-red);
-            backdrop-filter: blur(5px);
-            z-index: 3;
-        }
-        .wheel-label h4 { color: var(--f1-red); font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 5px; }
-        .wheel-label p { font-size: 0.8rem; color: #ccc; }
-
-        /* Linie łączące (pseudo-elementy) */
-        .wheel-label::after {
-            content: '';
-            position: absolute;
-            height: 2px;
-            background: var(--f1-red);
-            z-index: 1;
-        }
-
-        /* Pozycjonowanie etykiet i linii - Metoda prób i błędów */
         
-        /* Lewa strona */
-        .label-drs { top: 10%; left: 0; }
-        .label-drs::after { width: 150px; right: -150px; top: 50%; transform: rotate(15deg); transform-origin: left center; }
+        .hotspot-dot {
+            width: 10px; height: 10px; background: var(--bg-dark); border: 2px solid var(--neon-cyan);
+            border-radius: 50%; position: relative; z-index: 2;
+        }
+        .hotspot-line {
+            height: 1px; background: var(--neon-cyan); width: 50px; opacity: 0.5;
+        }
+        .hotspot-text {
+            border: 1px solid var(--neon-cyan); background: rgba(0, 243, 255, 0.1);
+            color: var(--neon-cyan); padding: 5px 10px; font-family: var(--font-code); font-size: 0.8rem;
+            backdrop-filter: blur(4px); min-width: 150px;
+        }
 
-        .label-brake { top: 40%; left: -5%; }
-        .label-brake::after { width: 120px; right: -120px; top: 50%; }
+        /* Pozycje Hotspotów */
+        .hs-left { flex-direction: row-reverse; left: 5%; } 
+        .hs-right { left: auto; right: 5%; }
+        
+        .hs-1 { top: 20%; } /* DRS */
+        .hs-2 { top: 40%; } /* Radio */
+        .hs-3 { top: 60%; } /* Brake Bal */
+        
+        .hs-4 { top: 20%; } /* Engine Map */
+        .hs-5 { top: 40%; } /* Neutral */
+        .hs-6 { top: 60%; } /* Pit Limiter */
 
-        .label-radio { bottom: 20%; left: 0; }
-        .label-radio::after { width: 150px; right: -150px; top: 50%; transform: rotate(-20deg); transform-origin: left center; }
+        /* --- OPONY (Wizualizacja CSS) --- */
+        .tyre-container {
+            display: flex; gap: 20px; justify-content: center; margin-top: 2rem; flex-wrap: wrap;
+        }
+        .tyre {
+            width: 100px; height: 100px; border-radius: 50%; border: 15px solid #111;
+            display: flex; justify-content: center; align-items: center;
+            position: relative; background: #222;
+            box-shadow: inset 0 0 20px #000;
+        }
+        .tyre::after {
+            content: ''; position: absolute; top: -18px; left: -18px; right: -18px; bottom: -18px;
+            border-radius: 50%; border: 3px solid transparent;
+        }
+        .t-soft::after { border-color: var(--neon-red); } .t-soft .tyre-label { color: var(--neon-red); }
+        .t-medium::after { border-color: var(--neon-yellow); } .t-medium .tyre-label { color: var(--neon-yellow); }
+        .t-hard::after { border-color: #fff; } .t-hard .tyre-label { color: #fff; }
+        .t-inter::after { border-color: var(--neon-green); } .t-inter .tyre-label { color: var(--neon-green); }
+        .t-wet::after { border-color: #0088ff; } .t-wet .tyre-label { color: #0088ff; }
 
-        /* Prawa strona */
-        .label-engine { top: 10%; right: 0; text-align: right; }
-        .label-engine::after { width: 150px; left: -150px; top: 50%; transform: rotate(-15deg); transform-origin: right center; }
+        .tyre-label { font-family: var(--font-tech); font-weight: 700; font-size: 1.2rem; }
 
-        .label-pit { top: 40%; right: -5%; text-align: right; }
-        .label-pit::after { width: 120px; left: -120px; top: 50%; }
+        /* --- ANIMACJE --- */
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-        .label-confirm { bottom: 20%; right: 0; text-align: right; }
-        .label-confirm::after { width: 180px; left: -180px; top: 50%; transform: rotate(25deg); transform-origin: right center; }
+        .live-dot {
+            width: 8px; height: 8px; background: var(--neon-red); border-radius: 50%;
+            display: inline-block; margin-right: 8px; animation: blink 1s infinite;
+        }
 
-
-        /* --- FOOTER --- */
-        footer { background: #000; color: #555; text-align: center; padding: 3rem; border-top: 2px solid var(--f1-red); }
-
-        /* --- RESPANSYWNOŚĆ --- */
-        @media (max-width: 1024px) {
-            .tech-dashboard { grid-template-columns: repeat(2, 1fr); }
-            .box-large { grid-column: span 2; } .box-tall { grid-row: span 1; }
-            .steering-container { height: auto; }
-            .wheel-img-wrapper { position: relative; width: 80%; left: auto; top: auto; transform: none; margin: 0 auto 2rem; }
-            .wheel-label { position: relative; top: auto; left: auto; right: auto; width: 90%; margin: 1rem auto; text-align: left; }
-            .wheel-label::after { display: none; /* Ukryj linie na mobile */ }
+        /* --- RESPONSYWNOŚĆ --- */
+        @media (max-width: 1200px) {
+            .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
+            .span-3 { grid-column: span 2; }
         }
         @media (max-width: 768px) {
-            .hero-content h1 { font-size: 2.8rem; }
-            .nav-links { display: none; }
-            .tech-dashboard { grid-template-columns: 1fr; }
-            .box-large { grid-column: span 1; }
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .span-2, .span-3 { grid-column: span 1; }
+            .hero-title { font-size: 3rem; }
+            .steering-img { width: 90%; opacity: 0.4; }
+            .hotspot { position: relative; margin: 10px 0; left: auto; right: auto; flex-direction: row; }
+            .hotspot-line { display: none; }
+            .schematic-container { height: auto; display: flex; flex-direction: column; }
         }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">F1 <span style="color:var(--f1-red);">TECH</span>HUB</div>
-        <div class="nav-links">
-            <a href="#kierowcy">Kierowcy</a>
-            <a href="#tech">Inżynieria</a>
-            <a href="#steering-wheel">Centrum Dowodzenia</a>
-        </div>
-    </nav>
-
     <header>
-        <div class="hero-content">
-            <h1>SZCZYT<br>TECHNOLOGII</h1>
-            <p style="font-size: 1.2rem; max-width: 600px; margin-bottom: 2rem;">Poznaj maszyny, które definiują granice fizyki. Od aerodynamiki po systemy hybrydowe.</p>
-            <a href="#tech" class="btn">ANALIZUJ DANE</a>
+        <div class="hero-bg-circle"></div>
+        <div style="font-family: var(--font-code); color: var(--neon-red); letter-spacing: 5px; margin-bottom: 20px;">
+            <span class="live-dot"></span>SYSTEM ONLINE
         </div>
+        <h1 class="hero-title">F1 <span>TELEMETRY</span><br>DATA HUB</h1>
+        <p class="hero-subtitle">// ADVANCED ENGINEERING ANALYSIS //</p>
+        <a href="#dashboard" class="btn-tech">INITIALIZE DASHBOARD</a>
     </header>
 
-    <section id="kierowcy">
-        <h2 class="section-title">Legendy Toru</h2>
-        <div class="drivers-grid">
-            <div class="driver-card">
-                <div class="driver-img-box">
-                    <img src="https://i.imgur.com/KzXjWfJ.jpeg" alt="Michael Schumacher">
-                </div>
-                <div class="driver-info">
-                    <h3>Michael Schumacher</h3>
-                    <p>Perfekcjonista, który zmienił Ferrari w dominującą siłę.</p>
-                    <div class="stats-row">
-                        <div><span>TYTUŁY</span><strong>7</strong></div>
-                        <div><span>WYGRANE</span><strong>91</strong></div>
-                    </div>
-                </div>
-            </div>
-            <div class="driver-card">
-                <div class="driver-img-box">
-                    <img src="https://i.imgur.com/Uq2uX7a.jpeg" alt="Lewis Hamilton">
-                </div>
-                <div class="driver-info">
-                    <h3>Lewis Hamilton</h3>
-                    <p>Statystycznie najlepszy kierowca w historii sportu.</p>
-                    <div class="stats-row">
-                        <div><span>TYTUŁY</span><strong>7</strong></div>
-                        <div><span>WYGRANE</span><strong>103+</strong></div>
-                    </div>
-                </div>
-            </div>
-            <div class="driver-card">
-                <div class="driver-img-box">
-                    <img src="https://i.imgur.com/9N8zYhR.jpeg" alt="Max Verstappen">
-                </div>
-                <div class="driver-info">
-                    <h3>Max Verstappen</h3>
-                    <p>Obecny dominator. Bezwzględny styl i kontrola.</p>
-                    <div class="stats-row">
-                        <div><span>TYTUŁY</span><strong>3+</strong></div>
-                        <div><span>WYGRANE</span><strong>54+</strong></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="tech">
-        <div class="tech-header">
-            <h2>SYSTEMY BOLIDU HYBRYDOWEGO</h2>
-            <p class="mono" style="color:var(--f1-red);">// DANE TELEMETRYCZNE // POZIOM ZAAWANSOWANY //</p>
+    <section id="dashboard">
+        <div class="section-header">
+            <h2>PARAMETRY BOLIDU</h2>
         </div>
 
-        <div class="tech-dashboard">
+        <div class="dashboard-grid">
             
-            <div class="tech-box box-large accent-aero">
-                <div class="box-title"><span>AERODYNAMICS & DOWNFORCE</span> <i class="fa-solid fa-wind"></i></div>
-                <div class="box-main-value">~5.5 G</div>
-                <div class="box-desc">Maksymalne przeciążenie boczne w szybkich zakrętach (np. Suzuka, Silverstone).</div>
-                <div class="tech-data-list">
-                    <div class="tech-data-item"><span class="label">MAX DOCISK:</span><span class="value">>2500 KG (przy 320km/h)</span></div>
-                    <div class="tech-data-item"><span class="label">EFEKTYWNOŚĆ DRS:</span><span class="value">+15-20 km/h</span></div>
-                    <div class="tech-data-item"><span class="label">KOMPONENTY:</span><span class="value">Podłoga (60% docisku), Skrzydła</span></div>
+            <div class="panel span-2 row-2 border-red">
+                <div class="panel-header">
+                    <span class="panel-title">PU / INTERNAL COMBUSTION ENGINE</span>
+                    <i class="fa-solid fa-fire-burner panel-icon"></i>
                 </div>
-                <i class="fa-solid fa-plane-up tech-icon-bg"></i>
-            </div>
-
-            <div class="tech-box accent-engine">
-                <div class="box-title"><span>POWER UNIT (V6 HYBRID)</span> <i class="fa-solid fa-bolt"></i></div>
-                <div class="box-main-value">1050+ KM</div>
-                <div class="box-desc">Najbardziej wydajny silnik spalinowy na świecie (sprawność >52%).</div>
-                <div class="tech-data-list">
-                    <div class="tech-data-item"><span class="label">ICE (Spalinowy):</span><span class="value">1.6L V6 Turbo, 15k RPM</span></div>
-                    <div class="tech-data-item"><span class="label">MGU-K (Kinetyczny):</span><span class="value">Odzysk z hamowania (160 KM)</span></div>
-                    <div class="tech-data-item"><span class="label">MGU-H (Ciepło):</span><span class="value">Odzysk z turbo (nielimitowany)</span></div>
-                </div>
-            </div>
-
-            <div class="tech-box box-tall accent-pit">
-                <div class="box-title"><span>PIT STOP EXECUTION</span> <i class="fa-solid fa-stopwatch"></i></div>
-                <div class="box-main-value">1.80s</div>
-                <div class="box-desc">Światowy rekord wymiany 4 kół (McLaren 2023). Perfekcyjna choreografia.</div>
-                
-                <div style="margin: 2rem 0; text-align: center;">
-                     <i class="fa-solid fa-people-group" style="font-size: 3rem; color: var(--tech-yellow);"></i>
+                <div style="margin-top: 1rem;">
+                    <div class="stat-value" style="color:var(--neon-red)">1036 <span style="font-size:1.5rem">HP</span></div>
+                    <div class="stat-unit">MOC CAŁKOWITA (ICE + ERS)</div>
                 </div>
                 
-                <div class="tech-data-list">
-                    <div class="tech-data-item"><span class="label">ZAŁOGA:</span><span class="value">~22 Mechaników</span></div>
-                    <div class="tech-data-item"><span class="label">KLUCZE PNEUMAT.:</span><span class="value">Moment obr. >3000 Nm</span></div>
-                    <div class="tech-data-item"><span class="label">KOSZT BŁĘDU:</span><span class="value">Utrata pozycji / Kara</span></div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 3rem;">
+                    <div>
+                        <div class="progress-label"><span>THERMAL EFFICIENCY</span><span>52%</span></div>
+                        <div class="progress-bar"><div class="progress-fill fill-red"></div></div>
+                        <p class="stat-desc" style="font-size: 0.8rem; margin-top: 5px;">Najbardziej wydajny silnik spalinowy w historii motoryzacji.</p>
+                    </div>
+                    <div>
+                        <div class="progress-label"><span>MGU-K RECOVERY</span><span>2 MJ/lap</span></div>
+                        <div class="progress-bar"><div class="progress-fill fill-red" style="width: 100%"></div></div>
+                        <p class="stat-desc" style="font-size: 0.8rem; margin-top: 5px;">Energia odzyskiwana z hamowania przekazywana na wał korbowy.</p>
+                    </div>
                 </div>
-                <i class="fa-solid fa-wrench tech-icon-bg"></i>
+                
+                <div style="margin-top: auto; border-top: 1px dashed #333; padding-top: 1rem; font-family: var(--font-code); color: var(--neon-red);">
+                    WARNING: TURBO TEMP > 900°C
+                </div>
             </div>
 
-            <div class="tech-box">
-                <div class="box-title"><span>TYRES (PIRELLI 18")</span> <i class="fa-regular fa-circle-dot"></i></div>
-                <div class="box-main-value">80-110°C</div>
-                <div class="box-desc">Optymalne okno pracy. Przegrzanie oznacza natychmiastową utratę przyczepności.</div>
-                <div class="tech-data-list">
-                    <div class="tech-data-item"><span class="label">CIŚNIENIE (PRZÓD):</span><span class="value">~22.5 PSI (Start)</span></div>
-                    <div class="tech-data-item"><span class="label">CIŚNIENIE (TYŁ):</span><span class="value">~20.5 PSI (Start)</span></div>
-                    <div class="tech-data-item"><span class="label">MIESZANKI:</span><span class="value">C1 (Twarda) do C5 (Miękka)</span></div>
+            <div class="panel border-cyan">
+                <div class="panel-header">
+                    <span class="panel-title">AERODYNAMICS</span>
+                    <i class="fa-solid fa-wind panel-icon"></i>
+                </div>
+                <div class="stat-value">5.5 <span style="font-size:1.5rem">G</span></div>
+                <div class="stat-unit">LATERAL FORCE</div>
+                <p class="stat-desc">Maksymalne przeciążenie boczne w szybkich zakrętach (np. Silverstone, Suzuka).</p>
+                
+                <div class="progress-container">
+                    <div class="progress-label"><span>DOWNFORCE LOAD</span><span>2500 KG</span></div>
+                    <div class="progress-bar"><div class="progress-fill fill-cyan"></div></div>
                 </div>
             </div>
 
-             <div class="tech-box accent-data">
-                <div class="box-title"><span>BRAKING SYSTEM</span> <i class="fa-solid fa-shield-halved"></i></div>
-                <div class="box-main-value">1000°C+</div>
-                <div class="box-desc">Temperatura tarcz węglowych podczas ostrego hamowania (np. 340km/h do 80km/h).</div>
-                <div class="tech-data-list">
-                    <div class="tech-data-item"><span class="label">MATERIAŁ:</span><span class="value">Carbon-Carbon</span></div>
-                    <div class="tech-data-item"><span class="label">SIŁA NA PEDAŁ:</span><span class="value">~150 kg nacisku kierowcy</span></div>
-                    <div class="tech-data-item"><span class="label">DROGA HAM.:</span><span class="value">< 100m (z 300km/h)</span></div>
+            <div class="panel border-yellow">
+                <div class="panel-header">
+                    <span class="panel-title">PIT STOP CREW</span>
+                    <i class="fa-solid fa-stopwatch panel-icon"></i>
                 </div>
-                <i class="fa-solid fa-fire-burner tech-icon-bg"></i>
+                <div class="stat-value">1.82 <span style="font-size:1.5rem">s</span></div>
+                <div class="stat-unit">WORLD RECORD</div>
+                <p class="stat-desc">Wymiana 4 kół przez 22 mechaników. Pistolety pneumatyczne obracają się z prędkością 15,000 RPM.</p>
+            </div>
+
+            <div class="panel span-2 border-green">
+                <div class="panel-header">
+                    <span class="panel-title">DATA ANALYTICS</span>
+                    <i class="fa-solid fa-network-wired panel-icon"></i>
+                </div>
+                <div style="display: flex; gap: 2rem;">
+                    <div>
+                        <div class="stat-value" style="color:var(--neon-green)">1.5 TB</div>
+                        <div class="stat-unit">DANE Z WEEKENDU</div>
+                    </div>
+                    <div style="border-left: 1px solid #333; padding-left: 2rem;">
+                         <div class="stat-value">300+</div>
+                        <div class="stat-unit">SENSORÓW W BOLIDZIE</div>
+                    </div>
+                </div>
+                <p class="stat-desc">Bolid wysyła telemetrię w czasie rzeczywistym do garażu oraz do fabryki (np. w Wielkiej Brytanii) z opóźnieniem mniejszym niż 0.2s.</p>
+                
+                <div style="background: #000; padding: 10px; margin-top: 1rem; font-family: var(--font-code); font-size: 0.8rem; color: var(--neon-green); opacity: 0.7;">
+                    > SENSOR_FR_SUSPENSION: OK<br>
+                    > TYRE_TEMP_RL: 102°C (HIGH)<br>
+                    > FUEL_FLOW: 98kg/h
+                </div>
+            </div>
+
+            <div class="panel border-red">
+                <div class="panel-header">
+                    <span class="panel-title">BRAKING SYSTEM</span>
+                    <i class="fa-solid fa-compact-disc panel-icon"></i>
+                </div>
+                <div class="stat-value">1200<span style="font-size:1.5rem">°C</span></div>
+                <div class="stat-unit">CARBON DISCS</div>
+                <p class="stat-desc">Tarcze węglowe rozgrzewają się do czerwoności w mniej niż sekundę. Kierowca naciska pedał z siłą ponad 100kg.</p>
+            </div>
+
+             <div class="panel border-cyan">
+                <div class="panel-header">
+                    <span class="panel-title">BUDGET CAP</span>
+                    <i class="fa-solid fa-coins panel-icon"></i>
+                </div>
+                <div class="stat-value">$135<span style="font-size:1.5rem">M</span></div>
+                <div class="stat-unit">LIMIT ROCZNY</div>
+                <p class="stat-desc">Maksymalny budżet zespołu na rozwój bolidu w sezonie. Wymusza ekstremalną efektywność inżynieryjną.</p>
             </div>
 
         </div>
     </section>
 
-    <section id="steering-wheel">
-        <div class="tech-header">
-            <h2>CENTRUM DOWODZENIA KIEROWCY</h2>
-            <p>Interfejs człowiek-maszyna. Ponad 30 przycisków i pokręteł kontrolujących każdy aspekt bolidu w czasie rzeczywistym.</p>
+    <section class="steering-section">
+        <div class="section-header">
+            <h2>INTERFACE KIEROWCY</h2>
+        </div>
+        
+        <div class="schematic-container">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/F1_steering_wheel_Red_Bull_RB9.jpeg" alt="F1 Steering Wheel" class="steering-img">
+            
+            <div class="hotspot hs-left hs-1">
+                <div class="hotspot-text">DRS (OPEN WING)</div>
+                <div class="hotspot-line"></div>
+                <div class="hotspot-dot"></div>
+            </div>
+            
+            <div class="hotspot hs-left hs-2">
+                <div class="hotspot-text">RADIO VOLUME / TALK</div>
+                <div class="hotspot-line"></div>
+                <div class="hotspot-dot"></div>
+            </div>
+
+             <div class="hotspot hs-left hs-3">
+                <div class="hotspot-text">DIFF ENTRY (Balans Dyferencjału)</div>
+                <div class="hotspot-line"></div>
+                <div class="hotspot-dot"></div>
+            </div>
+
+            <div class="hotspot hs-right hs-4">
+                <div class="hotspot-dot"></div>
+                <div class="hotspot-line"></div>
+                <div class="hotspot-text">ENGINE MAP (STRAT MODE)</div>
+            </div>
+
+            <div class="hotspot hs-right hs-5">
+                <div class="hotspot-dot"></div>
+                <div class="hotspot-line"></div>
+                <div class="hotspot-text">NEUTRAL (SKRZYNIA BIEGÓW)</div>
+            </div>
+
+            <div class="hotspot hs-right hs-6">
+                <div class="hotspot-dot"></div>
+                <div class="hotspot-line"></div>
+                <div class="hotspot-text">PIT LIMITER (80 KM/H)</div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 3rem; color: #666; font-family: var(--font-code);">
+            // INTERFACE COMPLEXITY: HIGH // >30 BUTTONS & ROTARIES //
+        </div>
+    </section>
+
+    <section>
+        <div class="section-header">
+            <h2>MIESZANKI OPON</h2>
+        </div>
+        <div style="text-align: center; max-width: 800px; margin: 0 auto; color: #aaa;">
+            <p>Jedyne punkty styku bolidu z torem. Zarządzanie oponami to klucz do strategii. Każda mieszanka ma inne "okno pracy" temperaturowej.</p>
         </div>
 
-        <div class="steering-container">
-            <div class="wheel-img-wrapper">
-                <img src="https://i.imgur.com/Q7Z9Z8x.png" alt="F1 Steering Wheel">
+        <div class="tyre-container">
+            <div class="tyre t-soft">
+                <span class="tyre-label">SOFT</span>
             </div>
-
-            <div class="wheel-label label-drs">
-                <h4>DRS (Drag Reduction)</h4>
-                <p>Otwiera tylne skrzydło w strefach DRS, zwiększając prędkość maksymalną o ok. 15 km/h.</p>
+            <div class="tyre t-medium">
+                <span class="tyre-label">MED</span>
             </div>
-            <div class="wheel-label label-brake">
-                <h4>BBAL (Brake Balance)</h4>
-                <p>Pokrętło do zmiany balansu hamulców przód/tył w trakcie jazdy, zależnie od zużycia opon i zakrętu.</p>
+            <div class="tyre t-hard">
+                <span class="tyre-label">HARD</span>
             </div>
-            <div class="wheel-label label-radio">
-                <h4>RADIO (Team Comm)</h4>
-                <p>Bezpośrednia komunikacja z inżynierem wyścigowym. "Box, box, box".</p>
+            <div class="tyre t-inter">
+                <span class="tyre-label">INT</span>
             </div>
-
-            <div class="wheel-label label-engine">
-                <h4>ENG MODE (Strat Mode)</h4>
-                <p>Wybór mapowania silnika. Od trybu oszczędzania paliwa po pełną moc kwalifikacyjną.</p>
-            </div>
-             <div class="wheel-label label-pit">
-                <h4>PL (Pit Limiter)</h4>
-                <p>Ogranicznik prędkości w alei serwisowej (zazwyczaj 80 km/h). Zapobiega karom.</p>
-            </div>
-             <div class="wheel-label label-confirm">
-                <h4>OK / ACKNOWLEDGE</h4>
-                <p>Potwierdzenie instrukcji od zespołu bez konieczności mówienia przez radio.</p>
+             <div class="tyre t-wet">
+                <span class="tyre-label">WET</span>
             </div>
         </div>
     </section>
 
-    <footer>
-        <div class="logo" style="font-size: 1.2rem;">F1 <span style="color:var(--f1-red);">TECH</span>HUB</div>
-        <p style="margin-top:1rem; font-size:0.9rem;">Projekt edukacyjny non-profit.</p>
-        <p style="font-size:0.8rem; color:#444;">F1 jest znakiem towarowym Formula One Licensing BV. Ta strona nie jest powiązana z oficjalną serią.</p>
+    <footer style="border-top: 1px solid #333; padding: 3rem; text-align: center; font-family: var(--font-code); color: #555;">
+        <p>F1 TELEMETRY HUB V 2.0</p>
+        <p style="font-size: 0.8rem; margin-top: 10px;">Projekt edukacyjny. Formula 1 jest znakiem towarowym Formula One Licensing BV.</p>
     </footer>
 
 </body>

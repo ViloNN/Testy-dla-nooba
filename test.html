@@ -3,412 +3,269 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 RACE ENGINEER // SYSTEM REBOOT</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <title>75 Pikantnych Pytań - Generator</title>
     <style>
         :root {
-            --bg-color: #050505;
-            --panel-bg: rgba(15, 15, 20, 0.85);
-            --neon-blue: #00f3ff;
-            --neon-red: #ff003c;
-            --neon-green: #39ff14;
-            --neon-yellow: #fff01f;
-            --border: 1px solid rgba(255,255,255,0.15);
-            --font-main: 'Share Tech Mono', monospace;
-            --font-head: 'Orbitron', sans-serif;
+            --bg-color: #121212;
+            --card-color: #1e1e1e;
+            --primary-color: #bb86fc;
+            --secondary-color: #03dac6;
+            --text-color: #e0e0e0;
+            --button-gradient: linear-gradient(135deg, #6200ea, #3700b3);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
-        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         body {
-            background: var(--bg-color);
-            color: #fff;
-            font-family: var(--font-main);
-            height: 100vh;
-            overflow: hidden; /* Zapobiega paskom przewijania */
+            background-color: var(--bg-color);
+            color: var(--text-color);
             display: flex;
             flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
         }
 
-        /* --- EKRAN STARTOWY (BOOT SCREEN) --- */
-        #boot-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
-            z-index: 9999;
-            display: flex; justify-content: center; align-items: center;
-            flex-direction: column;
-            transition: opacity 1s ease-out;
-        }
-        .loading-bar { width: 300px; height: 4px; background: #333; margin-top: 20px; border-radius: 2px; }
-        .loading-progress { width: 0%; height: 100%; background: var(--neon-green); transition: width 0.5s; box-shadow: 0 0 10px var(--neon-green); }
-        .boot-text { color: var(--neon-green); font-family: var(--font-main); margin-top: 10px; font-size: 0.9rem; }
-
-        /* --- GŁÓWNY INTERFEJS --- */
-        #main-grid {
-            display: grid;
-            grid-template-columns: 320px 1fr 320px; /* Lewy panel, Środek, Prawy panel */
-            height: 100%;
-            padding: 15px;
-            gap: 15px;
-            background: radial-gradient(circle at 50% 60%, #1a1a20 0%, #000 90%);
-        }
-
-        /* --- PANELE BOCZNE --- */
-        .sidebar {
-            display: flex; flex-direction: column; gap: 15px;
-            height: 100%;
-        }
-
-        .panel {
-            background: var(--panel-bg);
-            border: var(--border);
-            padding: 15px;
-            position: relative;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-            display: flex; flex-direction: column;
-        }
-        
-        /* Ozdobna linia na górze panelu */
-        .panel::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
-            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
-        }
-
-        h3 { 
-            color: var(--neon-blue); font-size: 0.9rem; margin-bottom: 10px; 
-            border-bottom: 1px solid #333; padding-bottom: 5px; letter-spacing: 1px;
-            display: flex; justify-content: space-between;
-        }
-
-        /* --- SHIFT LIGHTS (Poprawione) --- */
-        .shift-container {
-            display: flex; justify-content: center; gap: 4px; 
-            margin-bottom: 10px; padding: 10px;
-            background: rgba(0,0,0,0.5); border-radius: 20px; border: 1px solid #333;
-        }
-        .led {
-            width: 30px; height: 12px; background: #222; border-radius: 2px;
-            transition: background 0.05s, box-shadow 0.05s;
-        }
-        .led.on-green { background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green); }
-        .led.on-red { background: var(--neon-red); box-shadow: 0 0 10px var(--neon-red); }
-        .led.on-purple { background: var(--neon-purple); box-shadow: 0 0 15px var(--neon-purple); }
-
-        /* --- ŚRODEK (KIEROWNICA) --- */
-        .center-stage {
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            position: relative;
-        }
-        
-        .wheel-wrapper {
-            position: relative;
-            width: 100%;
+        .container {
             max-width: 800px;
-            display: flex; justify-content: center;
+            width: 100%;
+            text-align: center;
         }
 
-        .wheel-img {
-            width: 90%; 
-            height: auto;
-            filter: drop-shadow(0 0 30px rgba(0,0,0,0.8));
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        /* --- WYKRES G-FORCE --- */
-        .g-radar {
-            width: 180px; height: 180px; 
-            border: 1px solid #444; border-radius: 50%;
-            margin: 10px auto; position: relative;
-            /* Siatka celownika */
-            background: 
-                linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-            background-position: center;
-            box-shadow: inset 0 0 20px #000;
-        }
-        .g-dot {
-            width: 12px; height: 12px; background: var(--neon-red); border-radius: 50%;
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            box-shadow: 0 0 8px var(--neon-red);
-            transition: all 0.1s linear;
+        /* Sekcja Generatora */
+        .generator-card {
+            background-color: var(--card-color);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 50px;
+            border: 1px solid #333;
+            transition: transform 0.2s;
         }
 
-        /* --- RADIO --- */
-        .radio-feed {
-            flex-grow: 1; overflow-y: hidden; font-size: 0.85rem; color: #aaa;
-            display: flex; flex-direction: column; justify-content: flex-end;
-        }
-        .msg { margin-top: 8px; padding-left: 8px; border-left: 2px solid #555; animation: fadeIn 0.3s; }
-        .msg.eng { border-color: var(--neon-blue); color: #fff; }
-        .msg.drv { border-color: var(--neon-green); color: var(--neon-green); }
-
-        /* --- POWER UNIT (Naprawione ucinanie) --- */
-        .data-big { font-size: 3.5rem; font-family: var(--font-head); color: #fff; text-align: center; line-height: 1; text-shadow: 0 0 15px rgba(255,255,255,0.2); }
-        .data-label { text-align: center; color: #666; font-size: 0.8rem; margin-bottom: 10px; }
-        
-        .sub-stats { display: flex; gap: 10px; margin-top: 10px; }
-        .stat-box { 
-            flex: 1; border: 1px solid #333; padding: 10px; text-align: center; 
-            background: rgba(0,0,0,0.3);
-        }
-        .stat-val { font-size: 1.5rem; font-weight: bold; }
-
-        /* --- OPONY --- */
-        .tyre-status {
-            display: flex; align-items: center; justify-content: center; gap: 15px; height: 100%;
+        .generator-card:hover {
+            transform: translateY(-5px);
         }
 
-        /* --- HOTSPOTS (Przyciski na zdjęciu) --- */
-        .hotspot {
-            position: absolute; width: 45px; height: 45px; border-radius: 50%;
-            cursor: pointer; z-index: 10;
+        #question-display {
+            font-size: 1.5rem;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+            line-height: 1.4;
         }
-        /* Wizualizacja debugowania - usuń border po dopasowaniu */
-        /* .hotspot { border: 2px solid rgba(0, 243, 255, 0.5); } */
-        
-        /* Dopasowane do Twojego zdjęcia */
-        .hs-pit { top: 21%; right: 18%; }
-        .hs-radio { top: 38%; left: 22%; }
-        .hs-fail { top: 38%; right: 22%; }
-        .hs-mode { bottom: 20%; right: 28%; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        button {
+            background: var(--button-gradient);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.1s;
+            box-shadow: 0 4px 15px rgba(98, 0, 234, 0.4);
+        }
 
-        /* RWD */
-        @media (max-width: 1000px) {
-            #main-grid { grid-template-columns: 1fr; overflow-y: auto; height: auto; }
-            body { overflow: auto; }
-            .center-stage { order: -1; margin-bottom: 20px; }
+        button:hover {
+            opacity: 0.9;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        /* Sekcja Listy */
+        .list-section {
+            text-align: left;
+            background-color: var(--card-color);
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        .list-section h2 {
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        li {
+            padding: 10px 0;
+            border-bottom: 1px solid #333;
+            font-size: 1rem;
+            color: #ccc;
+        }
+
+        li span.number {
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            #question-display { font-size: 1.2rem; }
+            .generator-card { padding: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <div id="boot-overlay">
-        <div style="font-family: 'Orbitron'; font-size: 2rem; letter-spacing: 5px;">SYSTEM REBOOT</div>
-        <div class="loading-bar"><div class="loading-progress" id="progress"></div></div>
-        <div class="boot-text" id="boot-status">INITIALIZING...</div>
-    </div>
+    <div class="container">
+        <h1>Wymień 3 Rzeczy...</h1>
 
-    <div id="main-grid">
-        
-        <div class="sidebar">
-            <div class="panel">
-                <h3>G-FORCE <span style="color:var(--neon-red)">● LIVE</span></h3>
-                <div class="g-radar">
-                    <div class="g-dot" id="g-dot"></div>
-                </div>
-                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-top: 5px;">
-                    <span>LAT: <b id="val-lat" style="color:var(--neon-blue)">0.0</b></span>
-                    <span>LON: <b id="val-lon" style="color:var(--neon-blue)">0.0</b></span>
-                </div>
-            </div>
-
-            <div class="panel" style="flex-grow: 1;">
-                <h3>TEAM RADIO</h3>
-                <div class="radio-feed" id="radio-box">
-                    </div>
-            </div>
+        <div class="generator-card">
+            <div id="question-display">Kliknij przycisk, aby wylosować pytanie!</div>
+            <button onclick="drawQuestion()">Wylosuj pytanie</button>
         </div>
 
-        <div class="center-stage">
-            <div class="shift-container" id="led-strip">
-                </div>
-
-            <div class="wheel-wrapper">
-                <img src="./wheel.png" class="wheel-img" id="wheel-obj" alt="Brak pliku wheel.png">
-                
-                <div class="hotspot hs-pit" onclick="sendMsg('ENG', 'Pit Limiter Toggle')" title="PIT"></div>
-                <div class="hotspot hs-radio" onclick="sendMsg('DRV', 'Radio Check')" title="RADIO"></div>
-                <div class="hotspot hs-fail" onclick="alert('SENSOR RESET')" title="FAIL"></div>
-                <div class="hotspot hs-mode" onclick="sendMsg('ENG', 'Engine Mode 8 Selected')" title="MODE"></div>
-            </div>
-        </div>
-
-        <div class="sidebar">
-            <div class="panel">
-                <h3>POWER UNIT</h3>
-                <div class="data-big" id="rpm-val">0</div>
-                <div class="data-label">RPM</div>
-                
-                <div class="sub-stats">
-                    <div class="stat-box">
-                        <div class="stat-val" id="gear-val" style="color:var(--neon-blue)">N</div>
-                        <div class="data-label" style="margin:0">GEAR</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-val" id="speed-val" style="color:var(--neon-green)">0</div>
-                        <div class="data-label" style="margin:0">KM/H</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel">
-                <h3>ERS BATTERY</h3>
-                <div style="width: 100%; height: 20px; background: #333; margin-top: 10px; border: 1px solid #555;">
-                    <div id="ers-bar" style="width: 85%; height: 100%; background: var(--neon-yellow); transition: width 0.5s;"></div>
-                </div>
-                <div style="text-align: right; margin-top: 5px; color: var(--neon-yellow);">85%</div>
-            </div>
-
-            <div class="panel" style="flex-grow: 1;">
-                <h3>TYRE STATUS</h3>
-                <div class="tyre-status">
-                    <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 3rem; color: var(--neon-red);"></i>
-                    <div>
-                        <div style="font-size: 1.2rem; font-weight: bold;">SOFT C4</div>
-                        <div style="color: #888; font-size: 0.9rem;">
-                            TEMP: <span id="tyre-temp">98</span>°C<br>
-                            WEAR: 82%
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="list-section">
+            <h2 onclick="toggleList()" style="cursor: pointer;">Pełna lista pytań (Pokaż/Ukryj)</h2>
+            <ul id="full-list" style="display: none;">
+                </ul>
         </div>
     </div>
 
     <script>
-        // --- 1. BOOT SEQUENCE (AUTOMATYCZNA) ---
-        window.onload = function() {
-            const bar = document.getElementById('progress');
-            const txt = document.getElementById('boot-status');
-            const overlay = document.getElementById('boot-overlay');
-            
-            let width = 0;
-            const interval = setInterval(() => {
-                if (width >= 100) {
-                    clearInterval(interval);
-                    txt.innerText = "SYSTEM READY";
-                    setTimeout(() => {
-                        overlay.style.opacity = '0';
-                        setTimeout(() => overlay.style.display = 'none', 1000);
-                        startSimulation(); // Startuj dane po załadowaniu
-                    }, 500);
-                } else {
-                    width += Math.random() * 10;
-                    bar.style.width = width + '%';
-                }
-            }, 100);
-
-            createLeds();
-        };
-
-        // --- 2. TWORZENIE DIOD LED ---
-        function createLeds() {
-            const container = document.getElementById('led-strip');
-            for(let i=0; i<15; i++) {
-                const d = document.createElement('div');
-                d.className = 'led';
-                d.id = 'led-'+i;
-                container.appendChild(d);
-            }
-        }
-
-        // --- 3. GŁÓWNA PĘTLA SYMULACJI ---
-        let rpm = 4000;
-        let gear = 1;
-        let speed = 0;
-        let tyreTemp = 98;
-
-        function startSimulation() {
-            // Pętla odświeżania danych (20 razy na sekundę)
-            setInterval(() => {
-                // RPM Logic
-                rpm += (Math.random() - 0.45) * 600; 
-                if(rpm < 3800) rpm = 4000;
-                if(rpm > 13500) rpm = 4000; // Shift simulation
-
-                // Gear Logic
-                if(rpm > 12000 && gear < 8) gear++;
-                if(rpm < 4500 && gear > 1) gear--;
-                if(rpm < 4500 && gear == 1) gear = 1;
-
-                // Speed calculation
-                speed = Math.floor((rpm / 13000) * (gear * 42));
-
-                // Tyre Temp fluctuation
-                tyreTemp += (Math.random() - 0.5);
-
-                // G-Force Randomizer
-                const lat = (Math.random() - 0.5) * 4;
-                const lon = (Math.random() - 0.5) * 2;
-
-                // UPDATE UI
-                document.getElementById('rpm-val').innerText = Math.floor(rpm);
-                document.getElementById('gear-val').innerText = gear;
-                document.getElementById('speed-val').innerText = speed;
-                document.getElementById('tyre-temp').innerText = Math.floor(tyreTemp);
-                
-                updateLeds(rpm);
-                updateGForce(lat, lon);
-                
-                // Random battery drain/charge
-                document.getElementById('ers-bar').style.width = (Math.random() * 20 + 70) + '%';
-
-            }, 50);
-
-            // Radio Message Loop
-            setInterval(() => {
-                if(Math.random() > 0.85) triggerRandomRadio();
-            }, 4000);
-        }
-
-        // --- 4. FUNKCJE POMOCNICZE ---
-        function updateLeds(currentRpm) {
-            const max = 13000;
-            const percent = (currentRpm - 4000) / (max - 4000);
-            const activeCount = Math.floor(percent * 15);
-
-            for(let i=0; i<15; i++) {
-                const led = document.getElementById('led-'+i);
-                led.className = 'led'; // reset
-                if (i < activeCount) {
-                    if (i < 5) led.classList.add('on-green');
-                    else if (i < 10) led.classList.add('on-red');
-                    else led.classList.add('on-purple');
-                }
-            }
-        }
-
-        function updateGForce(lat, lon) {
-            const dot = document.getElementById('g-dot');
-            // Środek to 50%, 50%. Skalujemy ruch.
-            const x = 50 + (lat * 20);
-            const y = 50 - (lon * 20);
-            
-            dot.style.left = x + '%';
-            dot.style.top = y + '%';
-            
-            document.getElementById('val-lat').innerText = lat.toFixed(1);
-            document.getElementById('val-lon').innerText = lon.toFixed(1);
-        }
-
-        const radioMsgs = [
-            {w:"ENG", t:"Gap ahead is 1.2s"},
-            {w:"DRV", t:"Tires are overheating!"},
-            {w:"ENG", t:"Copy, switch map to 4"},
-            {w:"ENG", t:"Yellow flag sector 2"},
-            {w:"DRV", t:"No grip on rears"},
-            {w:"ENG", t:"Box box this lap"}
+        const questions = [
+            "Wymień 3 miejsca, w których nigdy nie uprawiałeś/aś seksu, ale chciałbyś/chciałabyś spróbować",
+            "Wymień 3 rzeczy, które zawsze chciałeś/chciałaś zrobić ze śmietaną w sprayu",
+            "Wymień 3 sławne osoby, które mogłyby być Twoim przepustem",
+            "Wymień 3 rzeczy, których nigdy nie robiłeś/aś, ale jesteś ciekawy/ciekawa, aby spróbować",
+            "Wymień 3 sposoby, aby uczynić grę wstępną bardziej ekscytującą",
+            "Wymień 3 rzeczy o swoich preferencjach seksualnych, o których nigdy nikomu nie powiedziałeś/aś",
+            "Wymień 3 miejsca, w których chciałbyś/chciałabyś zaszaleć na zewnątrz",
+            "Wymień 3 role, które zagrałbyś/zagrałabyś w niegrzecznym role-play’u",
+            "Wymień 3 najseksowniejsze akcenty, którym po prostu nie możesz się oprzeć",
+            "Wymień 3 typy bielizny, które uważasz za nieodparcie kuszące",
+            "Wymień 3 słynne sceny z filmów, które chciałbyś/chciałabyś odtworzyć z partnerem/partnerką",
+            "Wymień 3 seksowne piosenki, które zawsze wprowadzają Cię w nastrój",
+            "Wymień 3 figlarne wymówki, aby zaciągnąć kogoś do swojego miejsca",
+            "Wymień 3 części ciała, które uwielbiasz, gdy są całowane",
+            "Wymień 3 niegrzeczne gry do zabawy w ciemności",
+            "Wymień 3 przedmioty, które uważasz za niezbędne w “zestawie niegrzecznym”",
+            "Wymień 3 zwroty, które brzmią niewinnie, ale mają sekretnie niegrzeczne znaczenie",
+            "Wymień 3 sposoby na flirtowanie bez użycia słów",
+            "Wymień 3 rzeczy, które niespodziewanie znajdujesz seksowne u partnera",
+            "Wymień 3 z najseksowniejszych zawodów, jakie przychodzą Ci do głowy",
+            "Wymień 3 jedzenia, których odważyłbyś się użyć podczas gry wstępnej",
+            "Wymień 3 sposoby, aby drażnić partnera bez dotykania go",
+            "Wymień 3 rzeczy, które robisz po gorącej sesji",
+            "Wymień 3 gorące książki warte przeczytania z partnerem",
+            "Wymień 3 rodzaje pocałunków, które sprawiają, że chcesz więcej",
+            "Wymień 3 rodzaje masażu, które mogą prowadzić do czegoś więcej",
+            "Wymień 3 uwodzicielskie emotikony przy wysyłaniu zalotnego smsa",
+            "Wymień 3 niewinne przedmioty, które można użyć w niegrzeczny sposób",
+            "Wymień 3 publiczne miejsca, w których marzysz o pikantnym spotkaniu",
+            "Wymień 3 rzeczy, które można wyszeptać komuś do ucha, żeby go zmieszać",
+            "Wymień 3 miejsca, gdzie mógłbyś ukryć list miłosny, żeby twój partner go znalazł",
+            "Wymień 3 pikantne wyzwania do gry w prawda czy wyzwanie",
+            "Wymień 3 pikantne pytania, które zadałbyś w grze “Nigdy nie…”",
+            "Wymień 3 przedmioty, które zabrałbyś na dorosłe przyjęcie piżamowe",
+            "Wymień 3 rodzaje ubrań, na widok których twój partner staje się dla ciebie jeszcze bardziej pociągający",
+            "Wymień 3 flirciarskie zakłady, które możesz zawrzeć ze swoim partnerem",
+            "Wymień 3 rzeczy, które zrobiłbyś z “niegrzeczną” listą marzeń",
+            "Wymień 3 seksowne rzeczy, które możesz powiedzieć, aby podkręcić atmosferę podczas gry wstępnej",
+            "Wymień 3 nieoczekiwane miejsca na szybki numerek",
+            "Wymień 3 nie tak niewinne miejsca, aby dotknąć kogoś, by go rozszalać",
+            "Wymień 3 sposoby, aby zrobić niezapomniane wrażenie na pierwszej randce",
+            "Wymień 3 kuszące rzeczy, które można powiedzieć w ciemności",
+            "Wymień 3 sposoby, aby zmysłowo obudzić swojego partnera",
+            "Wymień 3 szybkie zmiany, aby uczynić sypialnię bardziej uwodzicielską",
+            "Wymień 3 figlarne kary za przegraną w zakładzie",
+            "Wymień 3 dziwaczne cechy, które uważasz za seksowne",
+            "Wymień 3 sposoby, aby uczynić prosty pocałunek niezapomnianym",
+            "Wymień 3 pikantne przezwiska dla twojego partnera",
+            "Wymień 3 zmysłowe czynności do wykonania przy pełni księżyca",
+            "Wymień 3 szeptane słowa, które wysyłają dreszcze po plecach",
+            "Wymień 3 kuszące rzeczy, które zrobiłbyś z syropem czekoladowym",
+            "Wymień 3 gorące sposoby na zakończenie listu miłosnego",
+            "Wymień 3 ryzykowne SMS-y do wysłania, gdy są w pracy",
+            "Wymień 3 flirciarskie gry na długą przejażdżkę samochodem",
+            "Wymień 3 uwodzicielskie sposoby jedzenia truskawki",
+            "Wymień 3 parne rzeczy, które możesz zrobić z lodem",
+            "Wymień 3 prowokujące piosenki, przy których masz ochotę tańczyć",
+            "Wymień 3 prowokujące słowa, aby jęczeć im do ucha podczas seksu",
+            "Wymień 3 pełne mocy rzeczy, które możesz powiedzieć, biorąc kontrolę w łóżku",
+            "Wymień 3 uwodzicielskie zapachy na randkę",
+            "Wymień 3 śmiałe ruchy na parkiecie",
+            "Wymień 3 rzeczy, które uważasz za nieodparcie atrakcyjne w partnerze",
+            "Wymień 3 sposoby, aby sprawić, by Twój partner czuł się pożądany",
+            "Wymień 3 kuszące desery do karmienia się nawzajem",
+            "Wymień 3 pikantne scenariusze do roli w sypialni",
+            "Wymień 3 miejsca, w których chciałbyś skraść pocałunek",
+            "Wymień 3 powody, dla których bycie przyłapanym może być ekscytujące",
+            "Wymień 3 zalotne sposoby na rozpoczęcie rozmowy",
+            "Wymień 3 uwodzicielskie ruchy do wypróbowania w sypialni",
+            "Wymień 3 romantyczne gesty, którymi możesz zaskoczyć swojego partnera",
+            "Wymień 3 rzeczy, które sprawiają, że czujesz się pewny siebie",
+            "Wymień 3 sposoby na okazanie wdzięczności partnerowi",
+            "Wymień 3 rzeczy, które uważasz za sexy w sobie",
+            "Wymień 3 aktywności, które urozmaicą leniwe niedzielne popołudnie",
+            "Wymień 3 przyjemności, na które sobie pozwalasz"
         ];
 
-        function triggerRandomRadio() {
-            const r = radioMsgs[Math.floor(Math.random() * radioMsgs.length)];
-            sendMsg(r.w, r.t);
+        // Funkcja losująca pytanie
+        function drawQuestion() {
+            const display = document.getElementById('question-display');
+            const randomIndex = Math.floor(Math.random() * questions.length);
+            
+            // Efekt "zanikania" tekstu
+            display.style.opacity = 0;
+            
+            setTimeout(() => {
+                display.innerText = questions[randomIndex];
+                display.style.opacity = 1;
+            }, 200);
         }
 
-        function sendMsg(who, text) {
-            const box = document.getElementById('radio-box');
-            const div = document.createElement('div');
-            div.className = `msg ${who === 'ENG' ? 'eng' : 'drv'}`;
-            div.innerHTML = `<b>${who}:</b> ${text}`;
-            box.prepend(div); // Nowe na górze
-            if(box.children.length > 8) box.lastElementChild.remove();
+        // Funkcja generująca listę (dla sekcji "Pełna lista")
+        function populateList() {
+            const listContainer = document.getElementById('full-list');
+            questions.forEach((q, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="number">${index + 1}.</span> ${q}`;
+                listContainer.appendChild(li);
+            });
         }
+
+        // Pokaż/Ukryj listę
+        function toggleList() {
+            const list = document.getElementById('full-list');
+            if (list.style.display === "none") {
+                list.style.display = "block";
+            } else {
+                list.style.display = "none";
+            }
+        }
+
+        // Inicjalizacja listy po załadowaniu
+        window.onload = populateList;
     </script>
 </body>
 </html>

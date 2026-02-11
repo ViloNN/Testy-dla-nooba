@@ -3,269 +3,447 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>75 Pikantnych Pytań - Generator</title>
+    <title>Mikroświat: Test z Przyrody 🔬</title>
     <style>
-        :root {
-            --bg-color: #121212;
-            --card-color: #1e1e1e;
-            --primary-color: #bb86fc;
-            --secondary-color: #03dac6;
-            --text-color: #e0e0e0;
-            --button-gradient: linear-gradient(135deg, #6200ea, #3700b3);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
+        /* --- STYL: MICROSCOPE VIEW --- */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
             align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            /* Ciemne, głębokie tło przypominające pole widzenia mikroskopu */
+            background-color: #0b132b; 
+            background: radial-gradient(circle at center, #1c2541 0%, #0b132b 100%);
+            color: #e0e0e0;
         }
 
-        .container {
-            max-width: 800px;
-            width: 100%;
+        .quiz-container { 
+            background-color: rgba(28, 37, 65, 0.8); 
+            backdrop-filter: blur(10px);
+            width: 100%; 
+            max-width: 750px; 
+            padding: 40px; 
+            border-radius: 15px; 
+            box-shadow: 0 0 30px rgba(75, 192, 200, 0.2);
+            border: 1px solid #3a506b;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Ozdoba z boku */
+        .quiz-container::after {
+            content: "🦠";
+            position: absolute;
+            bottom: -30px;
+            right: -20px;
+            font-size: 120px;
+            opacity: 0.05;
+            transform: rotate(-15deg);
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        h2 { 
             text-align: center;
-        }
-
-        h1 {
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            font-size: 2.5rem;
+            color: #4bc0c8; /* Fluorescencyjny cyjan */
+            margin-bottom: 5px;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(75, 192, 200, 0.4);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .subtitle { 
+            text-align: center; 
+            font-size: 1.05em; 
+            margin-bottom: 30px; 
+            color: #8c9eff;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
         }
 
-        /* Sekcja Generatora */
-        .generator-card {
-            background-color: var(--card-color);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            margin-bottom: 50px;
-            border: 1px solid #333;
-            transition: transform 0.2s;
+        /* --- Pasek postępu --- */
+        #progress-bar-container { 
+            width: 100%; 
+            background-color: #1a233a; 
+            border-radius: 6px; 
+            height: 8px; 
+            margin-bottom: 25px; 
+            overflow: hidden; 
+            border: 1px solid #3a506b;
+            position: relative;
+            z-index: 1;
+        }
+        
+        #progress-bar { 
+            height: 100%; 
+            background: linear-gradient(90deg, #4bc0c8, #c7f464); 
+            width: 0%; 
+            transition: width 0.4s ease; 
         }
 
-        .generator-card:hover {
-            transform: translateY(-5px);
+        #progress-text { 
+            text-align: right; 
+            font-size: 0.85em; 
+            color: #8c9eff; 
+            margin-bottom: 8px; 
         }
 
-        #question-display {
-            font-size: 1.5rem;
-            min-height: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 30px;
-            font-weight: bold;
-            line-height: 1.4;
+        /* --- Pytania --- */
+        #quiz-area { position: relative; z-index: 1; }
+
+        .question { 
+            font-size: 1.25em; 
+            margin-bottom: 25px; 
+            font-weight: 600; 
+            color: #ffffff; 
+            line-height: 1.6;
+        }
+        
+        .options { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+        }
+        
+        button.option-btn { 
+            padding: 15px 20px; 
+            border: 1px solid #3a506b; 
+            background: #111a30; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 1.05em; 
+            transition: all 0.2s ease; 
+            text-align: left; 
+            color: #c0c6d8; 
+            font-family: inherit;
+        }
+        
+        button.option-btn:hover { 
+            background-color: #1c2541; 
+            border-color: #4bc0c8; 
+            color: #fff;
+            transform: translateX(5px); 
+        }
+        
+        button.option-btn.selected { 
+            background-color: rgba(75, 192, 200, 0.2); 
+            border-color: #4bc0c8; 
+            color: #4bc0c8; 
+            font-weight: bold; 
+            box-shadow: 0 0 10px rgba(75, 192, 200, 0.2);
+        }
+        
+        /* --- Nawigacja --- */
+        .navigation { 
+            margin-top: 35px; 
+            display: flex; 
+            justify-content: space-between; 
+        }
+        
+        button.nav-btn { 
+            padding: 12px 30px; 
+            background-color: transparent; 
+            color: #c7f464; 
+            border: 2px solid #c7f464; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            font-size: 1em; 
+            font-weight: bold; 
+            transition: 0.3s; 
+            text-transform: uppercase;
+        }
+        
+        button.nav-btn:hover { 
+            background-color: #c7f464; 
+            color: #0b132b; 
+            box-shadow: 0 0 15px rgba(199, 244, 100, 0.4);
+        }
+        
+        button.nav-btn:disabled { 
+            border-color: #3a506b; 
+            color: #3a506b; 
+            cursor: not-allowed; 
+            background-color: transparent;
+            box-shadow: none;
         }
 
-        button {
-            background: var(--button-gradient);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            font-size: 1.2rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: opacity 0.3s, transform 0.1s;
-            box-shadow: 0 4px 15px rgba(98, 0, 234, 0.4);
+        /* --- Wyniki --- */
+        .result-box { display: none; text-align: center; position: relative; z-index: 1; }
+        
+        .score-circle { 
+            width: 140px; 
+            height: 140px; 
+            border-radius: 50%; 
+            background: rgba(11, 19, 43, 0.5); 
+            border: 6px solid #c7f464;
+            color: #c7f464; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            font-size: 2.5em; 
+            margin: 0 auto 25px; 
+            font-weight: bold; 
+            box-shadow: 0 0 20px rgba(199, 244, 100, 0.3);
         }
+        
+        /* Podgląd odpowiedzi */
+        #review-container { 
+            margin-top: 40px; 
+            text-align: left; 
+            border-top: 1px dashed #3a506b; 
+            padding-top: 25px; 
+        }
+        
+        .review-item { 
+            padding: 15px; 
+            margin-bottom: 15px; 
+            border-radius: 8px; 
+            background: #111a30; 
+            border-left: 5px solid #3a506b; 
+        }
+        
+        .review-item.correct { border-left-color: #c7f464; }
+        .review-item.incorrect { border-left-color: #ff6b6b; }
+        
+        .review-q-title { font-weight: bold; margin-bottom: 8px; display: block; color: #fff; }
+        .ans-bad { color: #ff6b6b; text-decoration: line-through; font-size: 0.9em; opacity: 0.8; }
+        .ans-good { color: #c7f464; font-weight: bold; margin-top: 5px; }
 
-        button:hover {
-            opacity: 0.9;
-        }
-
-        button:active {
-            transform: scale(0.95);
-        }
-
-        /* Sekcja Listy */
-        .list-section {
-            text-align: left;
-            background-color: var(--card-color);
-            padding: 30px;
-            border-radius: 15px;
-        }
-
-        .list-section h2 {
-            color: var(--secondary-color);
-            margin-bottom: 20px;
-            border-bottom: 2px solid #333;
-            padding-bottom: 10px;
-        }
-
-        ul {
-            list-style-type: none;
-        }
-
-        li {
-            padding: 10px 0;
-            border-bottom: 1px solid #333;
-            font-size: 1rem;
-            color: #ccc;
-        }
-
-        li span.number {
-            color: var(--primary-color);
-            font-weight: bold;
-            margin-right: 10px;
-        }
-
-        li:last-child {
-            border-bottom: none;
-        }
-
-        @media (max-width: 600px) {
-            h1 { font-size: 1.8rem; }
-            #question-display { font-size: 1.2rem; }
-            .generator-card { padding: 20px; }
-        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Wymień 3 Rzeczy...</h1>
+<div class="quiz-container">
+    <div id="quiz-area">
+        <h2>Mikroświat 🔬</h2>
+        <div class="subtitle">Wirusy, bakterie, protisty i grzyby</div>
+        
+        <div id="progress-text">Pytanie 1 z 10</div>
+        <div id="progress-bar-container"><div id="progress-bar"></div></div>
 
-        <div class="generator-card">
-            <div id="question-display">Kliknij przycisk, aby wylosować pytanie!</div>
-            <button onclick="drawQuestion()">Wylosuj pytanie</button>
-        </div>
-
-        <div class="list-section">
-            <h2 onclick="toggleList()" style="cursor: pointer;">Pełna lista pytań (Pokaż/Ukryj)</h2>
-            <ul id="full-list" style="display: none;">
-                </ul>
+        <div class="question" id="question-text">...</div>
+        <div class="options" id="options-container"></div>
+        
+        <div class="navigation">
+            <button class="nav-btn" id="prev-btn" onclick="prevQuestion()" disabled>Cofnij</button>
+            <button class="nav-btn" id="next-btn" onclick="nextQuestion()">Dalej</button>
         </div>
     </div>
 
-    <script>
-        const questions = [
-            "Wymień 3 miejsca, w których nigdy nie uprawiałeś/aś seksu, ale chciałbyś/chciałabyś spróbować",
-            "Wymień 3 rzeczy, które zawsze chciałeś/chciałaś zrobić ze śmietaną w sprayu",
-            "Wymień 3 sławne osoby, które mogłyby być Twoim przepustem",
-            "Wymień 3 rzeczy, których nigdy nie robiłeś/aś, ale jesteś ciekawy/ciekawa, aby spróbować",
-            "Wymień 3 sposoby, aby uczynić grę wstępną bardziej ekscytującą",
-            "Wymień 3 rzeczy o swoich preferencjach seksualnych, o których nigdy nikomu nie powiedziałeś/aś",
-            "Wymień 3 miejsca, w których chciałbyś/chciałabyś zaszaleć na zewnątrz",
-            "Wymień 3 role, które zagrałbyś/zagrałabyś w niegrzecznym role-play’u",
-            "Wymień 3 najseksowniejsze akcenty, którym po prostu nie możesz się oprzeć",
-            "Wymień 3 typy bielizny, które uważasz za nieodparcie kuszące",
-            "Wymień 3 słynne sceny z filmów, które chciałbyś/chciałabyś odtworzyć z partnerem/partnerką",
-            "Wymień 3 seksowne piosenki, które zawsze wprowadzają Cię w nastrój",
-            "Wymień 3 figlarne wymówki, aby zaciągnąć kogoś do swojego miejsca",
-            "Wymień 3 części ciała, które uwielbiasz, gdy są całowane",
-            "Wymień 3 niegrzeczne gry do zabawy w ciemności",
-            "Wymień 3 przedmioty, które uważasz za niezbędne w “zestawie niegrzecznym”",
-            "Wymień 3 zwroty, które brzmią niewinnie, ale mają sekretnie niegrzeczne znaczenie",
-            "Wymień 3 sposoby na flirtowanie bez użycia słów",
-            "Wymień 3 rzeczy, które niespodziewanie znajdujesz seksowne u partnera",
-            "Wymień 3 z najseksowniejszych zawodów, jakie przychodzą Ci do głowy",
-            "Wymień 3 jedzenia, których odważyłbyś się użyć podczas gry wstępnej",
-            "Wymień 3 sposoby, aby drażnić partnera bez dotykania go",
-            "Wymień 3 rzeczy, które robisz po gorącej sesji",
-            "Wymień 3 gorące książki warte przeczytania z partnerem",
-            "Wymień 3 rodzaje pocałunków, które sprawiają, że chcesz więcej",
-            "Wymień 3 rodzaje masażu, które mogą prowadzić do czegoś więcej",
-            "Wymień 3 uwodzicielskie emotikony przy wysyłaniu zalotnego smsa",
-            "Wymień 3 niewinne przedmioty, które można użyć w niegrzeczny sposób",
-            "Wymień 3 publiczne miejsca, w których marzysz o pikantnym spotkaniu",
-            "Wymień 3 rzeczy, które można wyszeptać komuś do ucha, żeby go zmieszać",
-            "Wymień 3 miejsca, gdzie mógłbyś ukryć list miłosny, żeby twój partner go znalazł",
-            "Wymień 3 pikantne wyzwania do gry w prawda czy wyzwanie",
-            "Wymień 3 pikantne pytania, które zadałbyś w grze “Nigdy nie…”",
-            "Wymień 3 przedmioty, które zabrałbyś na dorosłe przyjęcie piżamowe",
-            "Wymień 3 rodzaje ubrań, na widok których twój partner staje się dla ciebie jeszcze bardziej pociągający",
-            "Wymień 3 flirciarskie zakłady, które możesz zawrzeć ze swoim partnerem",
-            "Wymień 3 rzeczy, które zrobiłbyś z “niegrzeczną” listą marzeń",
-            "Wymień 3 seksowne rzeczy, które możesz powiedzieć, aby podkręcić atmosferę podczas gry wstępnej",
-            "Wymień 3 nieoczekiwane miejsca na szybki numerek",
-            "Wymień 3 nie tak niewinne miejsca, aby dotknąć kogoś, by go rozszalać",
-            "Wymień 3 sposoby, aby zrobić niezapomniane wrażenie na pierwszej randce",
-            "Wymień 3 kuszące rzeczy, które można powiedzieć w ciemności",
-            "Wymień 3 sposoby, aby zmysłowo obudzić swojego partnera",
-            "Wymień 3 szybkie zmiany, aby uczynić sypialnię bardziej uwodzicielską",
-            "Wymień 3 figlarne kary za przegraną w zakładzie",
-            "Wymień 3 dziwaczne cechy, które uważasz za seksowne",
-            "Wymień 3 sposoby, aby uczynić prosty pocałunek niezapomnianym",
-            "Wymień 3 pikantne przezwiska dla twojego partnera",
-            "Wymień 3 zmysłowe czynności do wykonania przy pełni księżyca",
-            "Wymień 3 szeptane słowa, które wysyłają dreszcze po plecach",
-            "Wymień 3 kuszące rzeczy, które zrobiłbyś z syropem czekoladowym",
-            "Wymień 3 gorące sposoby na zakończenie listu miłosnego",
-            "Wymień 3 ryzykowne SMS-y do wysłania, gdy są w pracy",
-            "Wymień 3 flirciarskie gry na długą przejażdżkę samochodem",
-            "Wymień 3 uwodzicielskie sposoby jedzenia truskawki",
-            "Wymień 3 parne rzeczy, które możesz zrobić z lodem",
-            "Wymień 3 prowokujące piosenki, przy których masz ochotę tańczyć",
-            "Wymień 3 prowokujące słowa, aby jęczeć im do ucha podczas seksu",
-            "Wymień 3 pełne mocy rzeczy, które możesz powiedzieć, biorąc kontrolę w łóżku",
-            "Wymień 3 uwodzicielskie zapachy na randkę",
-            "Wymień 3 śmiałe ruchy na parkiecie",
-            "Wymień 3 rzeczy, które uważasz za nieodparcie atrakcyjne w partnerze",
-            "Wymień 3 sposoby, aby sprawić, by Twój partner czuł się pożądany",
-            "Wymień 3 kuszące desery do karmienia się nawzajem",
-            "Wymień 3 pikantne scenariusze do roli w sypialni",
-            "Wymień 3 miejsca, w których chciałbyś skraść pocałunek",
-            "Wymień 3 powody, dla których bycie przyłapanym może być ekscytujące",
-            "Wymień 3 zalotne sposoby na rozpoczęcie rozmowy",
-            "Wymień 3 uwodzicielskie ruchy do wypróbowania w sypialni",
-            "Wymień 3 romantyczne gesty, którymi możesz zaskoczyć swojego partnera",
-            "Wymień 3 rzeczy, które sprawiają, że czujesz się pewny siebie",
-            "Wymień 3 sposoby na okazanie wdzięczności partnerowi",
-            "Wymień 3 rzeczy, które uważasz za sexy w sobie",
-            "Wymień 3 aktywności, które urozmaicą leniwe niedzielne popołudnie",
-            "Wymień 3 przyjemności, na które sobie pozwalasz"
-        ];
+    <div id="result-area" class="result-box">
+        <h2>Raport z laboratorium 📋</h2>
+        <div class="score-circle" id="score-val">0/10</div>
+        <p id="feedback-msg" style="font-size: 1.2em; color: #c0c6d8; margin-bottom: 30px;"></p>
+        
+        <button class="nav-btn" onclick="location.reload()" style="margin-bottom: 20px;">Wykonaj test ponownie</button>
 
-        // Funkcja losująca pytanie
-        function drawQuestion() {
-            const display = document.getElementById('question-display');
-            const randomIndex = Math.floor(Math.random() * questions.length);
-            
-            // Efekt "zanikania" tekstu
-            display.style.opacity = 0;
-            
-            setTimeout(() => {
-                display.innerText = questions[randomIndex];
-                display.style.opacity = 1;
-            }, 200);
+        <h3 style="color: #4bc0c8; margin-top: 30px;">Analiza odpowiedzi:</h3>
+        <div id="review-container"></div>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        { 
+            q: "1. Dlaczego wirusów NIE zaliczamy do organizmów żywych?", 
+            options: [
+                "Ponieważ są zbyt małe, by je zobaczyć.", 
+                "Ponieważ nie mają budowy komórkowej i nie wykonują czynności życiowych (np. nie oddychają, nie odżywiają się).", 
+                "Ponieważ żyją tylko w wodzie.", 
+                "Ponieważ nie wywołują chorób."
+            ], answer: 1 
+        },
+        { 
+            q: "2. Antybiotyki (np. penicylina) to leki, które stosuje się w leczeniu chorób wywoływanych przez:", 
+            options: [
+                "Bakterie", 
+                "Wirusy", 
+                "Zarówno bakterie, jak i wirusy", 
+                "Grzyby"
+            ], answer: 0 
+        },
+        { 
+            q: "3. Wskaż chorobę wywoływaną przez WIRUSY:", 
+            options: [
+                "Borelioza (od kleszczy)", 
+                "Angina", 
+                "Próchnica zębów", 
+                "Grypa"
+            ], answer: 3 
+        },
+        { 
+            q: "4. Drożdże to jednokomórkowe organizmy wykorzystywane np. do pieczenia chleba. Do jakiego królestwa należą?", 
+            options: [
+                "Protisty", 
+                "Grzyby", 
+                "Bakterie", 
+                "Rośliny"
+            ], answer: 1 
+        },
+        { 
+            q: "5. Pantofelek oraz euglena zielona to organizmy należące do grupy:", 
+            options: [
+                "Bakterii", 
+                "Protistów", 
+                "Wirusów", 
+                "Zwierząt"
+            ], answer: 1 
+        },
+        { 
+            q: "6. Ściana komórkowa u grzybów zbudowana jest z substancji o nazwie:", 
+            options: [
+                "Celuloza", 
+                "Skrobia", 
+                "Chityna", 
+                "Białko"
+            ], answer: 2 
+        },
+        { 
+            q: "7. W jaki sposób odżywiają się grzyby?", 
+            options: [
+                "Są organizmami samożywnymi (przeprowadzają fotosyntezę).", 
+                "Są wyłącznie cudzożywne (pobierają gotowy pokarm).", 
+                "Nie muszą się odżywiać.", 
+                "Żywią się tylko światłem słonecznym."
+            ], answer: 1 
+        },
+        { 
+            q: "8. Bakterie o kształcie kulistym nazywamy:", 
+            options: [
+                "Pałeczkami", 
+                "Krętkami", 
+                "Przecinkowcami", 
+                "Ziarniakami"
+            ], answer: 3 
+        },
+        { 
+            q: "9. Organizmy żyjące w jelicie grubym człowieka, które pomagają trawić pokarm i produkują witaminy, to najczęściej:", 
+            options: [
+                "Wirusy", 
+                "Bakterie", 
+                "Pasożyty", 
+                "Grzyby pleśniowe"
+            ], answer: 1 
+        },
+        { 
+            q: "10. Protisty to bardzo zróżnicowana grupa organizmów. Które zdanie o nich jest PRAWDZIWE?", 
+            options: [
+                "Wszystkie protisty wywołują groźne choroby.", 
+                "Mogą być jedno- lub wielokomórkowe, samożywne (np. glony) albo cudzożywne.", 
+                "Żyją tylko i wyłącznie na lądzie.", 
+                "Są zbudowane z chityny jak grzyby."
+            ], answer: 1 
         }
+    ];
 
-        // Funkcja generująca listę (dla sekcji "Pełna lista")
-        function populateList() {
-            const listContainer = document.getElementById('full-list');
-            questions.forEach((q, index) => {
-                const li = document.createElement('li');
-                li.innerHTML = `<span class="number">${index + 1}.</span> ${q}`;
-                listContainer.appendChild(li);
-            });
+    let currentQ = 0;
+    let answers = new Array(questions.length).fill(null);
+
+    function loadQ() {
+        const qData = questions[currentQ];
+        document.getElementById('question-text').innerText = qData.q;
+        document.getElementById('progress-text').innerText = `Pytanie ${currentQ + 1} z ${questions.length}`;
+        
+        const percent = ((currentQ) / questions.length) * 100;
+        document.getElementById('progress-bar').style.width = percent + "%";
+
+        const optsDiv = document.getElementById('options-container');
+        optsDiv.innerHTML = '';
+
+        qData.options.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            if (answers[currentQ] === idx) btn.classList.add('selected');
+            btn.onclick = () => {
+                answers[currentQ] = idx;
+                loadQ();
+            };
+            optsDiv.appendChild(btn);
+        });
+
+        document.getElementById('prev-btn').disabled = (currentQ === 0);
+        const nextBtn = document.getElementById('next-btn');
+        if (currentQ === questions.length - 1) {
+            nextBtn.innerText = "Zakończ badanie";
+        } else {
+            nextBtn.innerText = "Dalej";
         }
+    }
 
-        // Pokaż/Ukryj listę
-        function toggleList() {
-            const list = document.getElementById('full-list');
-            if (list.style.display === "none") {
-                list.style.display = "block";
+    function nextQuestion() {
+        if (currentQ < questions.length - 1) {
+            currentQ++;
+            loadQ();
+        } else {
+            finishQuiz();
+        }
+    }
+
+    function prevQuestion() {
+        if (currentQ > 0) {
+            currentQ--;
+            loadQ();
+        }
+    }
+
+    function finishQuiz() {
+        let score = 0;
+        const reviewContainer = document.getElementById('review-container');
+        reviewContainer.innerHTML = ""; 
+
+        questions.forEach((q, idx) => {
+            const userAnsIdx = answers[idx];
+            const correctAnsIdx = q.answer;
+            const isCorrect = (userAnsIdx === correctAnsIdx);
+            
+            if (isCorrect) score++;
+
+            const div = document.createElement('div');
+            div.className = isCorrect ? 'review-item correct' : 'review-item incorrect';
+            
+            const statusIcon = isCorrect ? '✅' : '❌';
+            
+            let reviewContent = `
+                <span class="review-q-title">${statusIcon} ${q.q}</span>
+            `;
+
+            if (isCorrect) {
+                reviewContent += `<div class="ans-good">Twój wybór: ${q.options[userAnsIdx]}</div>`;
             } else {
-                list.style.display = "none";
+                const userText = userAnsIdx !== null ? q.options[userAnsIdx] : "Brak odpowiedzi";
+                reviewContent += `
+                    <div class="ans-bad">Twój wybór: ${userText}</div>
+                    <div class="ans-good">Prawidłowa odpowiedź: ${q.options[correctAnsIdx]}</div>
+                `;
             }
-        }
+            div.innerHTML = reviewContent;
+            reviewContainer.appendChild(div);
+        });
 
-        // Inicjalizacja listy po załadowaniu
-        window.onload = populateList;
-    </script>
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+        document.getElementById('score-val').innerText = `${score}/${questions.length}`;
+        
+        let msg = "";
+        const percent = (score / questions.length) * 100;
+        if(percent === 100) msg = "Genialnie! Jesteś prawdziwym mikrobiologiem! 🔬🏆";
+        else if(percent >= 80) msg = "Świetna robota! Doskonale znasz się na przyrodzie. 🌱";
+        else if(percent >= 50) msg = "Całkiem nieźle, ale warto powtórzyć kilka definicji. 📖";
+        else msg = "Mikroświat bywa trudny! Przeczytaj jeszcze raz ten dział w podręczniku. 💪";
+        
+        document.getElementById('feedback-msg').innerText = msg;
+    }
+
+    loadQ();
+</script>
+
 </body>
 </html>
